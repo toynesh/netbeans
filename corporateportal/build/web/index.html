@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>PDSL Corporate Portal</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap Core CSS -->
+        <link href='css/bootstrap.min.css' rel='stylesheet'>
+        <!-- Custom CSS -->
+        <link href='css/corporate.css' rel='stylesheet'>
+        <!-- Custom Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Barlow+Condensed" rel="stylesheet">
+    </head>
+    <body  onload="startTime();startDate()">
+        <div class="container-fluid">
+            <div class="row">&nbsp;</div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-3">
+                    <div id="pdsltitle">
+                        <h4>PDSL CORPORATE PORTAL</h4>
+                    </div>
+                </div>
+                <div class="col-lg-3"></div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div id="pdsltime">
+                                <h5>Time: <span id="ctime"></span></h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div id="pdsldate">
+                                <h5>Date: <span id="cdate"></span></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1"></div>
+            </div>
+            <div class="row" style="padding-top:6%">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-3">
+                    <form class="">
+                        <div class="form-group">
+                            <label for="uname">Username:</label>
+                            <input type="uname" class="form-control pdslcolor" id="uname">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Password:</label>
+                            <input type="password" class="form-control pdslcolor" id="pwd">
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox"> Remember me</label>
+                        </div>
+                        <button type="submit" style="width:100%" class="btn btn-info">Login</button><br /><br />
+                        <button type="submit" style="width:100%" class="btn btn-info">Forgot Password?</button>
+                    </form>
+                </div>
+                <div class="col-lg-5"></div>
+            </div>
+        </div>
+
+
+        <!-- jQuery -->
+        <script src='js/jquery.js'></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src='js/bootstrap.min.js'></script>
+        <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('ctime').innerHTML =
+                    h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i
+            }
+            ;  // add zero in front of numbers < 10
+            return i;
+        }
+        </script>
+        <script type="text/javascript">
+
+            function startDate() {
+                now = new Date().toDateString();
+                document.getElementById('cdate').innerHTML = now;
+            }
+
+        </script>
+    </body>
+</html>

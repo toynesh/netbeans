@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://196.201.216.14/SDP_SMS/parlayx_sms_send_service_2_2.wsdl" uri="wsdl/196.201.216.14/SDP_SMS/parlayx_sms_send_service_2_2.wsdl"/>
+    <system systemId="http://196.201.216.14/SDP_SMS/parlayx_sms_send_interface_2_2.wsdl" uri="wsdl/196.201.216.14/SDP_SMS/parlayx_sms_send_interface_2_2.wsdl"/>
+    <system systemId="http://196.201.216.14/SDP_SMS/parlayx_sms_types_2_2.xsd" uri="wsdl/196.201.216.14/SDP_SMS/parlayx_sms_types_2_2.xsd"/>
+    <system systemId="http://196.201.216.14/SDP_SMS/parlayx_common_types_2_1.xsd" uri="wsdl/196.201.216.14/SDP_SMS/parlayx_common_types_2_1.xsd"/>
+    <system systemId="http://196.201.216.14/SDP_SMS/parlayx_common_faults_2_0.wsdl" uri="wsdl/196.201.216.14/SDP_SMS/parlayx_common_faults_2_0.wsdl"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/xml-resources/web-service-references/parlayx_sms_send_service_2_2/wsdl/196.201.216.14/SDP_SMS/parlayx_sms_send_service_2_2.wsdl" uri="xml-resources/web-service-references/parlayx_sms_send_service_2_2_1/wsdl/parlayx_sms_send_service_2_2.wsdl"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/xml-resources/web-service-references/parlayx_sms_send_service_2_2/wsdl/196.201.216.14/SDP_SMS/parlayx_sms_send_interface_2_2.wsdl" uri="xml-resources/web-service-references/parlayx_sms_send_service_2_2_1/wsdl/parlayx_sms_send_interface_2_2.wsdl"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/xml-resources/web-service-references/parlayx_sms_send_service_2_2/wsdl/196.201.216.14/SDP_SMS/parlayx_sms_types_2_2.xsd" uri="xml-resources/web-service-references/parlayx_sms_send_service_2_2_1/wsdl/parlayx_sms_types_2_2.xsd"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/xml-resources/web-service-references/parlayx_sms_send_service_2_2/wsdl/196.201.216.14/SDP_SMS/parlayx_common_types_2_1.xsd" uri="xml-resources/web-service-references/parlayx_sms_send_service_2_2_1/wsdl/parlayx_common_types_2_1.xsd"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/xml-resources/web-service-references/parlayx_sms_send_service_2_2/wsdl/196.201.216.14/SDP_SMS/parlayx_common_faults_2_0.wsdl" uri="xml-resources/web-service-references/parlayx_sms_send_service_2_2_1/wsdl/parlayx_common_faults_2_0.wsdl"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/src/META-INF/wsdl/parlayx_sms_send_service_2_2.wsdl" uri="wsdl/parlayx_sms_send_service_2_2.wsdl"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/src/META-INF/wsdl/parlayx_sms_send_interface_2_2.wsdl" uri="wsdl/parlayx_sms_send_interface_2_2.wsdl"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/src/META-INF/wsdl/parlayx_sms_types_2_2.xsd" uri="wsdl/parlayx_sms_types_2_2.xsd"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/src/META-INF/wsdl/parlayx_common_types_2_1.xsd" uri="wsdl/parlayx_common_types_2_1.xsd"/>
+    <system systemId="file:/home/coolie/NetBeansProjects/Metro_sdp/src/META-INF/wsdl/parlayx_common_faults_2_0.wsdl" uri="wsdl/parlayx_common_faults_2_0.wsdl"/>
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_sms_send_service_2_2.wsdl" uri="wsdl/parlayx_sms_send_service_2_2.wsdl"/>
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_sms_send_interface_2_2.wsdl" uri="wsdl/parlayx_sms_send_interface_2_2.wsdl"/>
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_sms_types_2_2.xsd" uri="wsdl/parlayx_sms_types_2_2.xsd"/>
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_common_types_2_1.xsd" uri="wsdl/parlayx_common_types_2_1.xsd"/>
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_common_faults_2_0.wsdl" uri="wsdl/parlayx_common_faults_2_0.wsdl"/>
+</catalog>

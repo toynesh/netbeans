@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_sms_send_service_2_2.wsdl" uri="src/conf/xml-resources/web-services/juliussdp/wsdl/parlayx_sms_send_service_2_2.wsdl"/>
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_sms_send_interface_2_2.wsdl" uri="src/conf/xml-resources/web-services/juliussdp/wsdl/parlayx_sms_send_interface_2_2.wsdl"/>
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_sms_types_2_2.xsd" uri="src/conf/xml-resources/web-services/juliussdp/wsdl/parlayx_sms_types_2_2.xsd"/>
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_common_types_2_1.xsd" uri="src/conf/xml-resources/web-services/juliussdp/wsdl/parlayx_common_types_2_1.xsd"/>
+    <system systemId="file:/home/coolie/Desktop/SDP_SMS/parlayx_common_faults_2_0.wsdl" uri="src/conf/xml-resources/web-services/juliussdp/wsdl/parlayx_common_faults_2_0.wsdl"/>
+    <system systemId="http://197.248.9.109:8084/msgoptlistener/CurrentParams?wsdl" uri="src/conf/xml-resources/web-service-references/CurrentParams/wsdl/197.248.9.109_8084/msgoptlistener/CurrentParams.wsdl"/>
+    <system systemId="http://197.248.9.109:8084/msgoptlistener/CurrentParams?xsd=1" uri="src/conf/xml-resources/web-service-references/CurrentParams/wsdl/197.248.9.109_8084/msgoptlistener/CurrentParams.xsd_1.xsd"/>
+</catalog>

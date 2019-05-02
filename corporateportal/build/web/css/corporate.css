@@ -1,0 +1,56 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 23, 2017, 1:36:18 PM
+    Author     : coolie
+*/
+body {
+    font-family: 'Barlow Condensed', sans-serif;
+    overflow-x: hidden;
+    background-image: url(../imgs/watermark.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    color: #000;
+}
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Barlow Condensed', sans-serif;
+}
+#pdsltitle {
+    border-radius: 10px;
+    border: 2px solid #2797D9;
+    padding: 20px; 
+    width: 100%;
+    height: 100%;    
+}
+#pdsltime {
+    border-radius: 10px;
+    border: 2px solid #2797D9;
+    padding: 20px; 
+    width: 100%;
+    height: 100%;    
+}
+#pdsldate {
+    border-radius: 10px;
+    border: 2px solid #2797D9;
+    padding: 20px; 
+    width: 100%;
+    height: 100%;    
+}
+.pdslcolor{
+    color: #2797D9;
+}
+.btn-info{
+    background-color: #2797D9;
+}
+.btn-info:hover{
+    background-color: #fff;
+    border-color: #2797D9;
+    color: #2797D9;
+}
+.form-control {
+  border-color: #2797D9;
+}

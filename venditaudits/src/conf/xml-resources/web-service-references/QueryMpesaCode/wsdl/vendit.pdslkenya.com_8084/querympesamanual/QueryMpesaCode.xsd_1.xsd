@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2-hudson-740-. --><xs:schema xmlns:tns="http://manualvends.vend.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://manualvends.vend.com/">
+
+<xs:element name="callAllcodes" type="tns:callAllcodes" />
+
+<xs:element name="callAllcodesResponse" type="tns:callAllcodesResponse" />
+
+<xs:element name="querymanual" type="tns:querymanual" />
+
+<xs:element name="querymanualResponse" type="tns:querymanualResponse" />
+
+<xs:complexType name="querymanual">
+<xs:sequence>
+<xs:element name="mcode" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="querymanualResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="callAllcodes">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="callAllcodesResponse">
+<xs:sequence />
+</xs:complexType>
+</xs:schema>

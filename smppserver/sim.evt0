@@ -1,0 +1,18 @@
+07:00:52 IOException receive via TCPIPConnection
+07:00:52 Exception: java.io.EOFException: Reached end of stream
+	at org.smpp.TCPIPConnection.receive(TCPIPConnection.java:421)
+	at org.smpp.ReceiverBase.receivePDUFromConnection(ReceiverBase.java:197)
+	at org.smpp.Receiver.receiveAsync(Receiver.java:358)
+	at org.smpp.ReceiverBase.process(ReceiverBase.java:96)
+	at org.smpp.util.ProcessingThread.run(ProcessingThread.java:191)
+	at java.lang.Thread.run(Thread.java:748)
+
+07:00:52 Receiver.receiveAsync()
+07:00:52 Exception: java.io.EOFException: Reached end of stream
+	at org.smpp.TCPIPConnection.receive(TCPIPConnection.java:421)
+	at org.smpp.ReceiverBase.receivePDUFromConnection(ReceiverBase.java:197)
+	at org.smpp.Receiver.receiveAsync(Receiver.java:358)
+	at org.smpp.ReceiverBase.process(ReceiverBase.java:96)
+	at org.smpp.util.ProcessingThread.run(ProcessingThread.java:191)
+	at java.lang.Thread.run(Thread.java:748)
+

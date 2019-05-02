@@ -1,0 +1,96 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 11, 2017, 1:12:02 PM
+    Author     : coolie
+*/
+/*default version*/
+body{
+    font-family: 'Open Sans', sans-serif;
+    font-size:18px;
+    color: #00337f;
+    /*background-image: url(../img/kenyapower.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: bottom;*/
+}
+a{
+    color:#000;
+}
+a:hover {
+    color: #ffcf01;
+    text-decoration: none;
+    outline:none
+}
+a:active, a:visited, a:link{
+    text-decoration: none;
+    outline:none
+}
+h5{
+    color:black;
+}
+#navcontainer {
+    border-radius: 3px;
+    border: 2px solid #ffcf01;
+    padding: 20px; 
+    width: 100%;
+    height: 100%; 
+    font-size:14px;
+}
+.horizontalLine {
+    width: 100%px;
+    height: 2px;
+    background:#00337f;
+}
+
+input[type="text"],
+select.form-control {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ffcf01;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+input[type="text"]:focus,
+select.form-control:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+input[type="password"],
+select.form-control {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ffcf01;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+input[type="password"]:focus,
+select.form-control:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.panel-primary > .panel-heading {
+    background-color:#00337f !important;
+}
+
+/* primary button */
+.btn-primary {
+    background-color: #00337f;
+    color: #fff;
+    border-color:  #ffcf01;
+    border-radius: 1px;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active    {
+    background-color: #ffcf01;;
+    color:#00337f;
+    border-color: #ffcf01;
+}

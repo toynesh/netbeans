@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="ant_all_in_one_basic" basedir="." default="info"> 
+	
+	<property file="run.properties"/>
+	
+	<property name="dir.lib" value="../../../lib"/>
+	<property name="dir.api.src" value="api/src"/>
+	<property name="dir.implementation.src" value="implementation/src"/>
+	<property name="dir.api.classes" value="../BUILD_LOCAL/api/classes"/>
+	
+	<property name="dir.implementation.classes" 
+		      value="../BUILD_LOCAL/implementation/classes"/>
+	
+	<property name="dir.dist" value="dist"/>
+	
+	<path id="classpath.api.path">
+		<pathelement location="."/>
+		<fileset dir="${dir.lib}">
+			  <include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="classpath.implementation.path">
+        <pathelement location="."/>
+        <fileset dir="${dir.lib}">
+              <include name="**/*.jar"/>
+        </fileset>
+		<fileset dir="${dir.implementation.classes}">
+              <include name="**/*.class"/>
+        </fileset>
+    </path>
+	
+	<target name="info">
+		<echo>Type ant -p to see a list of ant targets</echo>
+	</target>
+	
+	<target name="make.classes.dir">
+		<mkdir dir="${dir.api.classes}"/>
+		<mkdir dir="${dir.implementation.classes}"/>
+	</target>
+	
+	<target name="make.dist.dir">
+		<mkdir dir="${dir.dist}"/>
+	</target>
+	
+	<target name="make.all.dirs" 
+	        depends="make.classes.dir, make.dist.dir"/>
+	
+	<target name="compile.api" depends="make.all.dirs" 
+		    description="compiles classes">
+		<javac destdir="${dir.api.classes}">
+			<src path="${dir.api.src}"/>
+			<classpath>
+				<path refid="classpath.api.path"/>
+			</classpath>
+		</javac>
+		
+		<copy todir="${dir.api.classes}">
+			<fileset dir="${dir.api.src}">
+			    	<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	
+	<target name="compile.implementation" depends="make.all.dirs" 
+	        description="compiles classes">
+        <javac destdir="${dir.implementation.classes}">
+            <src path="${dir.implementation.src}"/>
+            <classpath>
+                <path refid="classpath.implementation.path"/>
+            </classpath>
+        </javac>
+        
+        <copy todir="${dir.implementation.classes}">
+            <fileset dir="${dir.implementation.src}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+	
+	
+    <target name="create.jar" 
+    	    depends="compile.api, compile.implementation" 
+    	    description="creates jar">	
+        <jar destfile="${dir.dist}/${jar.api.name}">
+            <manifest> 
+                <attribute name="Built-By" value="${user.name}"/>
+			</manifest>								     
+	        <fileset dir="${dir.api.classes}">                
+	        	<include name="**/*.class"/>
+	        </fileset>
+	        
+	        <fileset dir="${dir.src}">                
+	        	<!--include name="**/*.java"/-->
+	            <include name="com/**/*.gif"/>
+	            <include name="com/**/*.png"/>
+	        	<include name="com/**/*.js"/>
+	        	<include name="com/**/*.css"/>
+	        	<include name="com/**/*.xsd"/>
+	        	<include name="com/**/*.xsl"/>
+	        	<include name="com/**/*.xml"/>
+	        	<include name="com/**/*.properties"/>
+	        </fileset>
+    	</jar>
+		
+	    <jar destfile="${dir.dist}/${jar.implementation.name}">
+	    	<manifest> 
+	    	   <attribute name="Built-By" value="${user.name}"/>
+	    	</manifest>                                  
+            <fileset dir="${dir.implementation.classes}">                
+                <include name="**/*.class"/>
+            </fileset>
+            
+            <fileset dir="${dir.src}">                
+                <!--include name="**/*.java"/-->
+                <include name="com/**/*.gif"/>
+                <include name="com/**/*.png"/>
+                <include name="com/**/*.js"/>
+                <include name="com/**/*.css"/>
+                <include name="com/**/*.xsd"/>
+                <include name="com/**/*.xsl"/>
+                <include name="com/**/*.xml"/>
+                <include name="com/**/*.properties"/>
+            </fileset>
+        </jar>
+	</target>
+	
+	
+	<target name="clean"
+	        description="clean up">
+	    <delete dir="${dir.classes}"/>
+	    <delete dir="${dir.dist}"/>
+  	</target>
+	
+	
+	<target name="run.class" depends="create.jar" 
+	        description="runs class configured in run.properties file">
+	
+		<java classname="${java.main.class}"
+    	      fork="true" 
+    	      failonerror="true"
+       	      maxmemory="128m">
+			<classpath>
+                <path refid="classpath.implementation.path"/>
+            </classpath>
+	   </java>
+	</target>
+</project>

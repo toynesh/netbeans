@@ -1,0 +1,78 @@
+.menu{
+    position:relative;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: inline-block;
+    float: left;
+    left: 50%;
+    
+}
+
+.item{
+    position:relative;
+    background-color:#C5A66D;
+    float:left;
+    left: -50%;
+    width:70px;
+    height:70px;
+    border:3px solid #ddd;
+    -moz-border-radius:40px;
+    -webkit-border-radius:40px;
+    border-radius:40px;
+    -moz-box-shadow:1px 1px 3px #555;
+    -webkit-box-shadow:1px 1px 3px #555;
+    box-shadow:1px 1px 3px #555;
+    cursor:pointer;
+    overflow:hidden;
+}
+
+.link{
+    left:7px;
+    top:7px;
+    position:absolute;
+    width:70px;
+    height:70px;
+}
+.icon_menu{
+    font-size: 14px;
+}
+.item_content{
+    position:absolute;
+    height:30px;
+    width:220px;
+    overflow:hidden;
+    left:70px;
+    top:7px;
+    background:transparent;
+    display:none;
+}
+.item_content a{
+    background-color:transparent;
+    color:#fff;
+    text-decoration:none;
+}
+.item_content a:hover{
+    color:#000;
+}
+
+/* For Mobile*/
+@media screen and (max-width: 540px) {
+    .menu {
+        margin-left:2%;
+       left: 0%;
+    }
+    .item{
+       float:none; 
+       left: 0%;
+    }
+}
+
+/* For Tablets 
+@media screen and (min-width: 540px) and (max-width: 780px) {
+    .menu {
+        margin-left:17%;
+    }
+}*/

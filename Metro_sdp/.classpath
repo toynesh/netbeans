@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="build/generated-sources/jax-ws"/>
+	<classpathentry kind="src" path="build/generated/jax-wsCache/parlayx_sms_send_service_2_2"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="dist/lib/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry kind="lib" path="dist/metro_sdp.jar"/>
+	<classpathentry kind="lib" path="lib/CopyLibs/org-netbeans-modules-java-j2seproject-copylibstask.jar"/>
+	<classpathentry kind="lib" path="lib/JAX-WS-ENDORSED/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="lib/JAX-WS-ENDORSED/jaxws-api.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

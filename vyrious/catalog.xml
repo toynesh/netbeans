@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://172.27.116.23:8086/checkaccounts/Requests?wsdl" uri="xml-resources/web-service-references/Requests/wsdl/172.27.116.23_8086/checkaccounts/Requests.wsdl"/>
+</catalog>

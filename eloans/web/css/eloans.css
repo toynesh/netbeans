@@ -1,0 +1,55 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 11, 2017, 1:12:02 PM
+    Author     : coolie
+*/
+/*default version*/
+body{
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-size:18px;
+    color: #03bda7;
+}
+h4{
+    color: #000;
+    text-decoration: underline;
+    margin-bottom: 3%;
+}
+a{
+    color: #03bda7;
+}
+a:hover {
+    color: #03bda7;
+    text-decoration: underline;
+}
+a:active, a:visited, a:link{
+    text-decoration: none;
+}
+#navcontainer {
+    border-radius: 3px;
+    border: 2px solid #03bda7;
+    padding: 20px; 
+    width: 100%;
+    font-size:14px;
+}
+.list-group > .active{
+    background-color: #03bda7 !important;
+    border: 0px;
+}
+.panel-success > .panel-heading {
+    background-color:#03bda7 !important;
+}
+.btn-success, .btn-success:active, .btn-success:visited {
+    background-color:#03bda7 !important;
+    border-color: #03bda7 !important;
+}
+.btn-success:hover{
+    border-color: #03bda7 !important;
+    background-color:#fff !important;
+    color: #03bda7 !important;
+}
+
+

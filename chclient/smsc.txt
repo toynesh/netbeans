@@ -1,0 +1,5 @@
+Host>>localhost
+Port>>7080
+SystemId>>pavel
+Password>>dfsew
+Shortcode>>22225

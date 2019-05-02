@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2-hudson-740-. --><xs:schema xmlns:tns="http://vending.pdsl.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://vending.pdsl.com/">
+
+<xs:element name="airtimeVend" type="tns:airtimeVend" />
+
+<xs:element name="airtimeVendResponse" type="tns:airtimeVendResponse" />
+
+<xs:element name="postpaidAccountQuery" type="tns:postpaidAccountQuery" />
+
+<xs:element name="postpaidAccountQueryResponse" type="tns:postpaidAccountQueryResponse" />
+
+<xs:element name="postpaidVend" type="tns:postpaidVend" />
+
+<xs:element name="postpaidVendResponse" type="tns:postpaidVendResponse" />
+
+<xs:element name="prepaidMeterQuery" type="tns:prepaidMeterQuery" />
+
+<xs:element name="prepaidMeterQueryResponse" type="tns:prepaidMeterQueryResponse" />
+
+<xs:element name="prepaidVend" type="tns:prepaidVend" />
+
+<xs:element name="prepaidVendResponse" type="tns:prepaidVendResponse" />
+
+<xs:complexType name="airtimeVend">
+<xs:sequence>
+<xs:element name="vendorcode" type="xs:string" minOccurs="0" />
+<xs:element name="tokentype" type="xs:string" minOccurs="0" />
+<xs:element name="amount" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="airtimeVendResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:vendResponse" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="vendResponse">
+<xs:sequence>
+<xs:element name="account" type="xs:string" minOccurs="0" />
+<xs:element name="floatBalance" type="xs:string" minOccurs="0" />
+<xs:element name="pdslError" type="xs:string" minOccurs="0" />
+<xs:element name="queryRes" type="xs:string" minOccurs="0" />
+<xs:element name="stdMsg" type="xs:string" minOccurs="0" />
+<xs:element name="vendRef" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="postpaidAccountQuery">
+<xs:sequence>
+<xs:element name="vendorcode" type="xs:string" minOccurs="0" />
+<xs:element name="account" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="postpaidAccountQueryResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:vendResponse" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="postpaidVend">
+<xs:sequence>
+<xs:element name="vendorcode" type="xs:string" minOccurs="0" />
+<xs:element name="account" type="xs:string" minOccurs="0" />
+<xs:element name="amount" type="xs:string" minOccurs="0" />
+<xs:element name="phonenumber" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="postpaidVendResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:vendResponse" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="prepaidMeterQuery">
+<xs:sequence>
+<xs:element name="vendorcode" type="xs:string" minOccurs="0" />
+<xs:element name="meter" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="prepaidMeterQueryResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:vendResponse" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="prepaidVend">
+<xs:sequence>
+<xs:element name="vendorcode" type="xs:string" minOccurs="0" />
+<xs:element name="account" type="xs:string" minOccurs="0" />
+<xs:element name="amount" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="prepaidVendResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:vendResponse" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/home/julius/Desktop/SDP_SMS/parlayx_sms_notification_service_2_2.wsdl" uri="src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_notification_service_2_2.wsdl"/>
+    <system systemId="file:/home/julius/Desktop/SDP_SMS/parlayx_sms_notification_interface_2_2.wsdl" uri="src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_notification_interface_2_2.wsdl"/>
+    <system systemId="file:/home/julius/Desktop/SDP_SMS/parlayx_sms_types_2_2.xsd" uri="src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_types_2_2.xsd"/>
+    <system systemId="file:/home/julius/Desktop/SDP_SMS/parlayx_common_types_2_1.xsd" uri="src/conf/xml-resources/web-services/sms/wsdl/parlayx_common_types_2_1.xsd"/>
+</catalog>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://197.248.9.109:8084/msgoptlistener/CurrentParams?wsdl" uri="wsdl/197.248.9.109_8084/msgoptlistener/CurrentParams.wsdl"/>
+    <system systemId="http://197.248.9.109:8084/msgoptlistener/CurrentParams?xsd=1" uri="wsdl/197.248.9.109_8084/msgoptlistener/CurrentParams.xsd_1.xsd"/>
+    <system systemId="http://subaggregator.pdslkenya.com:8084/msgoptlistener/CurrentParams?wsdl" uri="wsdl/subaggregator.pdslkenya.com_8084/msgoptlistener/CurrentParams.wsdl"/>
+    <system systemId="http://subaggregator.pdslkenya.com:8084/msgoptlistener/CurrentParams?xsd=1" uri="wsdl/subaggregator.pdslkenya.com_8084/msgoptlistener/CurrentParams.xsd_1.xsd"/>
+    <system systemId="http://172.27.116.36:8084/msgoptlistener/CurrentParams?wsdl" uri="wsdl/172.27.116.36_8084/msgoptlistener/CurrentParams.wsdl"/>
+    <system systemId="http://172.27.116.36:8084/msgoptlistener/CurrentParams?xsd=1" uri="wsdl/172.27.116.36_8084/msgoptlistener/CurrentParams.xsd_1.xsd"/>
+</catalog>

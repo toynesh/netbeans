@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/home/coolie/Desktop/mlogger/saver.wsdl" uri="xml-resources/web-service-references/saver/wsdl/saver.wsdl"/>
+    <system systemId="file:/home/coolie/Desktop/mlogger/saver_schema1.xsd" uri="xml-resources/web-service-references/saver/wsdl/saver_schema1.xsd"/>
+    <system systemId="file:/home/coolie/IpnWebRetrieval.wsdl" uri="xml-resources/web-service-references/IpnWebRetrieval/wsdl/IpnWebRetrieval.wsdl"/>
+</catalog>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="ant_all_in_one_basic" basedir="." default="info"> 
+	
+	<property file="run.properties"/>
+	
+	<property name="dir.lib" value="../lib"/>
+	<!--<property name="dir.api.src" value="api/src"/>-->
+	<property name="dir.application.src" value="application/src"/>
+	
+	
+	<property name="dir.application.classes" 
+		      value="../BUILD_LOCAL/application/classes"/>
+	
+	<property name="dir.dist" value="../BUILD_LOCAL/dist"/>
+	
+	
+	
+	<path id="classpath.application.path">
+        <pathelement location="."/>
+        <fileset dir="${dir.lib}">
+              <include name="**/*.jar"/>
+        </fileset>
+		<fileset dir="${dir.dist}">
+              <include name="**/*.jar"/>
+        </fileset>
+    </path>
+	
+	<target name="info">
+		<echo>Type ant -p to see a list of ant targets</echo>
+	</target>
+	
+	<target name="make.classes.dir">
+		
+		<mkdir dir="${dir.application.classes}"/>
+	</target>
+	
+	<target name="make.dist.dir">
+		<mkdir dir="${dir.dist}"/>
+	</target>
+	
+	<target name="make.all.dirs" 
+	        depends="make.classes.dir, make.dist.dir"/>
+	
+	
+	
+	
+	<target name="compile.application" depends="make.all.dirs" 
+	        description="compiles classes">
+        <javac destdir="${dir.application.classes}">
+            <src path="${dir.application.src}"/>
+            <classpath>
+                <path refid="classpath.application.path"/>
+            </classpath>
+        </javac>
+        
+        <copy todir="${dir.application.classes}">
+            <fileset dir="${dir.application.src}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+	
+	
+    <target name="create.jar" 
+    	    depends=" compile.application" 
+    	    description="creates jar">	
+        
+		
+	    <jar destfile="${dir.dist}/${jar.name}">
+	    	<manifest> 
+	    	   <attribute name="Built-By" value="${user.name}"/>
+	    	</manifest>                                  
+            <fileset dir="${dir.application.classes}">                
+                <include name="**/*.class"/>
+            </fileset>
+            
+            <fileset dir="${dir.application.src}">                
+                <!--include name="**/*.java"/-->
+                <include name="org/**/*.gif"/>
+                <include name="org/**/*.png"/>
+                <include name="org/**/*.jpg"/>
+                <include name="org/**/*.js"/>
+                <include name="org/**/*.css"/>
+                <include name="org/**/*.xsd"/>
+                <include name="org/**/*.xsl"/>
+                <include name="org/**/*.xml"/>
+                <include name="org/**/*.properties"/>
+            </fileset>
+        </jar>
+	</target>
+	
+	
+	<target name="clean"
+	        description="clean up">
+	    <delete dir="${dir.classes}"/>
+	    <delete dir="${dir.dist}"/>
+  	</target>
+	
+	
+	<target name="run.class" depends="create.jar" 
+	        description="runs class configured in run.properties file">
+	
+		<java classname="${java.main.class}"
+    	      fork="true" 
+    	      failonerror="true"
+       	      maxmemory="128m">
+			<classpath>
+                <path refid="classpath.application.path"/>
+            </classpath>
+	   </java>
+	</target>
+</project>

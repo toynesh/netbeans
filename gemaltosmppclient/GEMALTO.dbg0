@@ -1,0 +1,791 @@
+10:30:49    main: Gemaltosmppclient.SMPPTest.bind() entered
+10:30:49       main: TCPIPConnection.open entered
+10:30:49       main: TCPIPConnection.open opened client tcp/ip connection to localhost on port 7080 (7)
+10:30:49       main: TCPIPConnection.open exited
+10:30:49       main: Session.send(Request) entered
+10:30:49       main: Session.send(Request) Sending request (bindreq: (pdu: 0 9 0 [1]) pavel dfsew  52 (addrrang: 0 0 ) )  (4)
+10:30:49          main: Transmitter.send entered
+10:30:49          main: Transmitter.send going to send pdu's data over connection (7)
+10:30:49          main: Transmitter.send PDU.getData() build up data 00000021000000090000000000000001706176656c006466736577000034000000 (5)
+10:30:49             main: TCPIPConnection.send entered
+10:30:49             main: TCPIPConnection.send sent 33 bytes to localhost on port 7080 (7)
+10:30:49             main: TCPIPConnection.send exited
+10:30:49          main: Transmitter.send successfully sent pdu's data over connection (7)
+10:30:49          main: Transmitter.send exited
+10:30:49       main: Session.send(Request) Going to receive response. Expecting (bindresp: (pdu: 0 80000009 0 1) )  (4)
+10:30:49       main: Session.send(Request) receivePDU: Going to receive response. (1)
+10:30:49       main: Session.send(Request) Is transmitter only => trying to receive from connection. (1)
+10:30:49       main: Session.send(Request) ReceiverBase.receivePDUFromConnection start (3)
+10:30:49          main: TCPIPConnection.receive entered
+10:30:49          main: TCPIPConnection.receive going to read from socket (8)
+10:30:49          main: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:30:49          main: TCPIPConnection.receive read 31 bytes from socket (8)
+10:30:49          main: TCPIPConnection.receive no more data remains in the socket (8)
+10:30:49          main: TCPIPConnection.receive totally read 31 bytes from socket (7)
+10:30:49          main: TCPIPConnection.receive exited
+10:30:49       main: Session.send(Request) trying to create pdu from unprocessed buffer (1)
+10:30:49       main: Session.send(Request) PDU.setData() parsing header 0000001f800000090000000000000001 (5)
+10:30:49       main: Session.send(Request) PDU.setData() parsing body 536d73632053696d756c61746f7200 (5)
+10:30:49       main: Session.send(Request) received complete pdu(bindresp: (pdu: 31 80000009 0 1) Smsc Simulator)  (1)
+10:30:49       main: Session.send(Request) there is 0 bytes left in unprocessed buffer (1)
+10:30:49       main: Session.send(Request) ReceiverBase.receivePDUFromConnection finished (3)
+10:30:49       main: Session.send(Request) Got pdu (bindresp: (pdu: 31 80000009 0 1) Smsc Simulator)  (1)
+10:30:49       main: Session.send(Request) Got response(?) pdu (bindresp: (pdu: 31 80000009 0 1) Smsc Simulator)  (4)
+10:30:49       main: Session.send(Request) checking response if it's what we expected. (4)
+10:30:49       main: Session.send(Request) exited
+10:30:49    main: Gemaltosmppclient.SMPPTest.bind() Receiver starting (1)
+10:30:49       main: Receiver.start() entered
+10:30:49    Receiver-1: Receiver.run() entered
+10:30:49    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:30:49    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:30:49       Receiver-1: TCPIPConnection.receive entered
+10:30:49       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:30:49       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:30:49       main: Receiver.start() exited
+10:30:49    main: Gemaltosmppclient.SMPPTest.bind() Receiver started (1)
+10:30:49    main: Gemaltosmppclient.SMPPTest.bind() exited
+10:30:49       main: Gemaltosmppclient.SMPPTest.submit() entered
+10:30:49    pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:30:49       pool-1-thread-1: Session.send(Request) entered
+10:30:49       pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [2]) )  (4)
+10:30:49          pool-1-thread-1: Transmitter.send entered
+10:30:49          pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:30:49          pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000002 (5)
+10:30:49             pool-1-thread-1: TCPIPConnection.send entered
+10:30:49             pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:30:49             pool-1-thread-1: TCPIPConnection.send exited
+10:30:49          pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:30:49          pool-1-thread-1: Transmitter.send exited
+10:30:49       pool-1-thread-1: Session.send(Request) exited
+10:30:49    pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:30:50       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:30:50       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:30:50       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:30:50       Receiver-1: TCPIPConnection.receive exited
+10:30:50    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:30:50    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000002 (5)
+10:30:50    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:30:50    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 2) )  (1)
+10:30:50    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:30:50    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:30:50    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 2) )  (1)
+10:30:50    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:30:50    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:30:50    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:30:50    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:30:50       Receiver-1: TCPIPConnection.receive entered
+10:30:50       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:30:50       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:30:59       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:30:59          pool-1-thread-1: Session.send(Request) entered
+10:30:59          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [3]) )  (4)
+10:30:59             pool-1-thread-1: Transmitter.send entered
+10:30:59             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:30:59             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000003 (5)
+10:30:59                pool-1-thread-1: TCPIPConnection.send entered
+10:30:59                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:30:59                pool-1-thread-1: TCPIPConnection.send exited
+10:30:59             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:30:59             pool-1-thread-1: Transmitter.send exited
+10:30:59          pool-1-thread-1: Session.send(Request) exited
+10:30:59       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:31:00       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:31:00       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:31:00       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:31:00       Receiver-1: TCPIPConnection.receive exited
+10:31:00    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:31:00    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000003 (5)
+10:31:00    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:31:00    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 3) )  (1)
+10:31:00    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:31:00    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:31:00    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 3) )  (1)
+10:31:00    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:31:00    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:31:00    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:31:00    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:31:00       Receiver-1: TCPIPConnection.receive entered
+10:31:00       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:31:00       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:31:09       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:31:09          pool-1-thread-1: Session.send(Request) entered
+10:31:09          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [4]) )  (4)
+10:31:09             pool-1-thread-1: Transmitter.send entered
+10:31:09             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:31:09             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000004 (5)
+10:31:09                pool-1-thread-1: TCPIPConnection.send entered
+10:31:09                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:31:09                pool-1-thread-1: TCPIPConnection.send exited
+10:31:09             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:31:09             pool-1-thread-1: Transmitter.send exited
+10:31:09          pool-1-thread-1: Session.send(Request) exited
+10:31:09       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:31:10       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:31:10       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:31:10       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:31:10       Receiver-1: TCPIPConnection.receive exited
+10:31:10    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:31:10    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000004 (5)
+10:31:10    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:31:10    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 4) )  (1)
+10:31:10    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:31:10    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:31:10    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 4) )  (1)
+10:31:10    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:31:10    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:31:10    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:31:10    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:31:10       Receiver-1: TCPIPConnection.receive entered
+10:31:10       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:31:10       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:31:19       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:31:19          pool-1-thread-1: Session.send(Request) entered
+10:31:19          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [5]) )  (4)
+10:31:19             pool-1-thread-1: Transmitter.send entered
+10:31:19             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:31:19             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000005 (5)
+10:31:19                pool-1-thread-1: TCPIPConnection.send entered
+10:31:19                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:31:19                pool-1-thread-1: TCPIPConnection.send exited
+10:31:19             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:31:19             pool-1-thread-1: Transmitter.send exited
+10:31:19          pool-1-thread-1: Session.send(Request) exited
+10:31:19       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:31:20       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:31:20       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:31:20       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:31:20       Receiver-1: TCPIPConnection.receive exited
+10:31:20    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:31:20    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000005 (5)
+10:31:20    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:31:20    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 5) )  (1)
+10:31:20    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:31:20    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:31:20    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 5) )  (1)
+10:31:20    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:31:20    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:31:20    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:31:20    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:31:20       Receiver-1: TCPIPConnection.receive entered
+10:31:20       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:31:20       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:31:29       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:31:29          pool-1-thread-1: Session.send(Request) entered
+10:31:29          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [6]) )  (4)
+10:31:29             pool-1-thread-1: Transmitter.send entered
+10:31:29             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:31:29             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000006 (5)
+10:31:29                pool-1-thread-1: TCPIPConnection.send entered
+10:31:29                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:31:29                pool-1-thread-1: TCPIPConnection.send exited
+10:31:29             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:31:29             pool-1-thread-1: Transmitter.send exited
+10:31:29          pool-1-thread-1: Session.send(Request) exited
+10:31:29       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:31:30       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:31:30       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:31:30       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:31:30       Receiver-1: TCPIPConnection.receive exited
+10:31:30    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:31:30    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000006 (5)
+10:31:30    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:31:30    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 6) )  (1)
+10:31:30    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:31:30    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:31:30    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 6) )  (1)
+10:31:30    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:31:30    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:31:30    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:31:30    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:31:30       Receiver-1: TCPIPConnection.receive entered
+10:31:30       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:31:30       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:31:39       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:31:39          pool-1-thread-1: Session.send(Request) entered
+10:31:39          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [7]) )  (4)
+10:31:39             pool-1-thread-1: Transmitter.send entered
+10:31:39             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:31:39             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000007 (5)
+10:31:39                pool-1-thread-1: TCPIPConnection.send entered
+10:31:39                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:31:39                pool-1-thread-1: TCPIPConnection.send exited
+10:31:39             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:31:39             pool-1-thread-1: Transmitter.send exited
+10:31:39          pool-1-thread-1: Session.send(Request) exited
+10:31:39       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:31:40       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:31:40       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:31:40       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:31:40       Receiver-1: TCPIPConnection.receive exited
+10:31:40    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:31:40    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000007 (5)
+10:31:40    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:31:40    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 7) )  (1)
+10:31:40    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:31:40    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:31:40    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 7) )  (1)
+10:31:40    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:31:40    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:31:40    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:31:40    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:31:40       Receiver-1: TCPIPConnection.receive entered
+10:31:40       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:31:40       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:31:49       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:31:49          pool-1-thread-1: Session.send(Request) entered
+10:31:49          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [8]) )  (4)
+10:31:49             pool-1-thread-1: Transmitter.send entered
+10:31:49             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:31:49             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000008 (5)
+10:31:49                pool-1-thread-1: TCPIPConnection.send entered
+10:31:49                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:31:49                pool-1-thread-1: TCPIPConnection.send exited
+10:31:49             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:31:49             pool-1-thread-1: Transmitter.send exited
+10:31:49          pool-1-thread-1: Session.send(Request) exited
+10:31:49       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:31:50       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:31:50       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:31:50       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:31:50       Receiver-1: TCPIPConnection.receive exited
+10:31:50    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:31:50    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000008 (5)
+10:31:50    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:31:50    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 8) )  (1)
+10:31:50    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:31:50    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:31:50    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 8) )  (1)
+10:31:50    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:31:50    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:31:50    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:31:50    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:31:50       Receiver-1: TCPIPConnection.receive entered
+10:31:50       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:31:50       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:31:59       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:31:59          pool-1-thread-1: Session.send(Request) entered
+10:31:59          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [9]) )  (4)
+10:31:59             pool-1-thread-1: Transmitter.send entered
+10:31:59             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:31:59             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000009 (5)
+10:31:59                pool-1-thread-1: TCPIPConnection.send entered
+10:31:59                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:31:59                pool-1-thread-1: TCPIPConnection.send exited
+10:31:59             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:31:59             pool-1-thread-1: Transmitter.send exited
+10:31:59          pool-1-thread-1: Session.send(Request) exited
+10:31:59       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:32:00       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:32:00       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:32:00       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:32:00       Receiver-1: TCPIPConnection.receive exited
+10:32:00    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:32:00    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000009 (5)
+10:32:00    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:32:00    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 9) )  (1)
+10:32:00    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:32:00    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:32:00    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 9) )  (1)
+10:32:00    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:32:00    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:32:00    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:32:00    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:32:00       Receiver-1: TCPIPConnection.receive entered
+10:32:00       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:32:00       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:32:09       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:32:09          pool-1-thread-1: Session.send(Request) entered
+10:32:09          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [10]) )  (4)
+10:32:09             pool-1-thread-1: Transmitter.send entered
+10:32:09             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:32:09             pool-1-thread-1: Transmitter.send PDU.getData() build up data 0000001000000015000000000000000a (5)
+10:32:09                pool-1-thread-1: TCPIPConnection.send entered
+10:32:09                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:32:09                pool-1-thread-1: TCPIPConnection.send exited
+10:32:09             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:32:09             pool-1-thread-1: Transmitter.send exited
+10:32:09          pool-1-thread-1: Session.send(Request) exited
+10:32:09       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:32:10       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:32:10       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:32:10       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:32:10       Receiver-1: TCPIPConnection.receive exited
+10:32:10    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:32:10    Receiver-1: Receiver.run() PDU.setData() parsing header 0000001080000015000000000000000a (5)
+10:32:10    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:32:10    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 10) )  (1)
+10:32:10    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:32:10    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:32:10    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 10) )  (1)
+10:32:10    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:32:10    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:32:10    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:32:10    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:32:10       Receiver-1: TCPIPConnection.receive entered
+10:32:10       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:32:10       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:32:19       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:32:19          pool-1-thread-1: Session.send(Request) entered
+10:32:19          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [11]) )  (4)
+10:32:19             pool-1-thread-1: Transmitter.send entered
+10:32:19             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:32:19             pool-1-thread-1: Transmitter.send PDU.getData() build up data 0000001000000015000000000000000b (5)
+10:32:19                pool-1-thread-1: TCPIPConnection.send entered
+10:32:19                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:32:19                pool-1-thread-1: TCPIPConnection.send exited
+10:32:19             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:32:19             pool-1-thread-1: Transmitter.send exited
+10:32:19          pool-1-thread-1: Session.send(Request) exited
+10:32:19       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:32:20       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:32:20       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:32:20       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:32:20       Receiver-1: TCPIPConnection.receive exited
+10:32:20    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:32:20    Receiver-1: Receiver.run() PDU.setData() parsing header 0000001080000015000000000000000b (5)
+10:32:20    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:32:20    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 11) )  (1)
+10:32:20    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:32:20    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:32:20    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 11) )  (1)
+10:32:20    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:32:20    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:32:20    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:32:20    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:32:20       Receiver-1: TCPIPConnection.receive entered
+10:32:20       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:32:20       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:32:29       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:32:29          pool-1-thread-1: Session.send(Request) entered
+10:32:29          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [12]) )  (4)
+10:32:29             pool-1-thread-1: Transmitter.send entered
+10:32:29             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:32:29             pool-1-thread-1: Transmitter.send PDU.getData() build up data 0000001000000015000000000000000c (5)
+10:32:29                pool-1-thread-1: TCPIPConnection.send entered
+10:32:29                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:32:29                pool-1-thread-1: TCPIPConnection.send exited
+10:32:29             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:32:29             pool-1-thread-1: Transmitter.send exited
+10:32:29          pool-1-thread-1: Session.send(Request) exited
+10:32:29       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:32:30       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:32:30       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:32:30       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:32:30       Receiver-1: TCPIPConnection.receive exited
+10:32:30    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:32:30    Receiver-1: Receiver.run() PDU.setData() parsing header 0000001080000015000000000000000c (5)
+10:32:30    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:32:30    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 12) )  (1)
+10:32:30    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:32:30    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:32:30    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 12) )  (1)
+10:32:30    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:32:30    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:32:30    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:32:30    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:32:30       Receiver-1: TCPIPConnection.receive entered
+10:32:30       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:32:30       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:32:39       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:32:39          pool-1-thread-1: Session.send(Request) entered
+10:32:39          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [13]) )  (4)
+10:32:39             pool-1-thread-1: Transmitter.send entered
+10:32:39             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:32:39             pool-1-thread-1: Transmitter.send PDU.getData() build up data 0000001000000015000000000000000d (5)
+10:32:39                pool-1-thread-1: TCPIPConnection.send entered
+10:32:39                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:32:39                pool-1-thread-1: TCPIPConnection.send exited
+10:32:39             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:32:39             pool-1-thread-1: Transmitter.send exited
+10:32:39          pool-1-thread-1: Session.send(Request) exited
+10:32:39       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:32:40       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:32:40       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:32:40       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:32:40       Receiver-1: TCPIPConnection.receive exited
+10:32:40    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:32:40    Receiver-1: Receiver.run() PDU.setData() parsing header 0000001080000015000000000000000d (5)
+10:32:40    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:32:40    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 13) )  (1)
+10:32:40    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:32:40    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:32:40    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 13) )  (1)
+10:32:40    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:32:40    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:32:40    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:32:40    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:32:40       Receiver-1: TCPIPConnection.receive entered
+10:32:40       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:32:40       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:32:49       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:32:49          pool-1-thread-1: Session.send(Request) entered
+10:32:49          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [14]) )  (4)
+10:32:49             pool-1-thread-1: Transmitter.send entered
+10:32:49             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:32:49             pool-1-thread-1: Transmitter.send PDU.getData() build up data 0000001000000015000000000000000e (5)
+10:32:49                pool-1-thread-1: TCPIPConnection.send entered
+10:32:49                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:32:49                pool-1-thread-1: TCPIPConnection.send exited
+10:32:49             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:32:49             pool-1-thread-1: Transmitter.send exited
+10:32:49          pool-1-thread-1: Session.send(Request) exited
+10:32:49       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:32:50       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:32:50       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:32:50       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:32:50       Receiver-1: TCPIPConnection.receive exited
+10:32:50    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:32:50    Receiver-1: Receiver.run() PDU.setData() parsing header 0000001080000015000000000000000e (5)
+10:32:50    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:32:50    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 14) )  (1)
+10:32:50    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:32:50    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:32:50    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 14) )  (1)
+10:32:50    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:32:50    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:32:50    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:32:50    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:32:50       Receiver-1: TCPIPConnection.receive entered
+10:32:50       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:32:50       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:32:59       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:32:59          pool-1-thread-1: Session.send(Request) entered
+10:32:59          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [15]) )  (4)
+10:32:59             pool-1-thread-1: Transmitter.send entered
+10:32:59             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:32:59             pool-1-thread-1: Transmitter.send PDU.getData() build up data 0000001000000015000000000000000f (5)
+10:32:59                pool-1-thread-1: TCPIPConnection.send entered
+10:32:59                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:32:59                pool-1-thread-1: TCPIPConnection.send exited
+10:32:59             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:32:59             pool-1-thread-1: Transmitter.send exited
+10:32:59          pool-1-thread-1: Session.send(Request) exited
+10:32:59       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:33:00       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:33:00       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:33:00       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:33:00       Receiver-1: TCPIPConnection.receive exited
+10:33:00    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:33:00    Receiver-1: Receiver.run() PDU.setData() parsing header 0000001080000015000000000000000f (5)
+10:33:00    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:33:00    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 15) )  (1)
+10:33:00    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:33:00    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:33:00    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 15) )  (1)
+10:33:00    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:33:00    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:33:00    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:33:00    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:33:00       Receiver-1: TCPIPConnection.receive entered
+10:33:00       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:33:00       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:33:09       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:33:09          pool-1-thread-1: Session.send(Request) entered
+10:33:09          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [16]) )  (4)
+10:33:09             pool-1-thread-1: Transmitter.send entered
+10:33:09             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:33:09             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000010 (5)
+10:33:09                pool-1-thread-1: TCPIPConnection.send entered
+10:33:09                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:33:09                pool-1-thread-1: TCPIPConnection.send exited
+10:33:09             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:33:09             pool-1-thread-1: Transmitter.send exited
+10:33:09          pool-1-thread-1: Session.send(Request) exited
+10:33:09       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:33:10       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:33:10       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:33:10       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:33:10       Receiver-1: TCPIPConnection.receive exited
+10:33:10    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:33:10    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000010 (5)
+10:33:10    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:33:10    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 16) )  (1)
+10:33:10    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:33:10    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:33:10    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 16) )  (1)
+10:33:10    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:33:10    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:33:10    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:33:10    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:33:10       Receiver-1: TCPIPConnection.receive entered
+10:33:10       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:33:10       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:33:19       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:33:19          pool-1-thread-1: Session.send(Request) entered
+10:33:19          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [17]) )  (4)
+10:33:19             pool-1-thread-1: Transmitter.send entered
+10:33:19             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:33:19             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000011 (5)
+10:33:19                pool-1-thread-1: TCPIPConnection.send entered
+10:33:19                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:33:19                pool-1-thread-1: TCPIPConnection.send exited
+10:33:19             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:33:19             pool-1-thread-1: Transmitter.send exited
+10:33:19          pool-1-thread-1: Session.send(Request) exited
+10:33:19       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:33:20       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:33:20       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:33:20       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:33:20       Receiver-1: TCPIPConnection.receive exited
+10:33:20    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:33:20    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000011 (5)
+10:33:20    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:33:20    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 17) )  (1)
+10:33:20    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:33:20    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:33:20    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 17) )  (1)
+10:33:20    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:33:20    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:33:20    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:33:20    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:33:20       Receiver-1: TCPIPConnection.receive entered
+10:33:20       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:33:20       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:33:29       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:33:29          pool-1-thread-1: Session.send(Request) entered
+10:33:29          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [18]) )  (4)
+10:33:29             pool-1-thread-1: Transmitter.send entered
+10:33:29             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:33:29             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000012 (5)
+10:33:29                pool-1-thread-1: TCPIPConnection.send entered
+10:33:29                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:33:29                pool-1-thread-1: TCPIPConnection.send exited
+10:33:29             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:33:29             pool-1-thread-1: Transmitter.send exited
+10:33:29          pool-1-thread-1: Session.send(Request) exited
+10:33:29       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:33:30       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:33:30       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:33:30       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:33:30       Receiver-1: TCPIPConnection.receive exited
+10:33:30    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:33:30    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000012 (5)
+10:33:30    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:33:30    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 18) )  (1)
+10:33:30    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:33:30    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:33:30    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 18) )  (1)
+10:33:30    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:33:30    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:33:30    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:33:30    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:33:30       Receiver-1: TCPIPConnection.receive entered
+10:33:30       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:33:30       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:33:39       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:33:39          pool-1-thread-1: Session.send(Request) entered
+10:33:39          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [19]) )  (4)
+10:33:39             pool-1-thread-1: Transmitter.send entered
+10:33:39             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:33:39             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000013 (5)
+10:33:39                pool-1-thread-1: TCPIPConnection.send entered
+10:33:39                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:33:39                pool-1-thread-1: TCPIPConnection.send exited
+10:33:39             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:33:39             pool-1-thread-1: Transmitter.send exited
+10:33:39          pool-1-thread-1: Session.send(Request) exited
+10:33:39       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:33:40       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:33:40       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:33:40       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:33:40       Receiver-1: TCPIPConnection.receive exited
+10:33:40    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:33:40    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000013 (5)
+10:33:40    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:33:40    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 19) )  (1)
+10:33:40    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:33:40    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:33:40    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 19) )  (1)
+10:33:40    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:33:40    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:33:40    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:33:40    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:33:40       Receiver-1: TCPIPConnection.receive entered
+10:33:40       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:33:40       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:33:49       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:33:49          pool-1-thread-1: Session.send(Request) entered
+10:33:49          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [20]) )  (4)
+10:33:49             pool-1-thread-1: Transmitter.send entered
+10:33:49             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:33:49             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000014 (5)
+10:33:49                pool-1-thread-1: TCPIPConnection.send entered
+10:33:49                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:33:49                pool-1-thread-1: TCPIPConnection.send exited
+10:33:49             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:33:49             pool-1-thread-1: Transmitter.send exited
+10:33:49          pool-1-thread-1: Session.send(Request) exited
+10:33:49       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:33:50       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:33:50       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:33:50       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:33:50       Receiver-1: TCPIPConnection.receive exited
+10:33:50    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:33:50    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000014 (5)
+10:33:50    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:33:50    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 20) )  (1)
+10:33:50    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:33:50    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:33:50    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 20) )  (1)
+10:33:50    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:33:50    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:33:50    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:33:50    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:33:50       Receiver-1: TCPIPConnection.receive entered
+10:33:50       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:33:50       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:33:59       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:33:59          pool-1-thread-1: Session.send(Request) entered
+10:33:59          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [21]) )  (4)
+10:33:59             pool-1-thread-1: Transmitter.send entered
+10:33:59             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:33:59             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000015 (5)
+10:33:59                pool-1-thread-1: TCPIPConnection.send entered
+10:33:59                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:33:59                pool-1-thread-1: TCPIPConnection.send exited
+10:33:59             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:33:59             pool-1-thread-1: Transmitter.send exited
+10:33:59          pool-1-thread-1: Session.send(Request) exited
+10:33:59       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:34:00       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:34:00       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:34:00       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:34:00       Receiver-1: TCPIPConnection.receive exited
+10:34:00    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:34:00    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000015 (5)
+10:34:00    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:34:00    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 21) )  (1)
+10:34:00    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:34:00    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:34:00    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 21) )  (1)
+10:34:00    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:34:00    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:34:00    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:34:00    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:34:00       Receiver-1: TCPIPConnection.receive entered
+10:34:00       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:34:00       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:34:09       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:34:09          pool-1-thread-1: Session.send(Request) entered
+10:34:09          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [22]) )  (4)
+10:34:09             pool-1-thread-1: Transmitter.send entered
+10:34:09             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:34:09             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000016 (5)
+10:34:09                pool-1-thread-1: TCPIPConnection.send entered
+10:34:09                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:34:09                pool-1-thread-1: TCPIPConnection.send exited
+10:34:09             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:34:09             pool-1-thread-1: Transmitter.send exited
+10:34:09          pool-1-thread-1: Session.send(Request) exited
+10:34:09       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:34:10       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:34:10       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:34:10       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:34:10       Receiver-1: TCPIPConnection.receive exited
+10:34:10    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:34:10    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000016 (5)
+10:34:10    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:34:10    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 22) )  (1)
+10:34:10    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:34:10    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:34:10    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 22) )  (1)
+10:34:10    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:34:10    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:34:10    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:34:10    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:34:10       Receiver-1: TCPIPConnection.receive entered
+10:34:10       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:34:10       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:34:19       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:34:19          pool-1-thread-1: Session.send(Request) entered
+10:34:19          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [23]) )  (4)
+10:34:19             pool-1-thread-1: Transmitter.send entered
+10:34:19             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:34:19             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000017 (5)
+10:34:19                pool-1-thread-1: TCPIPConnection.send entered
+10:34:19                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:34:19                pool-1-thread-1: TCPIPConnection.send exited
+10:34:19             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:34:19             pool-1-thread-1: Transmitter.send exited
+10:34:19          pool-1-thread-1: Session.send(Request) exited
+10:34:19       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:34:20       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:34:20       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:34:20       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:34:20       Receiver-1: TCPIPConnection.receive exited
+10:34:20    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:34:20    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000017 (5)
+10:34:20    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:34:20    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 23) )  (1)
+10:34:20    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:34:20    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:34:20    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 23) )  (1)
+10:34:20    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:34:20    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:34:20    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:34:20    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:34:20       Receiver-1: TCPIPConnection.receive entered
+10:34:20       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:34:20       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:34:29       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:34:29          pool-1-thread-1: Session.send(Request) entered
+10:34:29          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [24]) )  (4)
+10:34:29             pool-1-thread-1: Transmitter.send entered
+10:34:29             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:34:29             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000018 (5)
+10:34:29                pool-1-thread-1: TCPIPConnection.send entered
+10:34:29                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:34:29                pool-1-thread-1: TCPIPConnection.send exited
+10:34:29             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:34:29             pool-1-thread-1: Transmitter.send exited
+10:34:29          pool-1-thread-1: Session.send(Request) exited
+10:34:29       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:34:30       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:34:30       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:34:30       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:34:30       Receiver-1: TCPIPConnection.receive exited
+10:34:30    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:34:30    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000018 (5)
+10:34:30    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:34:30    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 24) )  (1)
+10:34:30    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:34:30    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:34:30    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 24) )  (1)
+10:34:30    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:34:30    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:34:30    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:34:30    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:34:30       Receiver-1: TCPIPConnection.receive entered
+10:34:30       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:34:30       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)
+10:34:39       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() entered
+10:34:39          pool-1-thread-1: Session.send(Request) entered
+10:34:39          pool-1-thread-1: Session.send(Request) Sending request (enquirelink: (pdu: 0 15 0 [25]) )  (4)
+10:34:39             pool-1-thread-1: Transmitter.send entered
+10:34:39             pool-1-thread-1: Transmitter.send going to send pdu's data over connection (7)
+10:34:39             pool-1-thread-1: Transmitter.send PDU.getData() build up data 00000010000000150000000000000019 (5)
+10:34:39                pool-1-thread-1: TCPIPConnection.send entered
+10:34:39                pool-1-thread-1: TCPIPConnection.send sent 16 bytes to localhost on port 7080 (7)
+10:34:39                pool-1-thread-1: TCPIPConnection.send exited
+10:34:39             pool-1-thread-1: Transmitter.send successfully sent pdu's data over connection (7)
+10:34:39             pool-1-thread-1: Transmitter.send exited
+10:34:39          pool-1-thread-1: Session.send(Request) exited
+10:34:39       pool-1-thread-1: Gemaltosmppclient.SMPPTest.enquireLink() exited
+10:34:40       Receiver-1: TCPIPConnection.receive read 16 bytes from socket (8)
+10:34:40       Receiver-1: TCPIPConnection.receive no more data remains in the socket (8)
+10:34:40       Receiver-1: TCPIPConnection.receive totally read 16 bytes from socket (7)
+10:34:40       Receiver-1: TCPIPConnection.receive exited
+10:34:40    Receiver-1: Receiver.run() trying to create pdu from unprocessed buffer (1)
+10:34:40    Receiver-1: Receiver.run() PDU.setData() parsing header 00000010800000150000000000000019 (5)
+10:34:40    Receiver-1: Receiver.run() PDU.setData() no data for body (5)
+10:34:40    Receiver-1: Receiver.run() received complete pdu(enquirelink_resp: (pdu: 16 80000015 0 25) )  (1)
+10:34:40    Receiver-1: Receiver.run() there is 0 bytes left in unprocessed buffer (1)
+10:34:40    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection finished (3)
+10:34:40    Receiver-1: Receiver.run() Receiver.receiveAsync(): PDU received, processing (enquirelink_resp: (pdu: 16 80000015 0 25) )  (1)
+10:34:40    Receiver-1: Receiver.run() receiver passing pdu to ServerPDUEventListener (1)
+10:34:40    Receiver-1: Receiver.run() ServerPDUEventListener received pdu (1)
+10:34:40    Receiver-1: Receiver.run() Receiver.receiveAsync() going to receive pdu. (3)
+10:34:40    Receiver-1: Receiver.run() ReceiverBase.receivePDUFromConnection start (3)
+10:34:40       Receiver-1: TCPIPConnection.receive entered
+10:34:40       Receiver-1: TCPIPConnection.receive going to read from socket (8)
+10:34:40       Receiver-1: TCPIPConnection.receive comms timeout=60000 receive timeout=20000 receive buffer size=4096 (8)

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/koks/Documents/NetBeansProjects/Payments3/build/web/WEB-INF/wsdl/sms/parlayx_sms_notification_service_2_2.wsdl" uri="src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_notification_service_2_2.wsdl"/>
+    <system systemId="file:/C:/Users/koks/Documents/NetBeansProjects/Payments3/build/web/WEB-INF/wsdl/sms/parlayx_sms_notification_interface_2_2.wsdl" uri="src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_notification_interface_2_2.wsdl"/>
+    <system systemId="file:/C:/Users/koks/Documents/NetBeansProjects/Payments3/build/web/WEB-INF/wsdl/sms/SDP_SMS/parlayx_sms_types_2_2.xsd" uri="src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_types_2_2.xsd"/>
+    <system systemId="file:/C:/Users/koks/Documents/NetBeansProjects/Payments3/build/web/WEB-INF/wsdl/sms/parlayx_common_types_2_1.xsd" uri="src/conf/xml-resources/web-services/sms/wsdl/parlayx_common_types_2_1.xsd"/>
+    <system systemId="http://197.248.31.217:8084/delaynotifications/SendDelayNotification?wsdl" uri="wsdl/197.248.31.217_8084/delaynotifications/SendDelayNotification.wsdl"/>
+    <system systemId="http://197.248.31.217:8084/checkaccountavailability/CheckAccount?wsdl" uri="wsdl/197.248.31.217_8084/checkaccountavailability/CheckAccount.wsdl"/>
+</catalog>

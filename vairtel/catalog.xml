@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://197.248.31.217:8084/checkaccounts/Requests?wsdl" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/197.248.31.217_8084/checkaccounts/Requests.wsdl"/>
+    <system systemId="http://197.248.31.217:8084/checkaccounts/Requests?xsd=1" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/197.248.31.217_8084/checkaccounts/Requests.xsd_1.xsd"/>
+    <system systemId="http://172.27.16.21:8084/checkaccounts/Requests?wsdl" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/172.27.16.21_8084/checkaccounts/Requests.wsdl"/>
+    <system systemId="http://172.27.16.21:8084/checkaccounts/Requests?xsd=1" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/172.27.16.21_8084/checkaccounts/Requests.xsd_1.xsd"/>
+    <system systemId="http://197.248.61.166:8084/checkaccounts/Requests?wsdl" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/197.248.61.166_8084/checkaccounts/Requests.wsdl"/>
+    <system systemId="http://197.248.61.166:8084/checkaccounts/Requests?xsd=1" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/197.248.61.166_8084/checkaccounts/Requests.xsd_1.xsd"/>
+    <system systemId="http://vendit.pdslkenya.com:8084/checkaccounts/Requests?wsdl" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/vendit.pdslkenya.com_8084/checkaccounts/Requests.wsdl"/>
+    <system systemId="http://vendit.pdslkenya.com:8084/checkaccounts/Requests?xsd=1" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/vendit.pdslkenya.com_8084/checkaccounts/Requests.xsd_1.xsd"/>
+    <system systemId="http://172.27.116.23:8086/checkaccounts/Requests?wsdl" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/172.27.116.23_8086/checkaccounts/Requests.wsdl"/>
+    <system systemId="http://172.27.116.23:8086/checkaccounts/Requests?xsd=1" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/172.27.116.23_8086/checkaccounts/Requests.xsd_1.xsd"/>
+    <system systemId="http://172.27.116.34:8086/checkaccounts/Requests?wsdl" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/172.27.116.34_8086/checkaccounts/Requests.wsdl"/>
+    <system systemId="http://172.27.116.34:8086/checkaccounts/Requests?xsd=1" uri="src/conf/xml-resources/web-service-references/Requests/wsdl/172.27.116.34_8086/checkaccounts/Requests.xsd_1.xsd"/>
+</catalog>

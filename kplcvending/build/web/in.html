@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>KPLC Transactions</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='shortcut icon' href='img/kenyapower.png' type='image/png'>
+
+        <link href="css/datepicker.min.css" rel="stylesheet" type="text/css">
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!-- manual CSS -->
+        <link href="css/kplc.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='row'>
+                <div class='col-lg-12 '>
+                    <span><img src='img/kenyapower.png' width='100'></span><span class='pull-right' style='margin-top:3%;font-size:40px;color: #ffcf01;'><i class='fas fa-hashtag'></i> Paybill 888880/888888</span>
+                </div>
+            </div>            
+        </div>
+        <div class='container-fluid'>
+            <div class='row'>
+                <div class='col-lg-12 text-center'>
+                    <div class='horizontalLine'></div>
+                </div>
+            </div>
+        </div>
+        <div class='container-fluid' style='margin-top:2%'>
+            <div class='row'>
+                <div class='col-lg-3'>
+                    <div id='navcontainer'>
+                        <a data-toggle='collapse' href='.mobilenumber'>
+                            <div class='mobilenumber collapse in'>
+                                <i class='fas fa-phone'></i> Query By Mobile Number <i class='fas fa-angle-double-right pull-right'></i>
+                            </div> 
+                            <div class='mobilenumber collapse'>
+                                <i class='fas fa-phone'></i> Query By Mobile Number <i class='fas fa-angle-double-down pull-right'></i>
+                            </div> 
+                        </a>
+                        <div class='mobilenumber collapse' style='padding-top:4%'>
+                            <form action='#' method='post'>
+                                <div class='input-group'>
+                                    <input type='text' class='form-control' id='msisdn' name='msisdn' placeholder='E.g 254720640926'>
+                                    <span class='input-group-btn'>
+                                        <button class='btn btn-primary' type='button'>Go!</button>
+                                    </span>
+                                </div>                                
+                            </form>
+                        </div>
+                        <hr>
+                        <a data-toggle='collapse' href='.meternumber'>
+                            <div class='meternumber collapse in'>
+                                <i class='fas fa-tachometer-alt'></i> Query By Meter Number <i class='fas fa-angle-double-right pull-right'></i>
+                            </div> 
+                            <div class='meternumber collapse'>
+                                <i class='fas fa-tachometer-alt'></i> Query By Meter Number <i class='fas fa-angle-double-down pull-right'></i>
+                            </div> 
+                        </a>
+                        <div class='meternumber collapse' style='padding-top:4%'>
+                            <form action='#' method='post'>
+                                <div class='input-group'>
+                                    <input type='text' class='form-control' id='meter' name='meter' placeholder='E.g 14763391074'>
+                                    <span class='input-group-btn'>
+                                        <button class='btn btn-primary' type='button'>Go!</button>
+                                    </span>
+                                </div>                                
+                            </form>
+                        </div>
+                        <hr>
+                        <a data-toggle='collapse' href='.accountnumber'>
+                            <div class='accountnumber collapse in'>
+                                <i class='fab fa-accusoft'></i> Query By Account Number <i class='fas fa-angle-double-right pull-right'></i>
+                            </div> 
+                            <div class='accountnumber collapse'>
+                                <i class='fab fa-accusoft'></i> Query By Account Number <i class='fas fa-angle-double-down pull-right'></i>
+                            </div> 
+                        </a>
+                        <div class='accountnumber collapse' style='padding-top:4%'>
+                            <form action='#' method='post'>
+                                <div class='input-group'>
+                                    <input type='text' class='form-control' id='meter' name='meter' placeholder='E.g 2586079-02'>
+                                    <span class='input-group-btn'>
+                                        <button class='btn btn-primary' type='button'>Go!</button>
+                                    </span>
+                                </div>                                
+                            </form>
+                        </div>
+                        <hr>
+                        <a data-toggle='collapse' href='.mpesacode'>
+                            <div class='mpesacode collapse in'>
+                                <i class='fas fa-money-bill-alt'></i> Query By Mpesa Code <i class='fas fa-angle-double-right pull-right'></i>
+                            </div> 
+                            <div class='mpesacode collapse'>
+                                <i class='fas fa-money-bill-alt'></i> Query By Mpesa Code <i class='fas fa-angle-double-down pull-right'></i>
+                            </div> 
+                        </a>
+                        <div class='mpesacode collapse' style='padding-top:4%'>
+                            <form action='#' method='post'>
+                                <div class='input-group'>
+                                    <input type='text' class='form-control' id='mpesacode' name='mpesacode' placeholder='E.g QUYTREWTY0I'>
+                                    <span class='input-group-btn'>
+                                        <button class='btn btn-primary' type='button'>Go!</button>
+                                    </span>
+                                </div>                                
+                            </form>
+                        </div>
+                        <hr>
+                        <a data-toggle='collapse' href='.daterange'>
+                            <div class='daterange collapse in'>
+                                <i class='fas fa-clock'></i> Query By Date Rage <i class='fas fa-angle-double-right pull-right'></i>
+                            </div> 
+                            <div class='daterange collapse'>
+                                <i class='fas fa-clock'></i> Query By Date Rage <i class='fas fa-angle-double-down pull-right'></i>
+                            </div> 
+                        </a>
+                        <div class='daterange collapse' style='padding-top:4%'>
+                            <form action='#' method='post'>
+                                <div class="input-group" style='margin-bottom:4%'>
+                                    <span class='input-group-addon' id='basic-addon1'>StartDate:</span>
+                                    <input type="text" class="datepicker-here" data-language='en' data-position='top left' data-date-format='dd-mm-yyyy' name='sdate' placeholder='03-03-2018' aria-describedby='basic-addon1'>
+                                </div>
+                                <div class="input-group" style='margin-bottom:2%'>
+                                    <span class='input-group-addon' id='basic-addon1'>End  Date:</span>
+                                    <input type="text" class="datepicker-here" data-language='en' data-position='top left' data-date-format='dd-mm-yyyy' name='edate' placeholder='03-03-2018' aria-describedby='basic-addon1'>
+                                </div>
+                                <button class='btn btn-primary' type='button'  style='margin-left:80%'>Go!</button>
+
+                            </form>
+                        </div>
+
+
+                    </div>                    
+                </div> 
+
+                <div class='col-lg-9'>
+                    <div class='panel panel-primary'>
+                        <div class='panel-heading text-center'>Mpesa Transactions</div>
+                        <div class='panel-body'></div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+
+
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src='js/bootstrap.min.js'></script>
+
+        <script src="js/datepicker.min.js"></script>
+        <!-- Include English language -->
+        <script src="js/datepicker.en.js"></script>
+    </body>
+</html>
