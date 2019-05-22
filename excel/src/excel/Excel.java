@@ -104,12 +104,13 @@ public class Excel {
                 String amountout = paidOut.getContents();
                 String mpesaname = ms[1];
                 amount = amount.replaceAll(",", "");
+                amountout = amountout.replaceAll(",", "");
                 if (mpesaname.equals("VENDIT LIMITED")) {
                     System.out.println("FLOATING");
                 } else if ((amount == null) || (amount.isEmpty())) {
                     System.out.println("REVERSED TRANSACTION");
                 } else if (!logmpesaexcel.contains(ref)) {
-                    if (!amountout.contains("-")) {
+                    if (!amountout.startsWith("-")) {
                         String deliverystatus = "SmsDeliveryWaiting";
                         System.out.println("Checking if unprocessed:-" + ref + "|" + meter + "|" + msisdn + "|" + mpesaname + "|" + amount);
 
@@ -226,6 +227,8 @@ public class Excel {
 
                         System.out.println("Payments Response:" + results);
                         System.out.println("<br />---------------------------------------<br />");
+                    }else{
+                        System.out.println("Transaction was reversed amount: "+amountout);
                     }
                 } else {
                     System.out.println("The Loggger Transaction exists");

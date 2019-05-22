@@ -28,7 +28,7 @@ public class DataStore {
             String myDriver = "org.gjt.mm.mysql.Driver";
             String myUrl = "jdbc:mysql://localhost/equitel";
             Class.forName(myDriver);
-            conn = DriverManager.getConnection(myUrl, "pdsluser", "P@Dsl949022");
+            conn = DriverManager.getConnection(myUrl, "root", "team12340.");
 
         } catch (Exception e) {
             System.err.println("Exception: " + e.getMessage());

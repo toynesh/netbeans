@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,12 +40,13 @@ public class ProcessRequest {
         String seq = RefClass.createSeq();
         String response = "";
 
-        BigDecimal payamt = new BigDecimal(amount);
-        payamt = payamt.multiply(new BigDecimal("100"));
-        String amt = payamt.toString();
-        String ipayamt = amt.substring(0, amt.length() - 2);
-        //String ipayamt = amt;
-        ipayamt= ipayamt.replace(".", "");
+        //String amount = "100.07";
+        BigDecimal amt2 = new BigDecimal(amount);
+        String amount2 = toCents(amt2);
+        String ipayamt=new DecimalFormat("#").format(parseDouble(amount2));        
+        System.out.println(amount);
+        System.out.println("Ipay Amount"+ipayamt);
+        
         String build = _postPaidBillSettlement(msisdn, account_no, ipayamt, seq, refere, time, client, term);
         String details = co.connection(build, initialtimeout);//this.co.connection(build);
 
@@ -363,12 +365,12 @@ public class ProcessRequest {
         String seq = RefClass.createSeq();
         String response = "";
 
-        BigDecimal payamt = new BigDecimal(amount);
-        payamt = payamt.multiply(new BigDecimal("100"));
-        String amt = payamt.toString();
-        String ipayamt = amt.substring(0, amt.length() - 2);
-        //String ipayamt = amt;
-        ipayamt= ipayamt.replace(".", "");
+        //String amount = "100.07";
+        BigDecimal amt2 = new BigDecimal(amount);
+        String amount2 = toCents(amt2);
+        String ipayamt=new DecimalFormat("#").format(parseDouble(amount2));        
+        Logger.getLogger(ProcessRequest.class.getName()).log(Level.INFO,"Converted Amount: "+amount);
+        Logger.getLogger(ProcessRequest.class.getName()).log(Level.INFO,"Ipay Amount: "+ipayamt);
 
         String build = _prePaidTokenRequest(msisdn, account_no, ipayamt, seq, refere, time, client, term);
         String details = co.connection(build, initialtimeout);//this.co.connection(build);
@@ -929,6 +931,10 @@ public class ProcessRequest {
             return "Invalid Reference.";
         }
         return "Service momentarily unavailable";
+    }
+    public static String toCents(BigDecimal amount) {
+    	
+    	return amount.multiply(new BigDecimal(100)).toString();
     }
 
 }

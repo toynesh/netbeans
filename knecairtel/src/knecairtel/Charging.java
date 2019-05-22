@@ -84,10 +84,12 @@ public class Charging {
         
         
         // Get target URL
-        String strURL = "https://41.223.58.133:8443/ChargingServiceFlowWeb/sca/ChargingExport1";
+        //String strURL = "https://41.223.58.133:8443/ChargingServiceFlowWeb/sca/ChargingExport1";
+        String strURL = "https://41.223.58.139:8443/ChargingWeb/services/ChargingExport1_ChargingHttpPort";
         // Get SOAP action
         String strSoapAction = "http://ChargingProcess/com/ibm/sdp/services/charging/abstraction/Charging";
-        String userCredentials = "3201966_PROFESSIONAL_DIGITAL_SYSTEM_LTD:iH8fc5#NK";
+        //String userCredentials = "3201966_PROFESSIONAL_DIGITAL_SYSTEM_LTD:iH8fc5#NK";
+        String userCredentials = "13201966_PROFESSIONAL_DIGITAL_SYSTEM_LTD:1ali3Kvx";
         String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
 
         // Prepare HTTP post
@@ -187,10 +189,12 @@ public class Charging {
         
         
         // Get target URL
-        String strURL = "https://41.223.58.133:8443/ChargingServiceFlowWeb/sca/ChargingExport1";
+        //String strURL = "https://41.223.58.133:8443/ChargingServiceFlowWeb/sca/ChargingExport1";
+        String strURL = "https://41.223.58.139:8443/ChargingWeb/services/ChargingExport1_ChargingHttpPort";
         // Get SOAP action
         String strSoapAction = "http://ChargingProcess/com/ibm/sdp/services/charging/abstraction/Charging";
-        String userCredentials = "3201966_PROFESSIONAL_DIGITAL_SYSTEM_LTD:iH8fc5#NK";
+        //String userCredentials = "3201966_PROFESSIONAL_DIGITAL_SYSTEM_LTD:iH8fc5#NK";
+        String userCredentials = "13201966_PROFESSIONAL_DIGITAL_SYSTEM_LTD:1ali3Kvx";
         String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
 
         // Prepare HTTP post

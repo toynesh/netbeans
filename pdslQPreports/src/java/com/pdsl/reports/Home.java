@@ -140,16 +140,18 @@ public class Home extends HttpServlet {
                             double aphrs = 0;
                             double apmins = 0;
                             double apsecs = 0;
+                            //System.out.println(date);
+                            //System.out.println(ttfm.parseDateTime("2019-03-01"));
                             try {
                                 String query = "SELECT `id`,`otime`,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `bill" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
-                                if (ddt.compareTo(formatter.parseDateTime("2019-03-01")) > 0) {
-                                    System.out.println("Date is after Feb 2019");
+                                if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
+                                    //System.out.println("Date is after Feb 2019");
                                     query = "SELECT `id`,`otime`,`dduration`,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `bill" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
                                 }
                                 Statement st = con.createStatement();
                                 ResultSet rs = st.executeQuery(query);
                                 while (rs.next()) {
-                                    if (ddt.compareTo(formatter.parseDateTime("2019-03-01")) > 0) {
+                                    if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
                                         bdys = bdys + rs.getInt(3);
                                         bhrs = bhrs + rs.getInt(4);
                                         bmins = bmins + rs.getInt(5);
@@ -176,14 +178,14 @@ public class Home extends HttpServlet {
                             }
                             try {
                                 String query = "SELECT `id`,`otime`,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `bizswitch" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
-                                if (ddt.compareTo(formatter.parseDateTime("2019-03-01")) > 0) {
+                                if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
                                     query = "SELECT `id`,`otime`,`dduration,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `bizswitch" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
                                 }
                                 Statement st = con.createStatement();
                                 ResultSet rs = st.executeQuery(query);
                                 while (rs.next()) {
-                                    if (ddt.compareTo(formatter.parseDateTime("2019-03-01")) > 0) {
-                                        adys = bdys + rs.getInt(3);
+                                    if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
+                                        adys = adys + rs.getInt(3);
                                         aphrs = bhrs + rs.getInt(4);
                                         apmins = bmins + rs.getInt(5);
                                         apsecs = bsecs + rs.getInt(6);

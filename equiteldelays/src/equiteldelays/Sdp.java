@@ -56,7 +56,7 @@ public class Sdp {
             String myDriver = "org.gjt.mm.mysql.Driver";
             String myUrl = "jdbc:mysql://localhost/dspDelivery";
             Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "pdsluser", "P@Dsl949022");
+            Connection con = DriverManager.getConnection(myUrl, "root", "team12340.");
             String query = "select spid,serviceid,password from scodeManager where accesscode='" + shortcode + "'";
             System.out.println(query);
             Statement st = con.createStatement();
@@ -151,7 +151,7 @@ public class Sdp {
             String myDriver = "org.gjt.mm.mysql.Driver";
             String myUrl = "jdbc:mysql://localhost/dspDelivery";
             Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "pdsluser", "P@Dsl949022");
+            Connection con = DriverManager.getConnection(myUrl, "root", "team12340.");
             String query = "select spid,serviceid,password from scodeManager where accesscode='" + shortcode + "'";
             System.out.println(query);
             Statement st = con.createStatement();

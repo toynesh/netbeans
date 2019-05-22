@@ -41,7 +41,7 @@ public class Sftpmpesalogger {
         DateTimeFormatter ofa = DateTimeFormat.forPattern("yyyyMMdd");
         String dirDate = ofa.print(da);
         //String command = "lftp sftp://SP100258:Nairobi\\#21@192.168.9.37:15423  -e \"mirror /working /opt/applications/sftpmpesalogger/sftpgets;bye\"";
-        String command = "lftp sftp://SP100258:VendIT\\@123@192.168.9.37:15423  -e \"mirror /working /opt/applications/sftpmpesalogger/sftpgets;bye\"";
+        String command = "lftp sftp://SP100258:Kenya\\$321@192.168.9.37:15423  -e \"mirror /working /opt/applications/sftpmpesalogger/sftpgets;bye\"";
         System.out.println("Command:=>> " + command);
         logger.terminalCMD(command);
         

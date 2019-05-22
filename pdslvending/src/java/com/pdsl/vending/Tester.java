@@ -7,21 +7,25 @@ package com.pdsl.vending;
 
 import static java.lang.Double.parseDouble;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 /**
  *
  * @author julius
  */
 public class Tester {
-    public static void main(String[] args){
-        BigDecimal payamt = new BigDecimal("4719.02");
-        payamt = payamt.multiply(new BigDecimal("100"));
-        String amt = payamt.toString();
-        String ipayamt = amt.substring(0, amt.length() - 2);
-        //String ipayamt = amt;
-        ipayamt= ipayamt.replace(".", "");
-        System.out.println(amt);
-        System.out.println(ipayamt);
 
+    public static void main(String[] args) {
+        String amount = "100.07";
+        BigDecimal amt2 = new BigDecimal(amount);
+        amount = toCents(amt2);
+        String ipayamt=new DecimalFormat("#").format(parseDouble(amount));        
+        System.out.println(amount);
+        System.out.println("Ipay Amount"+ipayamt);
+
+    }
+    public static String toCents(BigDecimal amount) {
+    	
+    	return amount.multiply(new BigDecimal(100)).toString();
     }
 }

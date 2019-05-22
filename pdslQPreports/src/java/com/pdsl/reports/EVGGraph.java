@@ -110,52 +110,85 @@ public class EVGGraph extends HttpServlet {
                     for (DateTime date = ddt; date.isBefore(lastDate.plusDays(1)); date = date.plusDays(1)) {
                         String thstr = ttfm.print(date);
                         System.out.println("Month Date: " + thstr);
+                        double bdys = 0;
                         double bhrs = 0;
                         double bmins = 0;
                         double bsecs = 0;
+                        double acdys = 0;
                         double achrs = 0;
                         double acmins = 0;
                         double acsecs = 0;
+                        double adys = 0;
                         double aphrs = 0;
                         double apmins = 0;
                         double apsecs = 0;
                         try {
                             String query = "SELECT `id`,`otime`,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `evg" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
+                            if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
+                                query = "SELECT `id`,`otime`,`dduration`,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `evg" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
+                            }
                             Statement st = con.createStatement();
                             ResultSet rs = st.executeQuery(query);
                             while (rs.next()) {
-                                bhrs = bhrs + rs.getInt(3);
-                                bmins = bmins + rs.getInt(4);
-                                bsecs = bsecs + rs.getInt(5);
+                                if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
+                                    bdys = bdys + rs.getInt(3);
+                                    bhrs = bhrs + rs.getInt(4);
+                                    bmins = bmins + rs.getInt(5);
+                                    bsecs = bsecs + rs.getInt(6);
+                                } else {
+                                    bhrs = bhrs + rs.getInt(3);
+                                    bmins = bmins + rs.getInt(4);
+                                    bsecs = bsecs + rs.getInt(5);
+                                }
                             }
                         } catch (SQLException x) {
                         }
                         try {
                             String query = "SELECT `id`,`otime`,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `backend" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
+                            if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
+                                query = "SELECT `id`,`otime`,`dduration`,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `backend" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
+                            }
                             Statement st = con.createStatement();
                             ResultSet rs = st.executeQuery(query);
                             while (rs.next()) {
-                                achrs = achrs + rs.getInt(3);
-                                acmins = acmins + rs.getInt(4);
-                                acsecs = acsecs + rs.getInt(5);
+                                if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
+                                    acdys = acdys + rs.getInt(3);
+                                    achrs = achrs + rs.getInt(4);
+                                    acmins = acmins + rs.getInt(5);
+                                    acsecs = acsecs + rs.getInt(6);
+                                } else {
+                                    achrs = achrs + rs.getInt(4);
+                                    acmins = acmins + rs.getInt(5);
+                                    acsecs = acsecs + rs.getInt(6);
+                                }
                             }
                         } catch (SQLException x) {
                             x.printStackTrace();
                         }
                         try {
                             String query = "SELECT `id`,`otime`,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `bizswitch" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
+                            if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
+                                query = "SELECT `id`,`otime`,`dduration,`hduration`,`mduration`,`sduration`,`status`,`notes` FROM `bizswitch" + str.replaceAll("-", "") + "` WHERE `status`='PROBLEM' AND `otime` LIKE '" + thstr + "%' ORDER BY `id` DESC";
+                            }
                             Statement st = con.createStatement();
                             ResultSet rs = st.executeQuery(query);
                             while (rs.next()) {
-                                aphrs = aphrs + rs.getInt(3);
-                                apmins = apmins + rs.getInt(4);
-                                apsecs = apsecs + rs.getInt(5);
+                                if (date.isAfter(ttfm.parseDateTime("2019-02-28"))) {
+                                        adys = adys + rs.getInt(3);
+                                        aphrs = bhrs + rs.getInt(4);
+                                        apmins = bmins + rs.getInt(5);
+                                        apsecs = bsecs + rs.getInt(6);
+                                    } else {
+                                        aphrs = aphrs + rs.getInt(3);
+                                        apmins = apmins + rs.getInt(4);
+                                        apsecs = apsecs + rs.getInt(5);
+                                    }
                             }
                         } catch (SQLException x) {
                         }
-                        double totalb = bsecs + (bmins * 60) + (bhrs * 60 * 60);
-                        double totalac = acsecs + (acmins * 60) + (achrs * 60 * 60);
-                        double totalap = apsecs + (apmins * 60) + (aphrs * 60 * 60);
+                        double totalb = bsecs + (bmins * 60) + (bhrs * 60 * 60) + (bdys * 24 * 60 * 60);
+                        double totalac = acsecs + (acmins * 60) + (achrs * 60 * 60) + (acdys * 24 * 60 * 60);
+                        double totalap = apsecs + (apmins * 60) + (aphrs * 60 * 60)+ (adys * 24 * 60 * 60);
                         ttbmonthdowntime = ttbmonthdowntime + totalb;
                         ttbmonthaccb = ttbmonthaccb + totalac;
                         ttbmonthapp = ttbmonthapp + totalap;
