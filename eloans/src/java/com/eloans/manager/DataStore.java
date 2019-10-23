@@ -29,7 +29,7 @@ public class DataStore {
             String myDriver = "org.gjt.mm.mysql.Driver";
             String myUrl = "jdbc:mysql://localhost/eloans";
             Class.forName(myDriver);
-            conn = DriverManager.getConnection(myUrl, "root", "1root2");
+            conn = DriverManager.getConnection(myUrl, "root", "juliusroot2");
         } catch (Exception e) {
             System.err.println("Exception: " + e.getMessage());
         }

@@ -6,6 +6,7 @@ package com.pdsl.vending;
 
 import java.io.IOException;
 import java.io.StringReader;
+import static java.lang.Double.parseDouble;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,8 +35,9 @@ public class IpayXML {
         }
         return "?";
     }
+
     public String xmlGetAttrib(String xml, String root, String node1, String attrib) {
-        System.out.println("XML Parames: " + root + ":" + node1);
+        //System.out.println("XML Parames: " + root + ":" + node1);
         ArrayList array = new ArrayList();
         //String attrib=null;
         try {
@@ -56,10 +58,10 @@ public class IpayXML {
                 Element line = (Element) name.item(0);
                 attrib = line.getAttribute(attrib);
                 array.add(getCharacterDataFromElement(line));
-                System.out.println("Message: " + getCharacterDataFromElement(line));
-                System.out.println("Attribute: " + attrib);
+                //System.out.println("Message: " + getCharacterDataFromElement(line));
+                //System.out.println("Attribute: " + attrib);
 
-                return attrib+"<<"+getCharacterDataFromElement(line);
+                return attrib + "<<" + getCharacterDataFromElement(line);
             }
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(IpayXML.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,6 +71,40 @@ public class IpayXML {
             Logger.getLogger(IpayXML.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "cell001";
+    }
+    public String xmlGetFixedAttrib(String xml, String root, String node1, String attrib) {
+        String respo = "";
+        try {
+            DocumentBuilderFactory dbf
+                    = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            InputSource is = new InputSource();
+            is.setCharacterStream(new StringReader(xml));
+
+            Document doc = db.parse(is);
+            NodeList nodes = doc.getElementsByTagName(root);
+
+            // iterate the node
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Element element = (Element) nodes.item(i);
+                NodeList name = element.getElementsByTagName(node1);
+                for (int j = 0; j < name.getLength(); j++) {
+                    Element line = (Element) name.item(j);
+                    String fxname = getCharacterDataFromElement(line);
+                    String amt = line.getAttribute(attrib);
+                    //System.out.println("Message: " + getCharacterDataFromElement(line));
+                    //System.out.println("Attribute: " + attrib);
+                    respo = respo + ": " + fxname + " " + parseDouble(amt) / 100;
+                }
+            }
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(IpayXML.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(IpayXML.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(IpayXML.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return respo;
     }
 
     public String xmlGetCustomer(String strMsg) {
@@ -178,6 +214,23 @@ public class IpayXML {
             builder = factory.newDocumentBuilder();
             Document document = builder.parse(new InputSource(new StringReader(strMsg)));
             NodeList el = document.getElementsByTagName("stdToken");
+            resp = el.item(0).getTextContent();
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            resp = "none";
+        }
+        return resp;
+    }
+
+    public String xmlGetTarrif(String strMsg) {
+        String resp = "none";
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
+        try {
+            builder = factory.newDocumentBuilder();
+            Document document = builder.parse(new InputSource(new StringReader(strMsg)));
+            NodeList el = document.getElementsByTagName("tariff");
             resp = el.item(0).getTextContent();
 
         } catch (Exception e) {

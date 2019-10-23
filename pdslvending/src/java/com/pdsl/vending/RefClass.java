@@ -12,8 +12,8 @@ public class RefClass {
 
     static synchronized String newRef() {
         DataStore data = new DataStore();
-        Connection conn = data.connect();
         try {
+        Connection conn = data.connect();
             String query = "select max(refe) from reference";
             PreparedStatement prep = conn.prepareStatement(query);
             ResultSet rst = prep.executeQuery();
@@ -53,8 +53,8 @@ public class RefClass {
 
     static synchronized String addRef(String ref) {
         DataStore data = new DataStore();
-        Connection conn = data.connect();
         try {
+        Connection conn = data.connect();
             String values = "insert into reference(refe) values (?)";
 
             PreparedStatement prep = conn.prepareStatement(values);

@@ -43,17 +43,17 @@ public class ProcessRequest {
         //String amount = "100.07";
         BigDecimal amt2 = new BigDecimal(amount);
         String amount2 = toCents(amt2);
-        String ipayamt=new DecimalFormat("#").format(parseDouble(amount2));        
-        System.out.println(amount);
-        System.out.println("Ipay Amount"+ipayamt);
-        
+        String ipayamt = new DecimalFormat("#").format(parseDouble(amount2));
+        Logger.getLogger(DataStore.class.getName()).log(Level.INFO,amount);
+        Logger.getLogger(DataStore.class.getName()).log(Level.INFO,"Ipay Amount" + ipayamt);
+
         String build = _postPaidBillSettlement(msisdn, account_no, ipayamt, seq, refere, time, client, term);
         String details = co.connection(build, initialtimeout);//this.co.connection(build);
 
         double conver = 0.016;
-        if (vendorcode.equals("900620")) {
+        /*if (vendorcode.equals("900620")) {
             conver = 0.0;
-        }
+        }*/
         double commission = Double.parseDouble(amount) * conver;
         if (Double.parseDouble(amount) > 100000) {
             commission = 100000 * conver;
@@ -164,7 +164,7 @@ public class ProcessRequest {
                 preparedStmt.setString(1, "Paid:" + amount + " For Account:" + account_no + " Reciept:" + rctNum);
                 preparedStmt.setString(2, refere);
                 preparedStmt.executeUpdate();
-                System.out.println("Updated Response");*/
+                Logger.getLogger(DataStore.class.getName()).log(Level.INFO,"Updated Response");*/
 
             } else {
                 if (ipaymsg.contains("Unknown meter")) {
@@ -368,23 +368,23 @@ public class ProcessRequest {
         //String amount = "100.07";
         BigDecimal amt2 = new BigDecimal(amount);
         String amount2 = toCents(amt2);
-        String ipayamt=new DecimalFormat("#").format(parseDouble(amount2));        
-        Logger.getLogger(ProcessRequest.class.getName()).log(Level.INFO,"Converted Amount: "+amount);
-        Logger.getLogger(ProcessRequest.class.getName()).log(Level.INFO,"Ipay Amount: "+ipayamt);
+        String ipayamt = new DecimalFormat("#").format(parseDouble(amount2));
+        Logger.getLogger(ProcessRequest.class.getName()).log(Level.INFO, "Converted Amount: " + amount);
+        Logger.getLogger(ProcessRequest.class.getName()).log(Level.INFO, "Ipay Amount: " + ipayamt);
 
         String build = _prePaidTokenRequest(msisdn, account_no, ipayamt, seq, refere, time, client, term);
         String details = co.connection(build, initialtimeout);//this.co.connection(build);
 
         double conver = 0.016;
-        if (vendorcode.equals("900620")) {
+        /*if (vendorcode.equals("900620")) {
             conver = 0.0;
-        }
+        }*/
         double commission = Double.parseDouble(amount) * conver;
         if (Double.parseDouble(amount) > 50000) {
             commission = 50000 * conver;
         }
         String maxLmt = data.chechMaxAmnt(account_no);
-        System.out.println("maxLmt: " + maxLmt);
+        Logger.getLogger(DataStore.class.getName()).log(Level.INFO,"maxLmt: " + maxLmt);
         if (maxLmt.equals("found")) {
             commission = 0;
         }
@@ -443,12 +443,19 @@ public class ProcessRequest {
                 String token = new IpayXML().xmlGetToken(details);
                 String units = new IpayXML().xmlGetAttrib(details, "elecMsg", "stdToken", "units");
                 String elec = new IpayXML().xmlGetAttrib(details, "elecMsg", "stdToken", "amt");
+                String rctNum = new IpayXML().xmlGetAttrib(details, "elecMsg", "stdToken", "rctNum");
+                String tariff = new IpayXML().xmlGetTarrif(details);
+                String acharges = new IpayXML().xmlGetFixedAttrib(details, "elecMsg", "fixed", "amt");
                 units = units.replaceAll("<<", "");
                 units = units.replaceAll(token, "");
                 elec = elec.replaceAll("<<", "");
                 elec = elec.replaceAll(token, "");
+                rctNum = rctNum.replaceAll("<<", "");
+                rctNum = rctNum.replaceAll(token, "");
+                Logger.getLogger(DataStore.class.getName()).log(Level.INFO,"All charges " + acharges);
+                Logger.getLogger(DataStore.class.getName()).log(Level.INFO,">>>>>><<<<<<");
                 double charges = parseDouble(amount) - (parseDouble(elec) / 100);
-                response = token + ":" + units + ":" + refere + ":" + parseDouble(elec) / 100 + ":" + Math.round(charges * 100.0) / 100.0;
+                response = refere + "<<" + "Token:" + token + " Units:" + units + " Elec:" + parseDouble(elec) / 100 + " Charges:" + Math.round(charges * 100.0) / 100.0 + ": Reciept No " + rctNum + ": Tariff " + tariff + acharges;
 
                 String values = "insert into transactions" + month + year + "(vendor_code,clientid,seqnumber,refnumber,terminal,ipaytime,tran_type,tran_account,tran_amt,tran_commission,tran_response,ipay_ref,status) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 try {
@@ -463,7 +470,7 @@ public class ProcessRequest {
                     prep.setString(8, account_no);
                     prep.setString(9, amount);
                     prep.setDouble(10, commission);
-                    prep.setString(11, "Token:" + token + " Units:" + units + " Elec:" + parseDouble(elec) / 100 + " Charges:" + Math.round(charges * 100.0) / 100.0 + "");
+                    prep.setString(11, "Token:" + token + " Units:" + units + " Elec:" + parseDouble(elec) / 100 + " Charges:" + Math.round(charges * 100.0) / 100.0 + ": Reciept No " + rctNum + ": Tariff " + tariff + acharges);
                     prep.setString(12, refere);
                     prep.setInt(13, 1);
                     prep.execute();
@@ -672,9 +679,9 @@ public class ProcessRequest {
             conver = 0.085;
             commamt = amount.replaceAll("ornge_", "");
         }
-        System.out.println("commant:" + commamt);
+        Logger.getLogger(DataStore.class.getName()).log(Level.INFO,"commant:" + commamt);
         double commission = Double.parseDouble(commamt) * conver;
-        System.out.println("commission:" + commission);
+        Logger.getLogger(DataStore.class.getName()).log(Level.INFO,"commission:" + commission);
 
         DateTime tdt = new DateTime();
         DateTimeFormatter tfmt = DateTimeFormat.forPattern("yyyy");
@@ -932,9 +939,10 @@ public class ProcessRequest {
         }
         return "Service momentarily unavailable";
     }
+
     public static String toCents(BigDecimal amount) {
-    	
-    	return amount.multiply(new BigDecimal(100)).toString();
+
+        return amount.multiply(new BigDecimal(100)).toString();
     }
 
 }

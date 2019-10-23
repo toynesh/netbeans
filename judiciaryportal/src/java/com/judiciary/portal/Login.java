@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pdsl.knec;
+package com.judiciary.portal;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -85,18 +85,20 @@ public class Login extends HttpServlet {
                 //System.out.println("User Not Loggedin");
             }
 
-            out.println(data.header);
+            out.println(data.loginheader);
             out.println("<div class='container' style='margin-top:2%'>");
             out.println("<div class='row'>");
-            out.println("<div class='col-lg-4 col-lg-offset-4' >");
-            out.println("<div id='navcontainer'>");
+            out.println("<div class='col-lg-4'></div><div class='col-lg-4'>");
+            out.println("<div id='navcontainer'>");   
+             out.println("<span class='text-center'><img src='img/logo.png' width='130'></span>");
+            out.println("<h3>SMS PORTAL</h3>");
             out.println("<h5><i class='fas fa-sign-in-alt'></i>&nbsp;&nbsp;<u>Login</u></h5>");
             out.println("<br />");
             out.println("<form action='" + request.getContextPath() + "/Login' method='post'>");
             out.println("<div class='form-group'>");
             out.println("<p class='text-danger'>" + notify + "</p>");
             out.println("<label for='uname'>User Name:</label>");
-            out.println("<input type='text' class='form-control' id='uname' name='uname' placeholder='knec'>");
+            out.println("<input type='text' class='form-control' id='uname' name='uname' placeholder='judiciary'>");
             out.println("<input type='text' style='display:none'  id='self' name='self' value='" + self + "'>");
             out.println("</div>");
             out.println("<div class='form-group'>");
@@ -109,6 +111,7 @@ public class Login extends HttpServlet {
             out.println("</div>");
             out.println("</div>");
             out.println("</div>");
+            out.println("</body>");
             out.println(data.footer);
         }
     }

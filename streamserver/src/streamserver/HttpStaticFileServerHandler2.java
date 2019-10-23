@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,8 +57,8 @@ import java.util.logging.Logger;
  */
 public class HttpStaticFileServerHandler2 extends SimpleChannelInboundHandler<HttpRequest> {
 
-    static String dir = "/opt/applications/streamserver/streams/";
-    //static String dir = "/home/julius/streams/";
+    //static String dir = "/opt/applications/streamserver/streams/";
+    static String dir = "/home/julius/streams/";
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, HttpRequest request) {
@@ -70,8 +71,13 @@ public class HttpStaticFileServerHandler2 extends SimpleChannelInboundHandler<Ht
         System.out.println("uri: " + uri);
         try {
             //String fromFile = "http://hiddennetworks.xyz:80/live/IanGathu/Wanjiru2308!" + uri.replaceAll("mp4", "ts");
-            String fromFile = "http://vapi.vaders.tv/play/" + uri.replaceAll("mp4", "ts"+"?token=eyJ1c2VybmFtZSI6ImlnYXRodSIsInBhc3N3b3JkIjoid2FuamlydTIzIn0=");
-            Thread download = new Thread() {
+            //String fromFile = "https://192-99-67-195.vpnmate.com:5052/live2/Lz_URV4cNEsuC_Vi_cg80A/1561287340/1018493.m3u8";
+            String command = "ffmpeg -i \"https://api.vpnmate.com/play/?vlc=1&channel=200433&token=hNKz-xPV-_mP:ZDk3YTBmOWViMzdlNTNkY2ViMzQzYmYyNDhmZjczYTg5MzFhMjk5OA==\" -c copy " + dir + uri.replace("/", "");
+            System.out.println("Command:=>> " + command);
+            //Thread.sleep(20000);
+            //pr.destroy();
+
+            /* Thread download = new Thread() {
                 public void run() {
                     try {
                         System.setProperty("http.agent", "Chrome");
@@ -91,7 +97,7 @@ public class HttpStaticFileServerHandler2 extends SimpleChannelInboundHandler<Ht
                         }
                     }
                 }
-            };
+            };*/
             File dfile = new File(dir + uri.replace("/", ""));
             if (dfile.exists()) {
                 System.out.println("Already existing: " + dfile);
@@ -99,6 +105,9 @@ public class HttpStaticFileServerHandler2 extends SimpleChannelInboundHandler<Ht
                 setChannelUsers(uri.replace("/", ""), String.valueOf(cusers + 1));
                 final String path = sanitizeUri(uri);
                 System.out.println("Paath: " + path);
+
+                String fileName = "/home/coolie/Desktop/processes.txt";
+
                 if (path == null) {
                     sendError(ctx, FORBIDDEN);
                     return;
@@ -191,7 +200,7 @@ public class HttpStaticFileServerHandler2 extends SimpleChannelInboundHandler<Ht
                         int cusers = getChannelUsers(uri.replace("/", ""));
                         setChannelUsers(uri.replace("/", ""), String.valueOf(cusers - 1));
                         if (cusers == 1) {
-                            download.interrupt();
+                            //download.interrupt();
                             File dfile = new File(dir + uri.replace("/", ""));
                             Path fpath = Paths.get(dfile.toString());
                             System.err.println("Deleting: " + dfile.toString());
@@ -211,9 +220,14 @@ public class HttpStaticFileServerHandler2 extends SimpleChannelInboundHandler<Ht
                 }
 
             } else {
-                download.start();//start the thread*/   
+                PrintWriter writer = new PrintWriter(dir + "processes.txt", "UTF-8");
+                Process pr = terminalCMD(command);
+                Thread.sleep(7000);
+                //download.start();//start the thread*/
                 setChannelUsers(uri.replace("/", ""), "1");
                 final String path = sanitizeUri(uri);
+                writer.println(uri.replace("/", "") + ">>>" + pr);
+                //writer.close();
                 System.out.println("Paath: " + path);
                 if (path == null) {
                     sendError(ctx, FORBIDDEN);
@@ -302,7 +316,8 @@ public class HttpStaticFileServerHandler2 extends SimpleChannelInboundHandler<Ht
                         int cusers = getChannelUsers(uri.replace("/", ""));
                         setChannelUsers(uri.replace("/", ""), String.valueOf(cusers - 1));
                         if (cusers == 1) {
-                            download.interrupt();
+                            //download.interrupt();
+                            pr.destroy();
                             File dfile = new File(dir + uri.replace("/", ""));
                             Path fpath = Paths.get(dfile.toString());
                             System.err.println("Deleting: " + dfile.toString());
@@ -370,7 +385,6 @@ public class HttpStaticFileServerHandler2 extends SimpleChannelInboundHandler<Ht
 
         // Convert to absolute path.
         //return SystemPropertyUtil.get("user.dir") + File.separator + uri;
-        Thread.sleep(7000);
         return dir + File.separator + uri;
     }
 
@@ -474,16 +488,21 @@ public class HttpStaticFileServerHandler2 extends SimpleChannelInboundHandler<Ht
 
     }
 
-    public void terminalCMD(String command) {
+    private static Process terminalCMD(String command) {
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
         pb.redirectErrorStream(true);
+        Process rp = null;
         try {
             Process shell = pb.start();
+            rp = shell;
         } catch (Exception exp) {
             System.out.println("Exception--->" + exp.getMessage());
         }
         // close the stream
 
         System.out.println("Done---->");
+        return rp;
     }
+
+
 }

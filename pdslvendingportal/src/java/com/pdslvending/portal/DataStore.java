@@ -7,7 +7,9 @@ package com.pdslvending.portal;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -23,67 +25,73 @@ import org.joda.time.format.DateTimeFormatter;
 public class DataStore {
 
     public Connection conn = null;
-    DataStore() {
+
+    /*DataStore() {
         DateTime dt = new DateTime();
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy");
-        String year = fmt.print(dt);
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM");
-        String month = formatter.print(dt);
+        if (dt.dayOfMonth().get() == 1) {
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy");
+            String year = fmt.print(dt);
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM");
+            String month = formatter.print(dt);
 
-        //create default user
-        Connection con = connect();
-        try {
-            String query = "select id from transactions" + month + year + " ORDER BY id DESC LIMIT 1";
-            Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery(query);
-            if (rs.isBeforeFirst()) {
-                System.out.println("SKIPPING CREATING TABLES");
-            }
-        } catch (SQLException emptydb) {
-            //e.printStackTrace();
-            System.out.println("CREATING TABLES");
-            createTables(month + year);
-
+            //create default user
             try {
-                String query = "SELECT * from users";
+                Connection con = connect();
+                String query = "select id from transactions" + month + year + " ORDER BY id DESC LIMIT 1";
                 Statement stm = con.createStatement();
                 ResultSet rs = stm.executeQuery(query);
-                if (!rs.isBeforeFirst()) {
-                    String values = "insert into users(full_names,uname,upass,utype,vendor_code) values (?,?,?,?,?)";
-                    try {
-                        PreparedStatement prep = con.prepareStatement(values);
-                        prep.setString(1, "Professional Digital Systems");
-                        prep.setString(2, "pdsl");
-                        prep.setString(3, "pdsl0000");
-                        prep.setString(4, "admin");
-                        prep.setInt(5, 1000);
-                        prep.execute();
-                        prep.close();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                if (rs.isBeforeFirst()) {
+                    //System.out.println("SKIPPING CREATING TABLES");
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            try {
-                String values = "insert into reference(refe) values (?)";
-
-                PreparedStatement prep = con.prepareStatement(values);
-                prep.setString(1, "100000000001");
-                prep.execute();
-                prep.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        } finally {
-            try {
                 con.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException emptydb) {
+                //e.printStackTrace();
+                System.out.println("CREATING TABLES");
+                createTables(month + year);
+
+                try {
+                    Connection con = connect();
+                    String query = "SELECT * from users";
+                    Statement stm = con.createStatement();
+                    ResultSet rs = stm.executeQuery(query);
+                    if (!rs.isBeforeFirst()) {
+                        String values = "insert into users(full_names,uname,upass,utype,vendor_code) values (?,?,?,?,?)";
+                        try {
+                            PreparedStatement prep = con.prepareStatement(values);
+                            prep.setString(1, "Professional Digital Systems");
+                            prep.setString(2, "pdsl");
+                            prep.setString(3, "pdsl0000");
+                            prep.setString(4, "admin");
+                            prep.setInt(5, 1000);
+                            prep.execute();
+                            prep.close();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Connection con = connect();
+                    String values = "insert into reference(refe) values (?)";
+
+                    PreparedStatement prep = con.prepareStatement(values);
+                    prep.setString(1, "100000000001");
+                    prep.execute();
+                    prep.close();
+
+                    con.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
+        } else {
+            System.out.println(dt.dayOfMonth().get() + " Day of the month");
         }
-    }
+    }*/
 
     public Connection connect() {
         Connection conn = null;
@@ -100,26 +108,30 @@ public class DataStore {
         return conn;
     }
 
-    public void createTables(String tdate) {
-        Connection conn = connect();
+    /*public void createTables(String tdate) {
         try {
+            Connection conn = connect();
             //serviceid = "6014702000147264";
             String users = "create table if not exists users(id INT NOT NULL AUTO_INCREMENT, full_names varchar(200), uname varchar(200), upass varchar(1000), utype varchar(100), vendor_code int, primary key(id))";
             String vendors = "create table if not exists vendors(id INT NOT NULL AUTO_INCREMENT, vendor_name varchar(200), vendor_code int, prepaid varchar(200), postpaid varchar(200), airtime varchar(200), status varchar(200), primary key(id), unique(vendor_code))";
             String reversals = "create table if not exists reversals(id INT NOT NULL AUTO_INCREMENT, vendor_code int, originalref varchar(500), account varchar(200), status int default '0', primary key(id))";
             String whitelist = "create table if not exists whitelist(id INT NOT NULL AUTO_INCREMENT, vendor_code int, ip varchar(100), port varchar(50), primary key(id))";
             String reference = "create table if not exists reference(id INT NOT NULL AUTO_INCREMENT, time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, refe varchar(255) DEFAULT NULL, primary key(id))";
+            String comlimit = "create table if not exists comlimit" + tdate + "(id INT NOT NULL AUTO_INCREMENT, tran_account varchar(200), primary key(id), unique(tran_account))";
             Statement stm = conn.createStatement();
             stm.execute(users);
             stm.execute(vendors);
             stm.execute(reversals);
             stm.execute(whitelist);
             stm.execute(reference);
+            stm.execute(comlimit);
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            String transactions = "create table transactions" + tdate + "(id INT NOT NULL AUTO_INCREMENT, vendor_code int, clientid varchar(50), seqnumber varchar(50), refnumber varchar(500), terminal varchar(50), ipaytime varchar(50), tran_type varchar(200), tran_account varchar(200), tran_amt double default 0, tran_depo_amt double default 0, tran_commission double default 0, tran_response text, ipay_ref varchar(50), tran_date timestamp default current_timestamp, status int default '0', primary key(id))";
+            Connection conn = connect();
+            String transactions = "create table transactions" + tdate + "(id INT NOT NULL AUTO_INCREMENT, vendor_code int, clientid varchar(50), seqnumber varchar(50), refnumber varchar(500), terminal varchar(50), ipaytime varchar(50), tran_type varchar(200), tran_account varchar(200), tran_amt double default 0, tran_depo_amt double default 0, tran_commission double default 0, tran_response text, ipay_ref varchar(500), tran_date timestamp default current_timestamp, status int default '0', primary key(id))";
             Statement stm = conn.createStatement();
             stm.execute(transactions);
 
@@ -142,7 +154,7 @@ public class DataStore {
             while (rs1.next()) {
                 System.out.println("Inseting for vendor:" + rs1.getString(1));
                 String query2 = "SELECT MAX(`ipay_ref`),SUM(`tran_depo_amt`),SUM(`tran_amt`),SUM(`tran_commission`) FROM `transactions" + lastmonth + "` WHERE  `vendor_code`=" + rs1.getString(1) + "";
-                System.out.println(query2);
+                //System.out.println(query2);
                 Statement stm2 = conn.createStatement();
                 ResultSet rs2 = stm2.executeQuery(query2);
                 if (rs2.isBeforeFirst()) {
@@ -216,18 +228,13 @@ public class DataStore {
                     prep2.close();
                 }
             }
+            conn.close();
         } catch (SQLException ex) {
             //Aready created
             System.out.println("Transaction Table already created");
-            //Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }*/
 
     public String getFloatBal(String shopcode) {
         String res = "0.00";
@@ -340,6 +347,31 @@ public class DataStore {
         }
         return res;
     }
+    public List<List<String>> getVendors(String vcode) {
+        List<List<String>> res = new ArrayList<>();
+        try {
+            DataStore data = new DataStore();
+            Connection con = data.connect();
+            String query = "SELECT `vendor_code`,`vendor_name` FROM `vendors`";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            ResultSetMetaData metadata = rs.getMetaData();
+                int numcols = metadata.getColumnCount();
+                while (rs.next()) {
+                    //System.out.println("Adding "+rs.getString(1) + ": "+rs.getString(2));
+                    List<String> row = new ArrayList<>(numcols);
+                    int i = 1;
+                    while (i <= numcols) {
+                        row.add(rs.getString(i++));
+                    }
+                    res.add(row);
+                }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return res;
+    }
     String headerP1 = "<!DOCTYPE html>"
             + "<!--"
             + "To change this license header, choose License Headers in Project Properties."
@@ -372,6 +404,9 @@ public class DataStore {
             + "                    <div class='row'>"
             + "                        <div class='col-lg-3'>"
             + "                            <a href='/pdslvendingportal/Admin'><i class='fa fa-ravelry' aria-hidden='true'></i> Manage Aggregator</a>"
+            + "                        </div>"
+            + "                        <div class='col-lg-2'>"
+            + "                            <a href='/pdslvendingportal/SalesSummary'><i class='fa fa-ravelry' aria-hidden='true'></i> Sales Summary</a>"
             + "                        </div>"
             + "                        <div class='col-lg-2'>"
             + "                            <a href='/pdslvendingportal/FloatReport'><i class='fa fa-ravelry' aria-hidden='true'></i> Float Report</a>"

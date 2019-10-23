@@ -19,6 +19,9 @@ import javax.jws.WebParam;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
@@ -36,7 +39,6 @@ public class Requests {
      * @WebMethod(operationName = "hello") public String hello(@WebParam(name =
      * "name") String txt) { return "Hello " + txt + " !"; }
      */
-    DataStore data = new DataStore();
     ProcessRequest req = new ProcessRequest();
 
     //sample meters 1345445677433 , 68574638596433 accounts 27654358-03, 547675864-01 token type orange_100,saf_50
@@ -47,7 +49,9 @@ public class Requests {
 
         MessageContext mc = wsContext.getMessageContext();
         HttpServletRequest req = (HttpServletRequest) mc.get(MessageContext.SERVLET_REQUEST);
-        System.out.println("Client IP = " + req.getRemoteAddr());
+        Logger.getLogger(Requests.class.getName()).log(Level.INFO, "Client IP = " + req.getRemoteAddr());
+
+        DataStore data = new DataStore();
 
         if (vendorcode == null || vendorcode.isEmpty() || vendorcode.equals("?") || vendorcode.equals("")) {
             Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, "EmptyVendorCode");
@@ -68,7 +72,7 @@ public class Requests {
                 try {
                     Connection con = data.connect();
                     String query = "SELECT `vendor_code`,`prepaid`,`postpaid`,`airtime`,`status` FROM `vendors` WHERE  `vendor_code`=" + vendorcode + "";
-                    //System.out.println(query);
+                    //Logger.getLogger(Requests.class.getName()).log(Level.INFO,query);
                     Statement stm = con.createStatement();
                     ResultSet rs = stm.executeQuery(query);
                     while (rs.next()) {
@@ -105,7 +109,7 @@ public class Requests {
                                 ipayres = ipayres.replace("[", "");
                                 ipayres = ipayres.replace("]", "");
                                 if (ipayres.startsWith("Owner")) {
-                                    //System.out.println("Starts with owner");
+                                    //Logger.getLogger(Requests.class.getName()).log(Level.INFO,"Starts with owner");
                                     String ipayres2 = "ServiceNotAvailable";
                                     try {
                                         ipayres2 = this.req._prePaidTokenBuy(vendorcode, "254728064120", account, amount, "PdslEquity", "00001");
@@ -119,9 +123,9 @@ public class Requests {
                                         Logger.getLogger(Requests.class.getName()).log(Level.INFO, ipayres2.replaceAll("Unsuccessfulmsg:", ""));
                                         return resformat.vendErrorXML(ipayres2.replaceAll("Unsuccessfulmsg:", ""));
                                     } else {
-                                        String resarr[] = ipayres2.split(":");
-                                        Logger.getLogger(Requests.class.getName()).log(Level.INFO, "Token:" + resarr[0] + " Units:" + resarr[1] + " Elec:" + resarr[3] + " Charges:" + resarr[4] + "");
-                                        return resformat.vendXML(account, resarr[2], "Token:" + resarr[0] + " Units:" + resarr[1] + " Elec:" + resarr[3] + " Charges:" + resarr[4] + "", data.getFloatBal(vendorcode));
+                                        String resarr[] = ipayres2.split("<<");
+                                        Logger.getLogger(Requests.class.getName()).log(Level.INFO, resarr[1]);
+                                        return resformat.vendXML(account, resarr[0], resarr[1], data.getFloatBal(vendorcode));
                                     }
                                 } else {
                                     Logger.getLogger(Requests.class.getName()).log(Level.INFO, ipayres);
@@ -153,9 +157,10 @@ public class Requests {
         Logger.getLogger(Requests.class.getName()).log(Level.INFO, "\n >>PrePaidMeterQuery<< \n VendorCode: " + vendorcode + "\n Meter: " + meter);
         FormatVendRes resformat = new FormatVendRes();
 
+        DataStore data = new DataStore();
         MessageContext mc = wsContext.getMessageContext();
         HttpServletRequest req = (HttpServletRequest) mc.get(MessageContext.SERVLET_REQUEST);
-        System.out.println("Client IP = " + req.getRemoteAddr());
+        Logger.getLogger(Requests.class.getName()).log(Level.INFO, "Client IP = " + req.getRemoteAddr());
 
         if (vendorcode == null || vendorcode.isEmpty() || vendorcode.equals("?") || vendorcode.equals("")) {
             Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, "EmptyVendorCode");
@@ -173,7 +178,7 @@ public class Requests {
                 try {
                     Connection con = data.connect();
                     String query = "SELECT `vendor_code`,`prepaid`,`postpaid`,`airtime`,`status` FROM `vendors` WHERE  `vendor_code`=" + vendorcode + "";
-                    //System.out.println(query);
+                    //Logger.getLogger(Requests.class.getName()).log(Level.INFO,query);
                     Statement stm = con.createStatement();
                     ResultSet rs = stm.executeQuery(query);
                     while (rs.next()) {
@@ -240,9 +245,19 @@ public class Requests {
         Logger.getLogger(Requests.class.getName()).log(Level.INFO, "\n >>PostPaidVend<< \n VendorCode: " + vendorcode + "\n Account: " + account + "\n Amount: " + amount + "\n Phone: " + phonenumber);
         FormatVendRes resformat = new FormatVendRes();
 
+        DataStore data = new DataStore();
         MessageContext mc = wsContext.getMessageContext();
         HttpServletRequest req = (HttpServletRequest) mc.get(MessageContext.SERVLET_REQUEST);
-        System.out.println("Client IP = " + req.getRemoteAddr());
+        Logger.getLogger(Requests.class.getName()).log(Level.INFO, "Client IP = " + req.getRemoteAddr());
+
+        DateTime dt = new DateTime();
+        if (dt.dayOfMonth().get() == 1) {
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy");
+            String year = fmt.print(dt);
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM");
+            String month = formatter.print(dt);
+            data.createTables(month + year);
+        }
 
         //check float
         if (vendorcode == null || vendorcode.isEmpty() || vendorcode.equals("?") || vendorcode.equals("")) {
@@ -264,7 +279,7 @@ public class Requests {
                 try {
                     Connection con = data.connect();
                     String query = "SELECT `vendor_code`,`prepaid`,`postpaid`,`airtime`,`status` FROM `vendors` WHERE  `vendor_code`=" + vendorcode + "";
-                    //System.out.println(query);
+                    //Logger.getLogger(Requests.class.getName()).log(Level.INFO,query);
                     Statement stm = con.createStatement();
                     ResultSet rs = stm.executeQuery(query);
                     while (rs.next()) {
@@ -347,9 +362,10 @@ public class Requests {
         Logger.getLogger(Requests.class.getName()).log(Level.INFO, "\n >>PostPaidAccountQuery<< \n VendorCode: " + vendorcode + "\n Account: " + account);
         FormatVendRes resformat = new FormatVendRes();
 
+        DataStore data = new DataStore();
         MessageContext mc = wsContext.getMessageContext();
         HttpServletRequest req = (HttpServletRequest) mc.get(MessageContext.SERVLET_REQUEST);
-        System.out.println("Client IP = " + req.getRemoteAddr());
+        Logger.getLogger(Requests.class.getName()).log(Level.INFO, "Client IP = " + req.getRemoteAddr());
 
         if (vendorcode == null || vendorcode.isEmpty() || vendorcode.equals("?") || vendorcode.equals("")) {
             Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, "EmptyVendorCode");
@@ -367,7 +383,7 @@ public class Requests {
                 try {
                     Connection con = data.connect();
                     String query = "SELECT `vendor_code`,`prepaid`,`postpaid`,`airtime`,`status` FROM `vendors` WHERE  `vendor_code`=" + vendorcode + "";
-                    //System.out.println(query);
+                    //Logger.getLogger(Requests.class.getName()).log(Level.INFO,query);
                     Statement stm = con.createStatement();
                     ResultSet rs = stm.executeQuery(query);
                     while (rs.next()) {
@@ -436,8 +452,9 @@ public class Requests {
 
         MessageContext mc = wsContext.getMessageContext();
         HttpServletRequest req = (HttpServletRequest) mc.get(MessageContext.SERVLET_REQUEST);
-        System.out.println("Client IP = " + req.getRemoteAddr());
+        Logger.getLogger(Requests.class.getName()).log(Level.INFO, "Client IP = " + req.getRemoteAddr());
 
+        DataStore data = new DataStore();
         //check float
         //eg tokentype orange_20
         if (vendorcode == null || vendorcode.isEmpty() || vendorcode.equals("?") || vendorcode.equals("")) {
@@ -459,7 +476,7 @@ public class Requests {
                 try {
                     Connection con = data.connect();
                     String query = "SELECT `vendor_code`,`prepaid`,`postpaid`,`airtime`,`status` FROM `vendors` WHERE  `vendor_code`=" + vendorcode + "";
-                    //System.out.println(query);
+                    //Logger.getLogger(Requests.class.getName()).log(Level.INFO,query);
                     Statement stm = con.createStatement();
                     ResultSet rs = stm.executeQuery(query);
                     while (rs.next()) {

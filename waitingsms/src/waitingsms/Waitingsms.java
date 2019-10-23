@@ -51,7 +51,7 @@ public class Waitingsms {
         } catch (SQLException ex) {
             Logger.getLogger(Waitingsms.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String query = "SELECT `mpesa_msisdn`,`mpesa_code`,`message`,`dlry_status` FROM `mpesa` WHERE `dlry_status`='SmsDeliveryWaiting' OR dlry_status='SDPTIMEOUT'";
+        String query = "SELECT `mpesa_msisdn`,`mpesa_code`,`message`,`dlry_status` FROM `mpesa` WHERE `dlry_status`='SmsDeliveryWaiting' OR dlry_status='SDPTIMEOUT' OR dlry_status='DeliveryImpossible'";
         try {
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(query);

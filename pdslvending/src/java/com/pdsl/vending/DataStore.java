@@ -24,26 +24,33 @@ public class DataStore {
 
     DataStore() {
         DateTime dt = new DateTime();
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy");
-        String year = fmt.print(dt);
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM");
-        String month = formatter.print(dt);
-
-        //create default user
-        Connection con = connect();
-        try {
-            String query = "select id from transactions" + month + year + " ORDER BY id DESC LIMIT 1";
-            Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery(query);
-            if (rs.isBeforeFirst()) {
-                //System.out.println("SKIPPING CREATING TABLES");
-            }
-        } catch (SQLException emptydb) {
-            //e.printStackTrace();
-            System.out.println("CREATING TABLES");
+        if (dt.dayOfMonth().get() == 1) {
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy");
+            String year = fmt.print(dt);
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM");
+            String month = formatter.print(dt);
+            DateTimeFormatter tformatter = DateTimeFormat.forPattern("hh");
+            String time = tformatter.print(dt);
+            Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,"Time:"+time);
+            if(time=="01"){
+            //create default user
+            /*try {
+                Connection con = connect();
+                String query = "select id from transactions" + month + year + " ORDER BY id DESC LIMIT 1";
+                Statement stm = con.createStatement();
+                ResultSet rs = stm.executeQuery(query);
+                if (rs.isBeforeFirst()) {
+                    //System.out.println("SKIPPING CREATING TABLES");
+                }
+                con.close();
+            } catch (SQLException emptydb) {
+                //e.printStackTrace();
+                Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE,"CREATING TABLES");
+            }*/
+            Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,"CREATING TABLES");
             createTables(month + year);
-
             try {
+                Connection con = connect();
                 String query = "SELECT * from users";
                 Statement stm = con.createStatement();
                 ResultSet rs = stm.executeQuery(query);
@@ -62,28 +69,31 @@ public class DataStore {
                         Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+
+                con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             try {
+                Connection con = connect();
                 String values = "insert into reference(refe) values (?)";
 
                 PreparedStatement prep = con.prepareStatement(values);
                 prep.setString(1, "100000000001");
                 prep.execute();
                 prep.close();
+
+                con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        }else{
+            Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,"Its Past 1am. Tables already created");
         }
 
+        } else {
+            Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,dt.dayOfMonth().get() + " Day of the month");
+        }
     }
 
     public Connection connect() {
@@ -96,14 +106,14 @@ public class DataStore {
 
             this.conn = conn;
         } catch (Exception e) {
-            System.err.println("Exception: " + e.getMessage());
+            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE,"Exception: " + e.getMessage());
         }
         return conn;
     }
 
     public void createTables(String tdate) {
-        Connection conn = connect();
         try {
+            Connection conn = connect();
             //serviceid = "6014702000147264";
             String users = "create table if not exists users(id INT NOT NULL AUTO_INCREMENT, full_names varchar(200), uname varchar(200), upass varchar(1000), utype varchar(100), vendor_code int, primary key(id))";
             String vendors = "create table if not exists vendors(id INT NOT NULL AUTO_INCREMENT, vendor_name varchar(200), vendor_code int, prepaid varchar(200), postpaid varchar(200), airtime varchar(200), status varchar(200), primary key(id), unique(vendor_code))";
@@ -118,10 +128,12 @@ public class DataStore {
             stm.execute(whitelist);
             stm.execute(reference);
             stm.execute(comlimit);
+            conn.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
+            Connection conn = connect();
             String transactions = "create table transactions" + tdate + "(id INT NOT NULL AUTO_INCREMENT, vendor_code int, clientid varchar(50), seqnumber varchar(50), refnumber varchar(500), terminal varchar(50), ipaytime varchar(50), tran_type varchar(200), tran_account varchar(200), tran_amt double default 0, tran_depo_amt double default 0, tran_commission double default 0, tran_response text, ipay_ref varchar(500), tran_date timestamp default current_timestamp, status int default '0', primary key(id))";
             Statement stm = conn.createStatement();
             stm.execute(transactions);
@@ -137,25 +149,25 @@ public class DataStore {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.MONTH, -1);
             String lastmonth = formatm.format(cal.getTime()) + format.format(cal.getTime());
-            System.out.println("Previous Month:" + lastmonth);
+            Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,"Previous Month:" + lastmonth);
 
             String query1 = "SELECT `vendor_code` FROM `vendors`";
             Statement stm1 = conn.createStatement();
             ResultSet rs1 = stm1.executeQuery(query1);
             while (rs1.next()) {
-                System.out.println("Inseting for vendor:" + rs1.getString(1));
+                Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,"Inseting for vendor:" + rs1.getString(1));
                 String query2 = "SELECT MAX(`ipay_ref`),SUM(`tran_depo_amt`),SUM(`tran_amt`),SUM(`tran_commission`) FROM `transactions" + lastmonth + "` WHERE  `vendor_code`=" + rs1.getString(1) + "";
-                //System.out.println(query2);
+                Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,query2);
                 Statement stm2 = conn.createStatement();
                 ResultSet rs2 = stm2.executeQuery(query2);
                 if (rs2.isBeforeFirst()) {
                     while (rs2.next()) {
-                        if (rs2.getString(1) == null) {
+                        if (rs2.getString(2) == null) {
                             String values = "insert into transactions" + month + year + "(vendor_code,tran_type,refnumber,tran_amt,tran_depo_amt,status) values (?,?,?,?,?,?)";
                             PreparedStatement prep = conn.prepareStatement(values);
                             prep.setString(1, rs1.getString(1));
                             prep.setString(2, "BALANCE BROUGHT FORWARD");
-                            prep.setString(3, "pdslauto");
+                            prep.setString(3, "BBF"+RefClass.newRef());
                             prep.setString(4, "0.0");
                             prep.setString(5, "0.0");
                             prep.setInt(6, 1);
@@ -166,7 +178,7 @@ public class DataStore {
                             PreparedStatement prep2 = conn.prepareStatement(values2);
                             prep2.setString(1, rs1.getString(1));
                             prep2.setString(2, "COMMISSION LAST MONTH");
-                            prep2.setString(3, "pdslauto");
+                            prep2.setString(3, "CBF"+RefClass.newRef());
                             prep2.setDouble(4, 0.0);
                             prep2.setInt(5, 1);
                             prep2.execute();
@@ -176,7 +188,7 @@ public class DataStore {
                             PreparedStatement prep = conn.prepareStatement(values);
                             prep.setString(1, rs1.getString(1));
                             prep.setString(2, "BALANCE BROUGHT FORWARD");
-                            prep.setString(3, rs2.getString(1));
+                            prep.setString(3, "BBF"+RefClass.newRef());
                             prep.setString(4, rs2.getString(1));
                             prep.setString(5, rs2.getString(3));
                             prep.setString(6, rs2.getString(2));
@@ -189,46 +201,41 @@ public class DataStore {
                             PreparedStatement prep2 = conn.prepareStatement(values2);
                             prep2.setString(1, rs1.getString(1));
                             prep2.setString(2, "COMMISSION LAST MONTH");
-                            prep2.setString(3, rs2.getString(1));
+                            prep2.setString(3, "CBF"+RefClass.newRef());
                             prep2.setDouble(4, commission);
                             prep2.setInt(5, 1);
                             prep2.execute();
                             prep2.close();
                         }
                     }
-                }else{
+                } else {
                     String values = "insert into transactions" + month + year + "(vendor_code,tran_type,refnumber,tran_amt,tran_depo_amt,status) values (?,?,?,?,?,?)";
-                        PreparedStatement prep = conn.prepareStatement(values);
-                        prep.setString(1, rs1.getString(1));
-                        prep.setString(2, "BALANCE BROUGHT FORWARD");
-                        prep.setString(3, "pdslauto");
-                        prep.setString(4, "0.0");
-                        prep.setString(5, "0.0");
-                        prep.setInt(6, 1);
-                        prep.execute();
-                        prep.close();
+                    PreparedStatement prep = conn.prepareStatement(values);
+                    prep.setString(1, rs1.getString(1));
+                    prep.setString(2, "BALANCE BROUGHT FORWARD");
+                    prep.setString(3, "BBF"+RefClass.newRef());
+                    prep.setString(4, "0.0");
+                    prep.setString(5, "0.0");
+                    prep.setInt(6, 1);
+                    prep.execute();
+                    prep.close();
 
-                        String values2 = "insert into transactions" + month + year + "(vendor_code,tran_type,refnumber,tran_depo_amt,status) values (?,?,?,?,?)";
-                        PreparedStatement prep2 = conn.prepareStatement(values2);
-                        prep2.setString(1, rs1.getString(1));
-                        prep2.setString(2, "COMMISSION LAST MONTH");
-                        prep2.setString(3, "pdslauto");
-                        prep2.setDouble(4, 0.0);
-                        prep2.setInt(5, 1);
-                        prep2.execute();
-                        prep2.close();
+                    String values2 = "insert into transactions" + month + year + "(vendor_code,tran_type,refnumber,tran_depo_amt,status) values (?,?,?,?,?)";
+                    PreparedStatement prep2 = conn.prepareStatement(values2);
+                    prep2.setString(1, rs1.getString(1));
+                    prep2.setString(2, "COMMISSION LAST MONTH");
+                    prep2.setString(3, "CBF"+RefClass.newRef());
+                    prep2.setDouble(4, 0.0);
+                    prep2.setInt(5, 1);
+                    prep2.execute();
+                    prep2.close();
                 }
             }
+            conn.close();
         } catch (SQLException ex) {
             //Aready created
-            System.out.println("Transaction Table already created");
-            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,"Transaction Table already created");
+            //Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -305,6 +312,7 @@ public class DataStore {
         }
         return res;
     }
+
     public String chechFloatRef(String ref, String month, String year) {
         String res = "none";
         try {

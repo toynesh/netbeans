@@ -40,6 +40,10 @@
         <servlet-name>FloatReport</servlet-name>
         <servlet-class>com.pdslvending.portal.FloatReport</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SalesSummary</servlet-name>
+        <servlet-class>com.pdslvending.portal.SalesSummary</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Admin</servlet-name>
         <url-pattern>/Admin</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>FloatReport</servlet-name>
         <url-pattern>/FloatReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SalesSummary</servlet-name>
+        <url-pattern>/SalesSummary</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

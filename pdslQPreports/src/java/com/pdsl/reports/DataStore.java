@@ -425,7 +425,7 @@ public class DataStore {
                     + "<div class='radio'>"
                     + "<label><input type='radio' name='uptype' value='notes'>Uptime Notes</label>"
                     + "</div>"
-                   + "<div class='radio'>"
+                    + "<div class='radio'>"
                     + "<label><input type='radio' name='uptype' value='sales'>AGGs Sales Upload</label>"
                     + "</div>"
                     + "<div class='radio'>"

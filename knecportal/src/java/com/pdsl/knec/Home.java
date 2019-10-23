@@ -109,7 +109,15 @@ public class Home extends HttpServlet {
                 out.println("<input value='regportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>REGCHECK");
             }
             out.println("</label>");
+            out.println("<label class='radio-inline'>");
+            if (stable.equals("seveneightportaldata")) {
+                out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>20078");
+            } else {
+                out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>20078");
+            }
+            out.println("</label>");
             out.println("</form>");
+
             out.println("</br>");
             out.println("</div>");
             out.println("</div>");
@@ -246,21 +254,25 @@ public class Home extends HttpServlet {
                     resultSet = statement.executeQuery("SELECT COUNT(*) FROM  safdlrykcpe WHERE `smsc`='SAFARICOM'");
                 } else if (stable.equals("kcseportaldata")) {
                     resultSet = statement.executeQuery("SELECT COUNT(*) FROM  safdlrykcse WHERE `smsc`='SAFARICOM'");
+                } else if (stable.equals("seveneightportaldata")) {
+                    resultSet = statement.executeQuery("SELECT COUNT(*) FROM  `" + stable + "` WHERE `smsc`='SAFARICOM'");
                 }
                 while (resultSet.next()) {
                     safcount = resultSet.getInt(1);
                 }
             } catch (SQLException myex) {
             }
-            try {
-                Statement statement = con.createStatement();
-                //ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `"+stable+"` WHERE `smsc`='SAFARICOM'");
-                ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM dlr_status WHERE `correlator`='20076' AND `status`='DeliveredToTerminal'");
-                while (resultSet.next()) {
-                    safcount = safcount + resultSet.getInt(1);
-                }
+            if (!stable.equals("seveneightportaldata")) {
+                try {
+                    Statement statement = con.createStatement();
+                    //ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `"+stable+"` WHERE `smsc`='SAFARICOM'");
+                    ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM dlr_status WHERE `correlator`='20076' AND `status`='DeliveredToTerminal'");
+                    while (resultSet.next()) {
+                        safcount = safcount + resultSet.getInt(1);
+                    }
 
-            } catch (SQLException myex) {
+                } catch (SQLException myex) {
+                }
             }
             //airtelcount
             int airtelcount = 0;
@@ -431,6 +443,7 @@ public class Home extends HttpServlet {
                         }
                     } catch (SQLException ex) {
                     }
+                    writer.close();
                     //exportExcel(eexportarray, filename);
                     //String redirectURL = "DownloadFile?ftdown=" + filename + ".xls";
                     String redirectURL = "DownloadFile?ftdown=" + filename + ".csv";
@@ -458,6 +471,7 @@ public class Home extends HttpServlet {
                         }
                     } catch (SQLException ex) {
                     }
+                    writer.close();
                     //exportExcel(eexportarray, filename);
                     //String redirectURL = "DownloadFile?ftdown=" + filename + ".xls";
                     String redirectURL = "DownloadFile?ftdown=" + filename + ".csv";
@@ -485,6 +499,7 @@ public class Home extends HttpServlet {
                         }
                     } catch (SQLException ex) {
                     }
+                    writer.close();
                     //exportExcel(eexportarray, filename);
                     //String redirectURL = "DownloadFile?ftdown=" + filename + ".xls";
                     String redirectURL = "DownloadFile?ftdown=" + filename + ".csv";

@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -70,9 +71,9 @@ public class ExportPDF extends HttpServlet {
                 Document PDFLogReport = new Document(PageSize.A4, 0f, 0f, 15f, 0f);
 
                 try {
-                    PdfWriter.getInstance(PDFLogReport, new FileOutputStream("/home/pdsladmin/agentreports/"+filename));
+                    PdfWriter.getInstance(PDFLogReport, new FileOutputStream("/home/pdsladmin/agentreports/" + filename));
                     PDFLogReport.open();
-                    Paragraph paragraph1 = new Paragraph("PDSL "+fullname+" Transaction(s) Report");
+                    Paragraph paragraph1 = new Paragraph("PDSL " + fullname + " Transaction(s) Report");
                     paragraph1.setSpacingAfter(10f);
                     paragraph1.setAlignment(Element.ALIGN_CENTER);
                     PDFLogReport.add(paragraph1);
@@ -103,7 +104,7 @@ public class ExportPDF extends HttpServlet {
                     table_cell = new PdfPCell(new Phrase(Commission0, font));
                     LogTable.addCell(table_cell);
                     String Response0 = "Response";
-                    if (query.contains("vendor_code")) {
+                    if (query.contains("vendor_code,")) {
                         Response0 = "SubAG";
                     }
                     table_cell = new PdfPCell(new Phrase(Response0, font));
@@ -111,6 +112,8 @@ public class ExportPDF extends HttpServlet {
                     String Status0 = "Status";
                     table_cell = new PdfPCell(new Phrase(Status0, font));
                     LogTable.addCell(table_cell);
+
+                    List<List<String>> vendors = data.getVendors(query);
 
                     Connection con = data.connect();
                     Statement st = con.createStatement();
@@ -143,8 +146,12 @@ public class ExportPDF extends HttpServlet {
                         LogTable.addCell(table_cell);
                         String res = " ";
                         if (null != rs.getString(7)) {
-                            if (query.contains("vendor_code")) {
-                                res = rs.getString(7)+"("+data.getVendorNameByCode(rs.getString(7))+")";
+                            if (query.contains("vendor_code,")) {
+                                for (int y = 0; y < vendors.size(); y++) {
+                                    if (rs.getString(7).equals(vendors.get(y).get(0))) {
+                                        res = rs.getString(7) + "(" + vendors.get(y).get(1) + ")";
+                                    }
+                                }
                             } else {
                                 res = rs.getString(7);
                             }

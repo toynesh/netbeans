@@ -135,7 +135,7 @@ public class Excel {
                             if (results.toLowerCase().contains("timed out")) {
                                 mesg = "Dear Customer,We are experiencing KPLC delays. Once the system is up we will resend your transaction";
                                 try {
-                                    sdp.sendSMS(msisdn, mesg, ref, "704307", "http://197.248.61.166:8084/VendITNotification/SmsNotificationService");
+                                    sdp.sendSMS(msisdn, mesg, ref, "704307", "http://197.248.9.105:8084/VendITNotification/SmsNotificationService");
                                 } catch (Exception xx) {
                                     deliverystatus = "SDPTIMEOUT";
                                 }
@@ -153,7 +153,7 @@ public class Excel {
                             } else if (results.startsWith("FAIL")) {
                                 try {
                                     try {
-                                        sdp.sendSMS(msisdn, results.substring(5), ref, "704307", "http://197.248.61.166:8084/VendITNotification/SmsNotificationService");
+                                        sdp.sendSMS(msisdn, results.substring(5), ref, "704307", "http://197.248.9.105:8084/VendITNotification/SmsNotificationService");
                                     } catch (Exception xx) {
                                         deliverystatus = "SDPTIMEOUT";
                                     }
@@ -176,7 +176,7 @@ public class Excel {
                                         //deliverystatus = "SmsNotSent";
                                     } else {
                                         try {
-                                            sdp.sendSMS(msisdn, mesg, ref, "704307", "http://197.248.61.166:8084/VendITNotification/SmsNotificationService");
+                                            sdp.sendSMS(msisdn, mesg, ref, "704307", "http://197.248.9.105:8084:8084/VendITNotification/SmsNotificationService");
                                         } catch (Exception xx) {
                                             deliverystatus = "SDPTIMEOUT";
                                         }

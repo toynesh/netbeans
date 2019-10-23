@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,9 @@ public class ExportExcel extends HttpServlet {
                 response.sendRedirect(redirectURL);
             } else {
                 String query = request.getParameter("query");
-                System.out.println("query:" + query);
+                System.out.println("query:" + query); 
+                
+                List<List<String>> vendors = data.getVendors(query);
                 try {
                     Connection con = data.connect();
                     PreparedStatement psmnt = null;
@@ -68,16 +71,14 @@ public class ExportExcel extends HttpServlet {
                     rowhead.createCell((short) 4).setCellValue("SaleAmount");
                     rowhead.createCell((short) 5).setCellValue("DepAmount");
                     rowhead.createCell((short) 6).setCellValue("Commission");
-                    if (query.contains("vendor_code")) {
+                    if (query.contains("vendor_code,")) {
                         rowhead.createCell((short) 7).setCellValue("SubAG");
                     } else {
                         rowhead.createCell((short) 7).setCellValue("Response");
                     }
                     rowhead.createCell((short) 8).setCellValue("Status");
-
                     int index = 1;
                     while (rs.next()) {
-
                         HSSFRow row = sheet.createRow((short) index);
                         row.createCell((short) 0).setCellValue(rs.getString(8).substring(0, rs.getString(8).length() - 2));
                         row.createCell((short) 1).setCellValue(rs.getString(1));
@@ -92,8 +93,12 @@ public class ExportExcel extends HttpServlet {
                         row.createCell((short) 6).setCellValue(rs.getString(6));
                         String res = " ";
                         if (null != rs.getString(7)) {
-                            if (query.contains("vendor_code")) {
-                                res = rs.getString(7)+"("+data.getVendorNameByCode(rs.getString(7))+")";
+                            if (query.contains("vendor_code,")) {
+                                for (int y = 0; y < vendors.size(); y++) {
+                                    if (rs.getString(7).equals(vendors.get(y).get(0))) {
+                                        res = rs.getString(7) + "(" + vendors.get(y).get(1) + ")";
+                                    }
+                                }
                             } else {
                                 res = rs.getString(7);
                             }

@@ -57,6 +57,11 @@ public class sms {
         String msisdn = deliveryStatus.getAddress().replaceAll("tel:", "");
         String insert = "insert into dlr_status (msisdn,correlator,status,realstatus) values ('" +msisdn+ "','" + correlator + "','" + status + "','" + realstatus + "')";
         data.vinsert(insert);
+        
+        if(status=="DeliveryImpossible"){
+        String insert2 = "insert into sdptimeout(mpesa_code) values ('" + correlator + "')";
+        data.vinsert(insert2);
+        }
 
         return responseE;
 

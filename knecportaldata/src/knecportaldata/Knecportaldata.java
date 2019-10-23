@@ -33,25 +33,64 @@ public class Knecportaldata {
             stmt.executeUpdate(sql);
             System.out.println("regportaldata Table  deleted in given database...");
             Statement stmt2 = con.createStatement();
-            String sql2 = "DROP TABLE 	failedreg ";
+            String sql2 = "DROP TABLE failedreg ";
             stmt2.executeUpdate(sql2);
             System.out.println("failedreg Table  deleted in given database...");
+            Statement stmt78 = con.createStatement();
+            String sql78 = "DROP TABLE seveneightportaldata ";
+            stmt78.executeUpdate(sql78);
+            System.out.println("seveneightportaldata Table  deleted in given database...");
 
             //CREATE TABLES
             Statement cstmt = con.createStatement();
-            String csql = "CREATE TABLE regportaldata AS SELECT * FROM sms WHERE outmessage NOT LIKE 'Dear customer%' AND sendresults='OK';";
+            String csql = "CREATE TABLE regportaldata AS SELECT * FROM sms WHERE outmessage NOT LIKE 'Dear customer, you have insufficient airtime%' AND sendresults='OK';";
             cstmt.executeUpdate(csql);
             System.out.println("Created regportaldata table...");
             Statement cstmt2 = con.createStatement();
             String csql2 = "CREATE TABLE failedreg AS SELECT * FROM sms WHERE outmessage LIKE 'Dear customer%';";
             cstmt2.executeUpdate(csql2);
             System.out.println("Created failedreg table...");
+            Statement cstmt78 = con.createStatement();
+            String csql78 = "CREATE TABLE seveneightportaldata AS SELECT * FROM sms WHERE id<0;";
+            cstmt78.executeUpdate(csql78);
+            System.out.println("Created seveneightportaldata table...");
 
             //INSERT INTO TABLES
+            String isql78 = "INSERT INTO `seveneightportaldata`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+            Statement statement78 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            PreparedStatement pstmt78 = con.prepareStatement(isql78);
+            ResultSet frs78 = statement78.executeQuery("SELECT `time_recieved`, `smsc`, `sender`, `reciever`, `message`, `timesent`, ' ', ' ', 'OK', 'Done', '1' FROM `inbox78`;");
+            while (frs78.next()) {
+                String time_recieved = frs78.getString(1);
+                String smsc = frs78.getString(2);
+                String sender = frs78.getString(3);
+                String shortcode = frs78.getString(4);
+                String inmessage = frs78.getString(5);
+                String timesent = frs78.getString(6);
+                String outmessage = frs78.getString(7);
+                String msgid = frs78.getString(8);
+                String sendresults = frs78.getString(9);
+                String deliverystatus = frs78.getString(10);
+                String status = frs78.getString(11);
+                pstmt78.setString(1, time_recieved);
+                pstmt78.setString(2, smsc);
+                pstmt78.setString(3, sender);
+                pstmt78.setString(4, shortcode);
+                pstmt78.setString(5, inmessage);
+                pstmt78.setString(6, timesent);
+                pstmt78.setString(7, outmessage);
+                pstmt78.setString(8, msgid);
+                pstmt78.setString(9, sendresults);
+                pstmt78.setString(10, deliverystatus);
+                pstmt78.setString(11, status);
+                pstmt78.executeUpdate();
+            }
+            System.out.println("Inserted into seveneightportaldata table from inbox78...");
+
             String isql = "INSERT INTO `regportaldata`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
             Statement statement = con44.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             PreparedStatement pstmt = con.prepareStatement(isql);
-            ResultSet rs = statement.executeQuery("SELECT `time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status` from sms where outmessage NOT LIKE 'Dear customer%' AND sendresults='OK';");
+            ResultSet rs = statement.executeQuery("SELECT `time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status` from sms where outmessage NOT LIKE 'Dear customer, you have insufficient airtime%' AND sendresults='OK';");
             while (rs.next()) {
                 String time_recieved = rs.getString(1);
                 String smsc = rs.getString(2);
@@ -79,7 +118,7 @@ public class Knecportaldata {
             }
             System.out.println("Inserted into regportaldata table from 44...");
             Statement statement2 = con46.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs2 = statement2.executeQuery("SELECT `time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status` from sms where outmessage NOT LIKE 'Dear customer%' AND sendresults='OK';");
+            ResultSet rs2 = statement2.executeQuery("SELECT `time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status` from sms where outmessage NOT LIKE 'Dear customer, you have insufficient airtime%' AND sendresults='OK';");
             while (rs2.next()) {
                 String time_recieved = rs2.getString(1);
                 String smsc = rs2.getString(2);
@@ -107,7 +146,7 @@ public class Knecportaldata {
             }
             System.out.println("Inserted into regportaldata table from 46...");
             //------------------------------------------------
-            
+
             String fisql = "INSERT INTO `failedreg`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
             Statement fstatement = con44.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             PreparedStatement fpstmt = con.prepareStatement(fisql);
@@ -164,16 +203,17 @@ public class Knecportaldata {
                 fpstmt.setString(10, deliverystatus);
                 fpstmt.setString(11, status);
                 fpstmt.executeUpdate();
-            }            
+            }
             System.out.println("Inserted into failedreg table from 46...");
+
             con.close();
             con44.close();
             con46.close();
             System.out.println("====================Done===============");
-            }catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(Knecportaldata.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        }
-
     }
+
+}

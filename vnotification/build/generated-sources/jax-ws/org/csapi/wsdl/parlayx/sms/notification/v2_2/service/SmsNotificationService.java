@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "SmsNotificationService", targetNamespace = "http://www.csapi.org/wsdl/parlayx/sms/notification/v2_2/service", wsdlLocation = "file:/home/coolie/NetBeansProjects/vnotification/src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_notification_service_2_2.wsdl")
+@WebServiceClient(name = "SmsNotificationService", targetNamespace = "http://www.csapi.org/wsdl/parlayx/sms/notification/v2_2/service", wsdlLocation = "file:/home/julius/NetBeansProjects/vnotification/src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_notification_service_2_2.wsdl")
 public class SmsNotificationService
     extends Service
 {
@@ -30,7 +30,7 @@ public class SmsNotificationService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/home/coolie/NetBeansProjects/vnotification/src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_notification_service_2_2.wsdl");
+            url = new URL("file:/home/julius/NetBeansProjects/vnotification/src/conf/xml-resources/web-services/sms/wsdl/parlayx_sms_notification_service_2_2.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

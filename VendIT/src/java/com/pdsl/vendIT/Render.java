@@ -210,6 +210,20 @@ public class Render extends HttpServlet {
                                                 prep.execute();
                                                 prep.close();
                                             }
+                                            if (results.toLowerCase().contains("TRN_ROOT")) {
+                                                mesg = "Dear Customer,We are experiencing KPLC delays. Once the system is up we will resend your transaction";
+                                                this.msEObj.setStatus("delay");
+                                                String timeout = "insert into timeout (msisdn,mpesa_code,mpesa_sender,amount,tx_date,account) values (?,?,?,?,?,?)";
+                                                prep = con.prepareStatement(timeout);
+                                                prep.setString(1, mpesa_msisdn);
+                                                prep.setString(2, mpesa_code);
+                                                prep.setString(3, mpesa_sender);
+                                                prep.setString(4, mpesa_amt);
+                                                prep.setString(5, tstamp);
+                                                prep.setString(6, mpesa_acc);
+                                                prep.execute();
+                                                prep.close();
+                                            }
                                             if (results.startsWith("FAIL")) {
                                                 try {
                                                     mesg = results.substring(5);
