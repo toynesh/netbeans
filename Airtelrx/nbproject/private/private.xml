@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/concurrent/Consumer.java</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/concurrent/Producer.java</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/entity/Snd.java</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/jpa/util/Conf.java</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/log4j.properties</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/Airtelrx.java</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/jpa/EjbClass.java</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/jpa/util/Props.java</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/build.xml</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/META-INF/persistence.xml</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/jpa/Bean.java</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/jpa/EmProvider.java</file>
+            <file>file:/home/tesla/NetBeansProjects/Airtelrx/src/com/pdslkenya/airtelrx/smpp/Bind.java</file>
+        </group>
+    </open-files>
+</project-private>
