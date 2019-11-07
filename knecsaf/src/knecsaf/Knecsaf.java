@@ -21,6 +21,8 @@ import com.cloudhopper.smpp.type.RecoverablePduException;
 import com.cloudhopper.smpp.type.SmppChannelException;
 import com.cloudhopper.smpp.type.SmppTimeoutException;
 import com.cloudhopper.smpp.type.UnrecoverablePduException;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -37,6 +39,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bson.Document;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -52,15 +55,14 @@ public class Knecsaf {
      */
     static Transmitter trx = new Transmitter();
     static DataStore data = new DataStore();
+    static MongoDatabase database = data.mongoconnect();
     static List<String> tosend = new ArrayList<>();
     static int port = 6692;//live
     static String host = "192.168.9.93";//live
-    static String systemId = "pdslmo";
-    static String password = "pdsl#$*";
-    /*static int port = 8070;
-    static String host = "172.27.116.22";
-    static String systemId = "pavel";
-    static String password = "dfsew";*/
+    //static String systemId = "pdslmo";
+    //static String password = "pdsl#$*";
+    static String systemId = "pdslmo";//test
+    static String password = "pdsl#$*";//test
     static ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
     static ScheduledThreadPoolExecutor monitorExecutor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1, new ThreadFactory() {
         private AtomicInteger sequence = new AtomicInteger(0);
@@ -81,6 +83,7 @@ public class Knecsaf {
     public static SmppSession moSession() {
         // GET SERVER IP and port The name of the file to open.
         String fileName = "/opt/applications/smppclients/safmo.txt";
+        //String fileName = "/home/julius/safmo.txt";
         String line = null;
 
         try {
@@ -88,20 +91,26 @@ public class Knecsaf {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             int index = 1;
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+                Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, line);
                 if (index == 1) {
                     host = line;
                 }
                 if (index == 2) {
                     port = parseInt(line);
                 }
+                if (index == 3) {
+                    systemId = line;
+                }
+                if (index == 4) {
+                    password = line;
+                }
                 index++;
             }
             bufferedReader.close();
         } catch (FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
+            Logger.getLogger(Knecsaf.class.getName()).log(Level.SEVERE, "Unable to open file '" + fileName + "'");
         } catch (IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
+            Logger.getLogger(Knecsaf.class.getName()).log(Level.SEVERE, "Error reading file '" + fileName + "'");
         }
         SmppSession msession = null;
         try {
@@ -173,8 +182,17 @@ public class Knecsaf {
                     String intime = ifmt.print(idt);
                     Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "Inbox: From:" + from + " To:" + dest + " Msg:" + message + " Time:" + intime);
                     Runnable irunnable = () -> {
-                        String insert = "INSERT INTO `knecsms`.`inbox` (`smsc`, `osmsc`, `sender`, `reciever`, `message`) VALUES ('SAFARICOM', '" + serviceT + "', '" + from + "', '" + dest + "', '" + message + "')";
-                        data.insert(insert);
+                        /*String insert = "INSERT INTO `knecsms`.`inbox` (`smsc`, `osmsc`, `sender`, `reciever`, `message`) VALUES ('SAFARICOM', '" + serviceT + "', '" + from + "', '" + dest + "', '" + message + "')";
+                        data.insert(insert);*/
+                        MongoCollection<Document> collection = database.getCollection("inbox");
+                        Document newInbox = new Document(
+                                "smsc", "SAFARICOM")
+                                .append("osmsc", serviceT)
+                                .append("sender", from)
+                                .append("reciever", dest)
+                                .append("message", message);
+                        collection.insertOne(newInbox);
+                        Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "newInbox Document inserted successfully");
                     };
                     Thread it = new Thread(irunnable);
                     it.start();
@@ -186,10 +204,10 @@ public class Knecsaf {
             t.start();
             long endTime = System.nanoTime();
             long duration = (endTime - startTime);
-            System.out.println("MO COUNTER: " + counter);
-            System.out.println("MO RES TOOK:" + duration + " nanoseconds");
-            System.out.println("MO RES TOOK:" + duration / 1000000 + " milliseconds");
-            System.out.println("MO RES TOOK:" + duration / 1000000 / 1000 + " seconds");
+            Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "MO COUNTER: " + counter);
+            Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "MO RES TOOK:" + duration + " nanoseconds");
+            Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "MO RES TOOK:" + duration / 1000000 + " milliseconds");
+            Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "MO RES TOOK:" + duration / 1000000 / 1000 + " seconds");
             return response;
         }
     }
@@ -200,7 +218,7 @@ public class Knecsaf {
         public void run() {
             dis = dis + 10;
             if (session0 == null) {
-                Logger.getLogger(Knecsaf.class.getName()).log(Level.SEVERE, "MO Session is null");
+                Logger.getLogger(Knecsaf.class.getName()).log(Level.WARNING, "MO Session is null");
                 Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "Initializing Reciever");
                 session0 = moSession();
             } else {
@@ -236,7 +254,7 @@ public class Knecsaf {
                 if (dis > 60) {
                     long startTime = System.nanoTime();
                     Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "Check for MO Disconnection");
-                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                     if (session0 != null) {
                         if (disman().equals("yes")) {
                             session0.unbind(3000);
@@ -247,9 +265,9 @@ public class Knecsaf {
                     dis = 0;
                     long endTime = System.nanoTime();
                     long duration = (endTime - startTime);
-                    System.out.println("MO DISCONCHECK TOOK:" + duration + " nanoseconds");
-                    System.out.println("MO DISCONCHECK TOOK:" + duration / 1000000 + " milliseconds");
-                    System.out.println("MO DISCONCHECK TOOK:" + duration / 1000000 / 1000 + " seconds");
+                    Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "MO DISCONCHECK TOOK:" + duration + " nanoseconds");
+                    Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "MO DISCONCHECK TOOK:" + duration / 1000000 + " milliseconds");
+                    Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, "MO DISCONCHECK TOOK:" + duration / 1000000 / 1000 + " seconds");
                 }
             }
         }
@@ -258,6 +276,7 @@ public class Knecsaf {
     private static String disman() {
         String res = "no";
         String fileName = "/opt/applications/smppclients/discon.txt";
+        //String fileName = "/home/julius/discon.txt";
         String line = null;
         try {
             FileReader fileReader = new FileReader(fileName);
@@ -265,16 +284,16 @@ public class Knecsaf {
             int index = 1;
             while ((line = bufferedReader.readLine()) != null) {
                 if (index == 1) {
-                    System.out.println(line);
+                    Logger.getLogger(Knecsaf.class.getName()).log(Level.INFO, line);
                     res = line;
                 }
                 index++;
             }
             bufferedReader.close();
         } catch (FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
+            Logger.getLogger(Knecsaf.class.getName()).log(Level.SEVERE, "Unable to open file '" + fileName + "'");
         } catch (IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
+            Logger.getLogger(Knecsaf.class.getName()).log(Level.SEVERE, "Error reading file '" + fileName + "'");
         }
         return res;
     }

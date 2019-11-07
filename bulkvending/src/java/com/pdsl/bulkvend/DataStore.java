@@ -54,8 +54,7 @@ public class DataStore {
             DateTimeFormatter tformatter = DateTimeFormat.forPattern("hh");
             String time = tformatter.print(dt);
             Logger.getLogger(DataStore.class.getName()).log(Level.WARNING, "Time:" + time);
-            if (time == "01") {*/
-
+            if (time.equals("12")) {*/
         DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy");
         String year = fmt.print(dt);
         DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM");
@@ -66,7 +65,7 @@ public class DataStore {
         //System.out.println("Creating Tables...");
         try {
             Connection con = connect();
-            String clients = "create table if not exists clients(id INT NOT NULL AUTO_INCREMENT, clientCode int, fullName varchar(200), uName varchar(200), uPass varchar(1000), uType varchar(100), creationDate timestamp default current_timestamp, primary key(id), unique(clientCode))";
+            String clients = "create table if not exists clients(id INT NOT NULL AUTO_INCREMENT, clientCode int, fullName varchar(200), uName varchar(200), uPass varchar(1000), uType varchar(100), creationDate timestamp default current_timestamp, status int default 0, primary key(id), unique(clientCode))";
             String groups = "create table if not exists groups(id INT NOT NULL AUTO_INCREMENT, clientId int, clientCode int, groupName varchar(200), groupType varchar(50), status int default 0, creationDate timestamp default current_timestamp, primary key(id), unique(groupName), foreign key(clientId) references clients(id) ON DELETE CASCADE)";
             String meters = "create table if not exists meters(id INT NOT NULL AUTO_INCREMENT,  clientCode int, groupId int, groupName varchar(200), groupType varchar(50), fullName varchar(200), phone varchar(50), meter varchar(50), amount  varchar(5000), status int default 0, creationDate timestamp default current_timestamp, primary key(id), foreign key(groupId) references groups(id) ON DELETE CASCADE)";
             Statement stm = con.createStatement();
@@ -144,7 +143,7 @@ public class DataStore {
             //Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         }
         /*} else {
-                Logger.getLogger(DataStore.class.getName()).log(Level.WARNING, "Its Past 1am. Tables already created");
+                Logger.getLogger(DataStore.class.getName()).log(Level.WARNING, "Its Past midnight. Tables already created");
             }
 
         } else {
@@ -184,7 +183,7 @@ public class DataStore {
         String res = "none";
         try {
             Connection con = connect();
-            String query = "SELECT `id`, `clientCode`, `fullName`, `uName` FROM `clients` WHERE  `uName`='" + uName + "' AND `uPass`='" + uPass + "'";
+            String query = "SELECT `id`, `clientCode`, `fullName`, `uName` FROM `clients` WHERE  `uName`='" + uName + "' AND `uPass`='" + uPass + "' AND status=0";
             //System.out.println(query);
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(query);

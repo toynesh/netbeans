@@ -25,12 +25,13 @@ import com.cloudhopper.smpp.type.RecoverablePduException;
 import com.cloudhopper.smpp.type.SmppChannelException;
 import com.cloudhopper.smpp.type.SmppTimeoutException;
 import com.cloudhopper.smpp.type.UnrecoverablePduException;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
-import java.sql.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -40,6 +41,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bson.Document;
 import org.jboss.netty.channel.DefaultChannelFuture;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -51,18 +53,15 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class Transmitter {
 
-    DataStore data = new DataStore();
+    static DataStore data = new DataStore();
+    static MongoDatabase database = data.mongoconnect();
     static Knecsafbulk bulk = new Knecsafbulk();
     int port = 7662;//live
     static String host = "192.168.9.21";//live
-    static String systemId = "pdsl";
-    static String password = "PDSL!@#";
+    //static String systemId = "pdsl";
     //static String password = "PDSL!@#";
-    //For testbed. the TX password = pds123
-    /*static int port = 2775;
-    static String host = "172.27.116.22";
-    static String systemId = "smppclient1";
-    static String password = "password";*/
+    static String systemId = "pdsl";//test
+    static String password = "pds123";//test
     static ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
     static ScheduledThreadPoolExecutor monitorExecutor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1, new ThreadFactory() {
         private AtomicInteger sequence = new AtomicInteger(0);
@@ -86,27 +85,34 @@ public class Transmitter {
 
     private SmppSession mtSession() {
         // GET SERVER IP and port The name of the file to open.
-        String fileName = "/opt/applications/smppclients/saftx2.txt";
+        String fileName = "/opt/applications/smppclients/saftx.txt";
+        //String fileName = "/home/julius/saftx.txt";
         String line = null;
         try {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             int index = 1;
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, line);
                 if (index == 1) {
                     host = line;
                 }
                 if (index == 2) {
                     port = parseInt(line);
                 }
+                if (index == 3) {
+                    systemId = line;
+                }
+                if (index == 4) {
+                    password = line;
+                }
                 index++;
             }
             bufferedReader.close();
         } catch (FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
+            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "Unable to open file '" + fileName + "'");
         } catch (IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
+            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "Error reading file '" + fileName + "'");
         }
         SmppSession rsession = null;
         try {
@@ -175,8 +181,8 @@ public class Transmitter {
             //String snd_txt = "QUERIED";
             long endTime = System.currentTimeMillis();
             long duration = (endTime - startTime);
-            System.out.println("QUERY RESULT TOOK:" + duration + " milliseconds");
-            System.out.println("QUERY RESULT TOOK:" + duration / 1000 + " seconds");
+            Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "QUERY RESULT TOOK:" + duration + " milliseconds");
+            Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "QUERY RESULT TOOK:" + duration / 1000 + " seconds");
             if (!snd_txt.equals("FAILED")) {
                 String msgid = "NONE";
                 String sendresults = "NONE";
@@ -186,7 +192,7 @@ public class Transmitter {
                 if (snd_txt.contains("does not exist") || snd_txt.contains("results are not available")) {
                     bulkst = 1;
                     Runnable runnable = () -> {
-                        bulk.sendSMS(intime, dest, snd_txt, from);
+                        bulk.sendSMS(intime, dest,message, snd_txt, from);
                     };
                     Thread t = new Thread(runnable);
                     t.start();
@@ -210,18 +216,18 @@ public class Transmitter {
                         Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SubmitSmResp: " + submitResp + " Errorcode " + ressplit[3]);
                         msgid = submitResp.getMessageId();
                         sendresults = submitResp.getResultMessage();
-                        if (!sendresults.equals("OK")) {
+                        if (!sendresults.equals("OK")) {                            
                             if (ressplit[3].trim().equals("0x00000045")) {
                                 bulkst = 1;
                                 Runnable runnable = () -> {
-                                    bulk.sendSMS(intime, dest, "Dear customer, you have insufficient airtime, please top up to enjoy this service", from);
+                                    bulk.sendSMS(intime, dest,message, "Dear customer, you have insufficient airtime, please top up to enjoy this service", from);
                                 };
                                 Thread t = new Thread(runnable);
                                 t.start();
                             } else {
                                 bulkst = 1;
                                 Runnable runnable = () -> {
-                                    bulk.sendSMS(intime, dest, "Dear customer, a problem occurred trying to process your request. Call 100", from);
+                                    bulk.sendSMS(intime, dest,message, "Dear customer, a problem occurred trying to process your request. Call 100", from);
                                 };
                                 Thread t = new Thread(runnable);
                                 t.start();
@@ -233,13 +239,13 @@ public class Transmitter {
                 }
                 long submitendTime = System.nanoTime();
                 long submitduration = (submitendTime - submitstartTime);
-                System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
-                System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
-                System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
+                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
+                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
+                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
                 DateTime ndt = new DateTime();
                 DateTimeFormatter nfmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
                 String nntime = nfmt.print(ndt);
-                System.out.println("Current Time:" + nntime);
+                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "Current Time:" + nntime);
                 Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "sendWindow.size: {}", trxsession.getSendWindow().getSize());
                 Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "Window data. max size : " + trxsession.getSendWindow().getMaxSize() + " size : " + trxsession.getSendWindow().getSize() + " free : " + trxsession.getSendWindow().getFreeSize() + " pending : " + trxsession.getSendWindow().getPendingOfferCount());
                 if (bulkst == 0) {
@@ -251,7 +257,7 @@ public class Transmitter {
                     final String mid = msgid;
                     final String sr = sendresults;
                     Runnable runnable = () -> {
-                        String insert = "insert into sms (time_recieved,smsc,sender,shortcode,inmessage,outmessage,msgid,sendresults) values (?,?,?,?,?,?,?,?)";
+                        /*String insert = "insert into sms (time_recieved,smsc,sender,shortcode,inmessage,outmessage,msgid,sendresults) values (?,?,?,?,?,?,?,?)";
                         try {
                             Connection con = data.connect();
                             PreparedStatement prep = con.prepareStatement(insert);
@@ -270,22 +276,35 @@ public class Transmitter {
                             Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
                             Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "WUUIIII SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
                             Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "WOOIII SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
-                        }
+                        }*/
+                        MongoCollection<Document> collection = database.getCollection("sms");
+                        Document newSMS = new Document(
+                                "time_recieved", intime)
+                                .append("smsc", "SAFARICOM")
+                                .append("sender", from)
+                                .append("shortcode", snd_sender)
+                                .append("inmessage", message)
+                                .append("outmessage", snd_txt)
+                                .append("msgid", mid)
+                                .append("sendresults", sr)
+                                .append("deliverystatus", "MessageSent");
+                        collection.insertOne(newSMS);
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "newSMS Document inserted successfully");
                     };
                     Thread t = new Thread(runnable);
                     t.start();
                     long saveendTime = System.nanoTime();
                     long saveduration = (saveendTime - savestartTime);
-                    System.out.println("SAVE TOOK:" + saveduration + " nanoseconds");
-                    System.out.println("SAVE TOOK:" + saveduration / 1000000 + " milliseconds");
-                    System.out.println("SAVE TOOK:" + saveduration / 1000000 / 1000 + " seconds");
-                    System.out.println("TRX COUNTER: " + counter);
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration + " nanoseconds");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration / 1000000 + " milliseconds");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration / 1000000 / 1000 + " seconds");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "TRX COUNTER: " + counter);
                 }
             } else {
-                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "GET MESSAGE FROM TONY FAILED");
+                Logger.getLogger(Transmitter.class.getName()).log(Level.WARNING, "GET MESSAGE FROM TONY FAILED");
             }
         } else {
-            Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "TRX Session is NULL!!!");
+            Logger.getLogger(Transmitter.class.getName()).log(Level.WARNING, "TRX Session is NULL!!!");
         }
     }
     int dis = 0;
@@ -331,7 +350,7 @@ public class Transmitter {
                 if (dis > 70) {
                     long startTime = System.nanoTime();
                     Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "Check for TX Disconnection");
-                    System.out.println("=====================================================================");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "=====================================================================");
                     if (trxsession != null) {
                         if (disman().equals("yes")) {
                             trxsession.unbind(3000);
@@ -341,9 +360,9 @@ public class Transmitter {
                         dis = 0;
                         long endTime = System.nanoTime();
                         long duration = (endTime - startTime);
-                        System.out.println("TX DISCONCHECK TOOK:" + duration + " nanoseconds");
-                        System.out.println("TX DISCONCHECK TOOK:" + duration / 1000000 + " milliseconds");
-                        System.out.println("TX DISCONCHECK TOOK:" + duration / 1000000 / 1000 + " seconds");
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "TX DISCONCHECK TOOK:" + duration + " nanoseconds");
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "TX DISCONCHECK TOOK:" + duration / 1000000 + " milliseconds");
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "TX DISCONCHECK TOOK:" + duration / 1000000 / 1000 + " seconds");
                     }
                 }
             }
@@ -353,6 +372,7 @@ public class Transmitter {
     private static String disman() {
         String res = "no";
         String fileName = "/opt/applications/smppclients/discon.txt";
+        //String fileName = "/home/julius/discon.txt";
         String line = null;
         try {
             FileReader fileReader = new FileReader(fileName);
@@ -360,16 +380,16 @@ public class Transmitter {
             int index = 1;
             while ((line = bufferedReader.readLine()) != null) {
                 if (index == 2) {
-                    System.out.println(line);
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, line);
                     res = line;
                 }
                 index++;
             }
             bufferedReader.close();
         } catch (FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
+            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "Unable to open file '" + fileName + "'");
         } catch (IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
+            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "Error reading file '" + fileName + "'");
         }
         return res;
     }

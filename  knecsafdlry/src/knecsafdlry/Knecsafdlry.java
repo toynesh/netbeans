@@ -21,6 +21,8 @@ import com.cloudhopper.smpp.type.RecoverablePduException;
 import com.cloudhopper.smpp.type.SmppChannelException;
 import com.cloudhopper.smpp.type.SmppTimeoutException;
 import com.cloudhopper.smpp.type.UnrecoverablePduException;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -36,6 +38,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bson.Document;
 import org.jboss.netty.channel.DefaultChannelFuture;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -51,7 +54,8 @@ public class Knecsafdlry {
      * @param args the command line arguments
      */
     static DataStore data = new DataStore();
-    static Knecsafdlry2 dlry2 = new Knecsafdlry2();
+    static MongoDatabase database = data.mongoconnect();
+    //static Knecsafdlry2 dlry2 = new Knecsafdlry2();
     static List<String> tosend = new ArrayList<>();
     //static String host = "192.168.9.96";
     static int port = 7662;//live
@@ -66,7 +70,7 @@ public class Knecsafdlry {
     public static void main(String[] args) {
         // TODO code application logic here
         // GET SERVER IP and port The name of the file to open.
-        String fileName = "/opt/applications/safaricom/safdlry.txt";
+        String fileName = "/opt/applications/smppclients/safdlry.txt";
         String line = null;
 
         try {
@@ -74,23 +78,28 @@ public class Knecsafdlry {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             int index = 1;
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+                Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, line);
                 if (index == 1) {
                     host = line;
                 }
                 if (index == 2) {
                     port = parseInt(line);
                 }
+                if (index == 3) {
+                    systemId = line;
+                }
+                if (index == 4) {
+                    password = line;
+                }
                 index++;
             }
             bufferedReader.close();
         } catch (FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
+            Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Unable to open file '" + fileName + "'");
         } catch (IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
+            Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Error reading file '" + fileName + "'");
         }
-        
-        
+
         try {
             ScheduledThreadPoolExecutor monitorExecutor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1, new ThreadFactory() {
                 private AtomicInteger sequence = new AtomicInteger(0);
@@ -124,23 +133,23 @@ public class Knecsafdlry {
             timer.schedule(new SayHello(), 0, 10000);
         } catch (SmppTimeoutException ex) {
             Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, "SmppTimeoutException" + ex);
-            String command = "/opt/applications/safaricom/safaricomdlry/safaricomdlry.sh >> /opt/applications/safaricom/safaricomdlry/nohup.out 2>&1";
-            System.out.println("Command:=>> " + command);
+            String command = "/opt/applications/smppclients/safaricomdlry/safaricomdlry.sh >> /opt/applications/smppclients/safaricomdlry/nohup.out 2>&1";
+            Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Command:=>> " + command);
             data.terminalCMD(command);
         } catch (SmppChannelException ex) {
             Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, "SmppChannelException Lost Connection" + ex);
-            String command = "/opt/applications/safaricom/safaricomdlry/safaricomdlry.sh >> /opt/applications/safaricom/safaricomdlry/nohup.out 2>&1";
-            System.out.println("Command:=>> " + command);
+            String command = "/opt/applications/smppclients/safaricomdlry/safaricomdlry.sh >> /opt/applications/smppclients/safaricomdlry/nohup.out 2>&1";
+            Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Command:=>> " + command);
             data.terminalCMD(command);
         } catch (UnrecoverablePduException ex) {
             Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, "UnrecoverablePduException" + ex);
-            String command = "/opt/applications/safaricom/safaricomdlry/safaricomdlry.sh >> /opt/applications/safaricom/safaricomdlry/nohup.out 2>&1";
-            System.out.println("Command:=>> " + command);
+            String command = "/opt/applications/smppclients/safaricomdlry/safaricomdlry.sh >> /opt/applications/smppclients/safaricomdlry/nohup.out 2>&1";
+            Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Command:=>> " + command);
             data.terminalCMD(command);
         } catch (InterruptedException ex) {
             Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, "InterruptedException" + ex);
-            String command = "/opt/applications/safaricom/safaricomdlry/safaricomdlry.sh >> /opt/applications/safaricom/safaricomdlry/nohup.out 2>&1";
-            System.out.println("Command:=>> " + command);
+            String command = "/opt/applications/smppclients/safaricomdlry/safaricomdlry.sh >> /opt/applications/smppclients/safaricomdlry/nohup.out 2>&1";
+            Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Command:=>> " + command);
             data.terminalCMD(command);
         }
     }
@@ -179,8 +188,17 @@ public class Knecsafdlry {
                     DateTimeFormatter ifmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
                     String intime = ifmt.print(idt);
                     Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Dlr1: From:" + from + " To:" + dest + " Msg:" + message + " Time:" + intime);
-                    String insert = "INSERT INTO `knecsms`.`dlry` (`smsc`, `osmsc`, `sender`, `reciever`, `message`) VALUES ('SAFARICOM', '" + serviceT + "', '" + from + "', '" + dest + "', '" + message + "')";
-                    data.insert(insert);
+                    /*String insert = "INSERT INTO `knecsms`.`dlry` (`smsc`, `osmsc`, `sender`, `reciever`, `message`) VALUES ('SAFARICOM', '" + serviceT + "', '" + from + "', '" + dest + "', '" + message + "')";
+                    data.insert(insert);*/
+                    MongoCollection<Document> collection = database.getCollection("dlry");
+                    Document newDlry = new Document(
+                            "smsc", "SAFARICOM")
+                            .append("osmsc", serviceT)
+                            .append("sender", from)
+                            .append("reciever", dest)
+                            .append("message", message);
+                    collection.insertOne(newDlry);
+                    Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "newDlry1 Document inserted successfully");
 
                 }
             };
@@ -207,28 +225,28 @@ public class Knecsafdlry {
                 }
             } catch (RecoverablePduException ex) {
                 Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, "RecoverablePduException" + ex);
-                String command = "/opt/applications/safaricom/safaricomdlry/safaricomdlry.sh >> /opt/applications/safaricom/safaricomdlry/nohup.out 2>&1";
-                System.out.println("Command:=>> " + command);
+                String command = "/opt/applications/smppclients/safaricomdlry/safaricomdlry.sh >> /opt/applications/smppclients/safaricomdlry/nohup.out 2>&1";
+                Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Command:=>> " + command);
                 data.terminalCMD(command);
             } catch (UnrecoverablePduException ex) {
                 Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, "UnrecoverablePduException" + ex);
-                String command = "/opt/applications/safaricom/safaricomdlry/safaricomdlry.sh >> /opt/applications/safaricom/safaricomdlry/nohup.out 2>&1";
-                System.out.println("Command:=>> " + command);
+                String command = "/opt/applications/smppclients/safaricomdlry/safaricomdlry.sh >> /opt/applications/smppclients/safaricomdlry/nohup.out 2>&1";
+                Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Command:=>> " + command);
                 data.terminalCMD(command);
             } catch (SmppTimeoutException ex) {
                 Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, "SmppTimeoutException" + ex);
-                String command = "/opt/applications/safaricom/safaricomdlry/safaricomdlry.sh >> /opt/applications/safaricom/safaricomdlry/nohup.out 2>&1";
-                System.out.println("Command:=>> " + command);
+                String command = "/opt/applications/smppclients/safaricomdlry/safaricomdlry.sh >> /opt/applications/smppclients/safaricomdlry/nohup.out 2>&1";
+                Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Command:=>> " + command);
                 data.terminalCMD(command);
             } catch (SmppChannelException ex) {
                 Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, "SmppChannelException" + ex);
-                String command = "/opt/applications/safaricom/safaricomdlry/safaricomdlry.sh >> /opt/applications/safaricom/safaricomdlry/nohup.out 2>&1";
-                System.out.println("Command:=>> " + command);
+                String command = "/opt/applications/smppclients/safaricomdlry/safaricomdlry.sh >> /opt/applications/smppclients/safaricomdlry/nohup.out 2>&1";
+                Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Command:=>> " + command);
                 data.terminalCMD(command);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, "InterruptedException" + ex);
-                String command = "/opt/applications/safaricom/safaricomdlry/safaricomdlry.sh >> /opt/applications/safaricom/safaricomdlry/nohup.out 2>&1";
-                System.out.println("Command:=>> " + command);
+                String command = "/opt/applications/smppclients/safaricomdlry/safaricomdlry.sh >> /opt/applications/smppclients/safaricomdlry/nohup.out 2>&1";
+                Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Command:=>> " + command);
                 data.terminalCMD(command);
             }
         }

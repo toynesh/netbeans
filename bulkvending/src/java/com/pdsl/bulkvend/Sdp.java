@@ -17,7 +17,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -26,6 +28,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -39,35 +42,26 @@ public class Sdp {
     /**
      * @param args the command line arguments
      */
+    List<String> connarray = new ArrayList<>();
+
     public static void main(String[] args) {
         Sdp sdp = new Sdp();
-        String result = sdp.sendSMS("254728064120", "Now b4 db", "fromdb", "704307");
+        String result = sdp.sendSMS("254728064120", "OK| KPLC system delayed. Will keep trying & resend your transaction.Queries Call:0709711000.", "fromdb", "704307");
+        String result2 = sdp.sendSMS("254728064120", "OK| KPLC system delayed. Will keep trying & resend your transaction.Queries Call:0709711000.", "fromdb", "704307");
         Logger.getLogger(Sdp.class.getName()).log(Level.INFO, "Result: " + result);
+        Logger.getLogger(Sdp.class.getName()).log(Level.INFO, "Result2: " + result2);
     }
+
     public String sendSMS(String msisdn, String message, String correlator, String shortcode, String dlrurl) {
         String response = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         String ctime = sdf.format(Calendar.getInstance().getTime());
-        String spid = null;
-        String serviceid = null;
-        String spPassword = null;
+        callSDPConn(shortcode);
+        String spid = connarray.get(0);
+        String serviceid = connarray.get(1);
+        String spPassword = connarray.get(2);
         try {
-            //DB
-            String myDriver = "org.gjt.mm.mysql.Driver";
-            String myUrl = "jdbc:mysql://localhost/dspDelivery";
-            Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "root", "team12340.");
-            String query = "select spid,serviceid,password from scodeManager where accesscode='" + shortcode + "'";
-            System.out.println(query);
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query);
-            while (rs.next()) {
-                spid = rs.getString(1);
-                serviceid = rs.getString(2);
-                spPassword = rs.getString(3);
-            }
-            con.close();
-            Logger.getLogger(Sdp.class.getName()).log(Level.INFO,"spID:"+spid+" serviceID:"+serviceid+" spPassword:"+spPassword);
+            Logger.getLogger(Sdp.class.getName()).log(Level.INFO, "spID:" + spid + " serviceID:" + serviceid + " spPassword:" + spPassword);
             //MD5PASS
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] hashInBytes = md.digest((spid + spPassword + ctime).getBytes(StandardCharsets.UTF_8));
@@ -98,7 +92,7 @@ public class Sdp {
                     + "<loc:addresses>tel:" + msisdn + "</loc:addresses>\n"
                     + "<!--Optional:-->\n"
                     + "<loc:senderName>" + shortcode + "</loc:senderName>\n"
-                    + "<loc:message>" + message + "</loc:message>\n"
+                    + "<loc:message>" + StringEscapeUtils.escapeXml(message) + "</loc:message>\n"
                     + "<!--Optional:-->\n"
                     + "<loc:receiptRequest>\n"
                     + "<endpoint>" + dlrurl + "</endpoint>\n"
@@ -132,37 +126,20 @@ public class Sdp {
             Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
         }
         return response;
     }
+
     public String sendSMS(String msisdn, String message, String correlator, String shortcode) {
         String response = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         String ctime = sdf.format(Calendar.getInstance().getTime());
-        String spid = null;
-        String serviceid = null;
-        String spPassword = null;
+        callSDPConn(shortcode);
+        String spid = connarray.get(0);
+        String serviceid = connarray.get(1);
+        String spPassword = connarray.get(2);
         try {
-            //DB
-            String myDriver = "org.gjt.mm.mysql.Driver";
-            String myUrl = "jdbc:mysql://localhost/dspDelivery";
-            Class.forName(myDriver);
-            Connection con = DriverManager.getConnection(myUrl, "root", "team12340.");
-            String query = "select spid,serviceid,password from scodeManager where accesscode='" + shortcode + "'";
-            System.out.println(query);
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query);
-            while (rs.next()) {
-                spid = rs.getString(1);
-                serviceid = rs.getString(2);
-                spPassword = rs.getString(3);
-            }
-            con.close();
-            System.out.println("spID:"+spid+" serviceID:"+serviceid+" spPassword:"+spPassword);
+            Logger.getLogger(Sdp.class.getName()).log(Level.INFO, "spID:" + spid + " serviceID:" + serviceid + " spPassword:" + spPassword);
             //MD5PASS
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] hashInBytes = md.digest((spid + spPassword + ctime).getBytes(StandardCharsets.UTF_8));
@@ -193,7 +170,7 @@ public class Sdp {
                     + "<loc:addresses>tel:" + msisdn + "</loc:addresses>\n"
                     + "<!--Optional:-->\n"
                     + "<loc:senderName>" + shortcode + "</loc:senderName>\n"
-                    + "<loc:message>" + message + "</loc:message>\n"
+                    + "<loc:message>" + StringEscapeUtils.escapeXml(message) + "</loc:message>\n"
                     + "<!--Optional:-->\n"
                     + "<loc:receiptRequest>\n"
                     + "<endpoint>http://10.138.30.123:9080/notify</endpoint>\n"
@@ -227,10 +204,6 @@ public class Sdp {
             Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
         }
         return response;
     }
@@ -249,5 +222,32 @@ public class Sdp {
             // e.printStackTrace();
         }
         return resp;
+    }
+
+    public void callSDPConn(String shortcode) {
+        if (connarray.size() == 0) {
+            try {
+                String myDriver = "org.gjt.mm.mysql.Driver";
+                String myUrl = "jdbc:mysql://localhost/dspDelivery";
+                Class.forName(myDriver);
+                Connection con = DriverManager.getConnection(myUrl, "pdsluser", "P@Dsl949022");
+                String query = "select spid,serviceid,password from scodeManager where accesscode='" + shortcode + "'";
+                System.out.println(query);
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(query);
+                while (rs.next()) {
+                    connarray.add(rs.getString(1));
+                    connarray.add(rs.getString(2));
+                    connarray.add(rs.getString(3));
+                }
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Sdp.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            System.out.println("sdpconn array Already Created: " + connarray.size());
+        }
     }
 }

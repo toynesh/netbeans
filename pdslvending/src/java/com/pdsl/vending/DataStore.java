@@ -32,7 +32,7 @@ public class DataStore {
             DateTimeFormatter tformatter = DateTimeFormat.forPattern("hh");
             String time = tformatter.print(dt);
             Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,"Time:"+time);
-            if(time=="01"){
+            if (time.equals("12")) {
             //create default user
             /*try {
                 Connection con = connect();
@@ -88,7 +88,7 @@ public class DataStore {
                 ex.printStackTrace();
             }
         }else{
-            Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,"Its Past 1am. Tables already created");
+            Logger.getLogger(DataStore.class.getName()).log(Level.WARNING,"Its Past midnight. Tables already created");
         }
 
         } else {

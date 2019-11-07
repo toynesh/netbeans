@@ -261,9 +261,9 @@ p {
   font-weight: 100 !important;
 }
 
-table {
-  background-image: linear-gradient(to bottom, red 0%, blue 100%); /* the gradient */
-  background-origin: border-box; /* set background to start from border-box */
-  border-spacing: 5px; /* space between each cell */
-  border: 5px solid transparent; /* optional */
-}
+/*table {
+  background-image: linear-gradient(to bottom, red 0%, blue 100%); /* the gradient 
+  background-origin: border-box; /* set background to start from border-box 
+  border-spacing: 5px; /* space between each cell 
+  border: 5px solid transparent; /* optional 
+}*/

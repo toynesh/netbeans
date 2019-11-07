@@ -4,6 +4,9 @@ package knecairtel;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.client.MongoDatabase;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -27,7 +30,7 @@ import java.util.logging.Logger;
 public class DataStore {
 
     public DataStore() {
-        createTables();
+        //createTables();
 
     }
 
@@ -48,6 +51,28 @@ public class DataStore {
         }
         return conn;
 
+    }
+    public MongoDatabase mongoconnect() {
+        //db.createUser({user:"knec", pwd:"1root2", roles:[{role:"dbAdmin", db:"knecsms"}]})
+        MongoDatabase database = null;
+        try {
+            // TODO code application logic here
+            // Creating a Mongo client 
+            MongoClient mongo = new MongoClient("localhost", 27017);
+
+            // Creating Credentials 
+            MongoCredential credential;
+            credential = MongoCredential.createCredential("knec", "1root2", "".toCharArray());
+            System.out.println("Connected to the database successfully");
+
+            // Accessing the database 
+            database = mongo.getDatabase("knecsms");
+            System.out.println("Credentials ::" + credential);
+        } catch (Exception e) {
+            System.err.println("Exception connecting to Mongo: " + e.getMessage());
+
+        }
+        return database;
     }
 
     public void createTables() {

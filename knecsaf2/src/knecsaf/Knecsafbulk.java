@@ -25,14 +25,13 @@ import com.cloudhopper.smpp.type.RecoverablePduException;
 import com.cloudhopper.smpp.type.SmppChannelException;
 import com.cloudhopper.smpp.type.SmppTimeoutException;
 import com.cloudhopper.smpp.type.UnrecoverablePduException;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
@@ -42,6 +41,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bson.Document;
 import org.jboss.netty.channel.DefaultChannelFuture;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -56,15 +56,14 @@ public class Knecsafbulk {
     /**
      * @param args the command line arguments
      */
-    DataStore data = new DataStore();
+    static DataStore data = new DataStore();
+    static MongoDatabase database = data.mongoconnect();
     int port = 7662;//live
     static String host = "192.168.9.21";//live
-    static String systemId = "pdslblk";
-    static String password = "pd$lbu!";
-    /*static int port = 8070;
-    static String host = "172.27.116.44";
-    static String systemId = "pavel";
-    static String password = "dfsew";*/
+    //static String systemId = "pdslblk";
+    //static String password = "pd$lbu!";
+    static String systemId = "pdslblk";//test
+    static String password = "pd$lbu!";//test
     static ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
     static ScheduledThreadPoolExecutor monitorExecutor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1, new ThreadFactory() {
         private AtomicInteger sequence = new AtomicInteger(0);
@@ -89,6 +88,7 @@ public class Knecsafbulk {
     public SmppSession bulkSession() {
         // GET SERVER IP and port The name of the file to open.
         String fileName = "/opt/applications/smppclients/safbulk.txt";
+        //String fileName = "/home/julius/safbulk.txt";
         String line = null;
 
         try {
@@ -96,20 +96,26 @@ public class Knecsafbulk {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             int index = 1;
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+                Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, line);
                 if (index == 1) {
                     host = line;
                 }
                 if (index == 2) {
                     port = parseInt(line);
                 }
+                if (index == 3) {
+                    systemId = line;
+                }
+                if (index == 4) {
+                    password = line;
+                }
                 index++;
             }
             bufferedReader.close();
         } catch (FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.SEVERE, "Unable to open file '" + fileName + "'");
         } catch (IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.SEVERE, "Error reading file '" + fileName + "'");
         }
         SmppSession bsession = null;
         try {
@@ -167,7 +173,7 @@ public class Knecsafbulk {
         }
     }
 
-    public void sendSMS(String intime, String dest, String message, String from) {
+    public void sendSMS(String intime, String dest, String inmessage, String message, String from) {
         if (trxsession2 == null) {
             Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "BULK Session IS null");
         }
@@ -187,7 +193,7 @@ public class Knecsafbulk {
                 SubmitSm submit0 = new SubmitSm();
                 submit0.setSourceAddress(new Address((byte) 0x00, (byte) 0x00, snd_sender));
                 submit0.setDestAddress(new Address((byte) 0x01, (byte) 0x01, from));
-                submit0.setRegisteredDelivery(SmppConstants.REGISTERED_DELIVERY_SMSC_RECEIPT_REQUESTED);
+                //submit0.setRegisteredDelivery(SmppConstants.REGISTERED_DELIVERY_SMSC_RECEIPT_REQUESTED);
                 if (textBytes != null && textBytes.length > 255) {
                     submit0.addOptionalParameter(new Tlv(SmppConstants.TAG_MESSAGE_PAYLOAD, textBytes, "message_payload"));
                 } else {
@@ -202,13 +208,13 @@ public class Knecsafbulk {
             }
             long submitendTime = System.nanoTime();
             long submitduration = (submitendTime - submitstartTime);
-            System.out.println("bulkSUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
-            System.out.println("bulkSUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
-            System.out.println("bulkSUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "bulkSUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "bulkSUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "bulkSUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
             DateTime ndt = new DateTime();
             DateTimeFormatter nfmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
             String nntime = nfmt.print(ndt);
-            System.out.println("Current Time:" + nntime);
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "Current Time:" + nntime);
             Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "sendWindow.size: {}", trxsession2.getSendWindow().getSize());
             Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "Window data. max size : " + trxsession2.getSendWindow().getMaxSize() + " size : " + trxsession2.getSendWindow().getSize() + " free : " + trxsession2.getSendWindow().getFreeSize() + " pending : " + trxsession2.getSendWindow().getPendingOfferCount());
             if (msgid == null) {
@@ -219,7 +225,7 @@ public class Knecsafbulk {
             long savestartTime = System.nanoTime();
             Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "BULK SAVING:" + intime + "||" + from + "||" + snd_sender + "||" + message + "||" + snd_txt + "||" + msgid + "||" + sendresults);
             Runnable runnable = () -> {
-                String insert = "insert into sms (time_recieved,smsc,sender,shortcode,inmessage,outmessage,msgid,sendresults) values (?,?,?,?,?,?,?,?)";
+                /*String insert = "insert into sms (time_recieved,smsc,sender,shortcode,inmessage,outmessage,msgid,sendresults) values (?,?,?,?,?,?,?,?)";
                 try {
                     Connection con = data.connect();
                     PreparedStatement prep = con.prepareStatement(insert);
@@ -238,18 +244,31 @@ public class Knecsafbulk {
                     Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
                     Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "WUUIIII SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
                     Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "WOOIII SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
-                }
+                }*/
+                MongoCollection<Document> collection = database.getCollection("sms");
+                Document newSMS = new Document(
+                        "time_recieved", intime)
+                        .append("smsc", "SAFARICOM")
+                        .append("sender", from)
+                        .append("shortcode", snd_sender)
+                        .append("inmessage", inmessage)
+                        .append("outmessage", snd_txt)
+                        .append("msgid", mid)
+                        .append("sendresults", sr)
+                        .append("deliverystatus", "MessageSent");
+                collection.insertOne(newSMS);
+                Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "newSMS Document inserted successfully");
             };
             Thread t = new Thread(runnable);
             t.start();
             long saveendTime = System.nanoTime();
             long saveduration = (saveendTime - savestartTime);
-            System.out.println("SAVE TOOK:" + saveduration + " nanoseconds");
-            System.out.println("SAVE TOOK:" + saveduration / 1000000 + " milliseconds");
-            System.out.println("SAVE TOOK:" + saveduration / 1000000 / 1000 + " seconds");
-            System.out.println("BULK COUNTER: " + counter);
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration + " nanoseconds");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration / 1000000 + " milliseconds");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration / 1000000 / 1000 + " seconds");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "BULK COUNTER: " + counter);
         } else {
-            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "bulk Session is NULL!!!");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.WARNING, "bulk Session is NULL!!!");
         }
     }
     int dis = 0;
@@ -259,7 +278,7 @@ public class Knecsafbulk {
         public void run() {
             dis = dis + 10;
             if (trxsession2 == null) {
-                Logger.getLogger(Knecsafbulk.class.getName()).log(Level.SEVERE, "BULK Session is null");
+                Logger.getLogger(Knecsafbulk.class.getName()).log(Level.WARNING, "BULK Session is null");
                 Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "Initializing BULK Transciever");
                 trxsession2 = bulkSession();
             } else {
@@ -295,7 +314,7 @@ public class Knecsafbulk {
                 if (dis > 80) {
                     long startTime = System.nanoTime();
                     Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "Check for BULK Disconnection");
-                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                    Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                     if (trxsession2 != null) {
                         if (disman().equals("yes")) {
                             trxsession2.unbind(3000);
@@ -305,9 +324,9 @@ public class Knecsafbulk {
                         dis = 0;
                         long endTime = System.nanoTime();
                         long duration = (endTime - startTime);
-                        System.out.println("BULK DISCONCHECK TOOK:" + duration + " nanoseconds");
-                        System.out.println("BULK DISCONCHECK TOOK:" + duration / 1000000 + " milliseconds");
-                        System.out.println("BULK DISCONCHECK TOOK:" + duration / 1000000 / 1000 + " seconds");
+                        Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "BULK DISCONCHECK TOOK:" + duration + " nanoseconds");
+                        Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "BULK DISCONCHECK TOOK:" + duration / 1000000 + " milliseconds");
+                        Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, "BULK DISCONCHECK TOOK:" + duration / 1000000 / 1000 + " seconds");
                     }
                 }
             }
@@ -316,7 +335,8 @@ public class Knecsafbulk {
 
     private static String disman() {
         String res = "no";
-        String fileName = "/opt/applications/smppclients/discon.txt";
+        String fileName = "/opt/applications/smppclients/discon.txt";        
+        //String fileName = "/home/julius/discon.txt";
         String line = null;
         try {
             FileReader fileReader = new FileReader(fileName);
@@ -324,16 +344,16 @@ public class Knecsafbulk {
             int index = 1;
             while ((line = bufferedReader.readLine()) != null) {
                 if (index == 3) {
-                    System.out.println(line);
+                    Logger.getLogger(Knecsafbulk.class.getName()).log(Level.INFO, line);
                     res = line;
                 }
                 index++;
             }
             bufferedReader.close();
         } catch (FileNotFoundException ex) {
-            System.out.println("Unable to open file '" + fileName + "'");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.SEVERE, "Unable to open file '" + fileName + "'");
         } catch (IOException ex) {
-            System.out.println("Error reading file '" + fileName + "'");
+            Logger.getLogger(Knecsafbulk.class.getName()).log(Level.SEVERE, "Error reading file '" + fileName + "'");
         }
         return res;
     }

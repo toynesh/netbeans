@@ -57,137 +57,261 @@ public class Admin extends HttpServlet {
             if (null == session.getAttribute("clientCode")) {
                 String redirectURL = "Home?login";
                 response.sendRedirect(redirectURL);
-            }
-            String fullname = (String) request.getSession().getAttribute("fullname");
-            if(!fullname.equals("Professional Digital Systems Ltd")){
-                String redirectURL = "Home?restricted";
-                response.sendRedirect(redirectURL);
-            }
+            } else {
+                String fullname = (String) request.getSession().getAttribute("fullname");
+                if (!fullname.equals("Professional Digital Systems Ltd")) {
+                    String redirectURL = "Home";
+                    response.sendRedirect(redirectURL);
+                }
+                if (null != request.getParameter("cid")) {
+                    String cid = request.getParameter("cid");
+                    String query = "SELECT id, status from clients where id=" + cid + " ";
+                    int status = 0;
+                    try {
+                        Connection con = this.data.connect();
+                        //System.out.println(query);
+                        Statement stm = con.createStatement();
+                        ResultSet rs = stm.executeQuery(query);
+                        while (rs.next()) {
+                            status = rs.getInt(2);
+                        }
+                        con.close();
+                    } catch (SQLException ex) {
+                        //Logger.getLogger(Groups.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (status == 0) {
+                        try {
+                            Connection con = this.data.connect();
+                            String update = "update clients set status = ? WHERE id = ?";
+                            PreparedStatement preparedStmt = con.prepareStatement(update);
+                            preparedStmt.setInt(1, 1);
+                            preparedStmt.setString(2, cid);
+                            preparedStmt.executeUpdate();
+                            System.out.println("Updated client status to disabled");
+                        } catch (SQLException ex) {
+                            //Logger.getLogger(Groups.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        String redirectURL = "Admin";
+                        response.sendRedirect(redirectURL);
+                    } else {
+                        try {
+                            Connection con = this.data.connect();
+                            String update = "update clients set status = ? WHERE id = ?";
+                            PreparedStatement preparedStmt = con.prepareStatement(update);
+                            preparedStmt.setInt(1, 0);
+                            preparedStmt.setString(2, cid);
+                            preparedStmt.executeUpdate();
+                            System.out.println("Updated client status to enable");
+                        } catch (SQLException ex) {
+                            //Logger.getLogger(Groups.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        String redirectURL = "Admin";
+                        response.sendRedirect(redirectURL);
+                    }
+                }
+                if (null != request.getParameter("uPass")) {
+                    String clientCode = request.getParameter("clientCode");
+                    String fullName = request.getParameter("fullName");
+                    String uName = request.getParameter("uName");
+                    String uPass = request.getParameter("uPass");
+                    String uType = "user";
+                    String values = "insert into clients(clientCode,fullName,uName,uPass,uType) values (?,?,?,?,?)";
+                    try {
+                        Connection con = data.connect();
+                        PreparedStatement prep = con.prepareStatement(values);
+                        prep.setString(1, clientCode);
+                        prep.setString(2, fullName);
+                        prep.setString(3, uName);
+                        prep.setString(4, uPass);
+                        prep.setString(5, uType);
+                        prep.execute();
+                        prep.close();
+                        con.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Groups.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                if (null != request.getParameter("amount")) {
+                    String clientId = request.getParameter("client");
+                    String reference = request.getParameter("reference");
+                    String amount = request.getParameter("amount");
 
-            if (null != request.getParameter("amount")) {
-                String clientId = request.getParameter("client");
-                String reference = request.getParameter("reference");
-                String amount = request.getParameter("amount");
+                    DateTime dt = new DateTime();
+                    DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy");
+                    String year = fmt.print(dt);
+                    DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM");
+                    String month = formatter.print(dt);
+                    String tdate = month + year;
+                    String values = "insert into transactions" + tdate + "(clientId,groupType,meter,deposit) values (?,?,?,?)";
+                    try {
+                        Connection con = data.connect();
+                        PreparedStatement prep = con.prepareStatement(values);
+                        prep.setString(1, clientId);
+                        prep.setString(2, "FLOAT DEPOSIT");
+                        prep.setString(3, reference);
+                        prep.setString(4, amount);
+                        prep.execute();
+                        prep.close();
+                        con.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Groups.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
 
-                DateTime dt = new DateTime();
-                DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy");
-                String year = fmt.print(dt);
-                DateTimeFormatter formatter = DateTimeFormat.forPattern("MMM");
-                String month = formatter.print(dt);
-                String tdate = month + year;
-                String values = "insert into transactions" + tdate + "(clientId,groupType,meter,deposit) values (?,?,?,?)";
+                out.println(data.pageHeader(true, fullname));
+                out.println("<section class='page-section about-heading'>");
+                out.println("<div class='container'>");
+                out.println("<div class='about-heading-content'>");
+                out.println("<div class='row'>");
+                out.println("<div class='col-xl-6 col-lg-6 mx-auto'>");
+                out.println("<div class='bg-faded rounded p-5 mt-3'>");
+                out.println("<h2 class='section-heading mb-4'>");
+                out.println("<span class='section-heading-upper'>Add Client</span>");
+                out.println("</h2>");
+                out.println("<form action='Admin' method='POST'>");
+                out.println("<div class='form-group row'>");
+                out.println("<label for='client' class='col-sm-2 col-form-label'>Code</label>");
+                out.println("<div class='col-sm-9'>");
+                out.println("<input type='text' class='form-control' id='clientCode' name='clientCode' required>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("<div class='form-group row'>");
+                out.println("<label for='reference' class='col-sm-2 col-form-label'>Full Name</label>");
+                out.println("<div class='col-sm-9'>");
+                out.println("<input type='text' class='form-control' id='fullName' name='fullName' required>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("<div class='form-group row'>");
+                out.println("<label for='amount' class='col-sm-2 col-form-label'>uName</label>");
+                out.println("<div class='col-sm-9'>");
+                out.println("<input type='text' class='form-control' id='uName' name='uName' required>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("<div class='form-group row'>");
+                out.println("<label for='amount' class='col-sm-2 col-form-label'>Password</label>");
+                out.println("<div class='col-sm-9'>");
+                out.println("<input type='password' class='form-control' id='uPass' name='uPass' required>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("<div class='form-group row'>");
+                out.println("<div class='col-sm-12'>");
+                out.println("<button type='submit' value='submit' class='btn btn-primary'>Add</button>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("</form>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("<div class='col-xl-6 col-lg-6 mx-auto'>");
+                out.println("<div class='bg-faded rounded p-5 mt-3'>");
+                out.println("<h2 class='section-heading mb-4'>");
+                out.println("<span class='section-heading-upper'>Add Float</span>");
+                out.println("</h2>");
+                out.println("<form action='Admin' method='POST'>");
+                out.println("<div class='form-group row'>");
+                out.println("<label for='client' class='col-sm-2 col-form-label'>Client</label>");
+                out.println("<div class='col-sm-10'>");
+                out.println("<select class='custom-select mr-sm-2' name='client'>");
+                String selquery2 = "SELECT id,fullName from clients order by id desc";
                 try {
                     Connection con = data.connect();
-                    PreparedStatement prep = con.prepareStatement(values);
-                    prep.setString(1, clientId);
-                    prep.setString(2, "FLOAT DEPOSIT");
-                    prep.setString(3, reference);
-                    prep.setString(4, amount);
-                    prep.execute();
-                    prep.close();
+                    Statement stm = con.createStatement();
+                    ResultSet rs = stm.executeQuery(selquery2);
+                    int count = 1;
+                    while (rs.next()) {
+                        if (count == 1) {
+                            out.println("<option selected value='" + rs.getString(1) + "'>" + rs.getString(2) + "</option>");
+                        } else {
+                            out.println("<option value='" + rs.getString(1) + "'>" + rs.getString(2) + "</option>");
+                        }
+                        count++;
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Groups.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                out.println("</select>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("<div class='form-group row'>");
+                out.println("<label for='reference' class='col-sm-2 col-form-label'>Reference</label>");
+                out.println("<div class='col-sm-10'>");
+                out.println("<input type='text' class='form-control' id='reference' name='reference' required>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("<div class='form-group row'>");
+                out.println("<label for='amount' class='col-sm-2 col-form-label'>Amount</label>");
+                out.println("<div class='col-sm-10'>");
+                out.println("<input type='text' class='form-control' id='amount' name='amount' placeholder='0.00' required>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("<div class='form-group row'>");
+                out.println("<div class='col-sm-12'>");
+                out.println("<button type='submit' value='submit' class='btn btn-primary'>Add</button>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("</form>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("<div class='bg-faded rounded p-5 mt-3'>");
+                out.println("<div class='row'>");
+                out.println("<div class='col-xl-12 col-lg-12 mx-auto'>");
+                out.println("<h2 class='section-heading mb-4'>");
+                out.println("<span class='section-heading-lower text-center'>Clients</span>");
+                out.println("</h2>");
+                out.println("<table class='table table-striped'>");
+                out.println("<thead class='thead-dark'>");
+                out.println("<tr>");
+                out.println("<th scope='col'>#</th>");
+                out.println("<th scope='col'>Client Code</th>");
+                out.println("<th scope='col'>Name</th>");
+                out.println("<th scope='col'>Float Balance</th>");
+                out.println("<th scope='col'>Action</th>");
+                out.println("</tr>");
+                out.println("</thead>");
+                out.println("<tbody>");
+                String query = "SELECT id,clientCode,fullName,status from clients";
+                try {
+                    Connection con = data.connect();
+                    Statement stm = con.createStatement();
+                    ResultSet rs = stm.executeQuery(query);
+                    int count = 1;
+                    while (rs.next()) {
+                        out.println("<tr>");
+                        out.println("<th scope='row'>" + count + "</th>");
+                        out.println("<td>" + rs.getString(2) + "</td>");
+                        out.println("<td>" + rs.getString(3) + "</td>");
+                        String fb = data.getFloatBal(parseInt(rs.getString(1)));
+                        DecimalFormat formatter = new DecimalFormat("#,###.00");
+                        double floatbal = Math.round(Double.parseDouble(fb) * 100.0) / 100.0;
+                        out.println("<td>" + formatter.format(floatbal) + "</td>");
+                        out.println("<td>");
+                        out.println("<div class='list-group list-group-horizontal-sm'>");
+                        out.println("<a href='Admin?cid=" + rs.getString(1) + "' class='list-group-item list-group-item-action list-group-item-warning'>");
+                        if (rs.getInt(4) == 0) {
+                            out.println("Click to Disable");
+                        } else {
+                            out.println("Click to enable");
+                        }
+                        out.println("</a>");
+                        out.println("</div>");
+                        out.println("</td>");
+                        out.println("</tr>");
+                        count++;
+                    }
                     con.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(Groups.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                out.println("</tbody>");
+                out.println("</table>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("</section>");
+                out.println(data.pageFoorter(""));
             }
-
-            out.println(data.pageHeader(true, fullname));
-            out.println("<section class='page-section about-heading'>");
-            out.println("<div class='container'>");
-            out.println("<div class='about-heading-content'>");
-            out.println("<div class='row'>");
-            out.println("<div class='col-xl-12 col-lg-12 mx-auto'>");
-            out.println("<div class='bg-faded rounded p-5 mt-3'>");
-            out.println("<h2 class='section-heading mb-4'>");
-            out.println("<span class='section-heading-upper'>Add Float</span>");
-            out.println("</h2>");
-            out.println("<form action='Admin' method='POST'>");
-            out.println("<div class='form-group row'>");
-            out.println("<label for='client' class='col-sm-1 col-form-label'>Client</label>");
-            out.println("<div class='col-sm-5'>");
-            out.println("<select class='custom-select mr-sm-2' name='client'>");
-            String selquery = "SELECT id,fullName from clients order by id desc";
-            try {
-                Connection con = data.connect();
-                Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery(selquery);
-                int count = 1;
-                while (rs.next()) {
-                    if (count == 1) {
-                        out.println("<option selected value='" + rs.getString(1) + "'>" + rs.getString(2) + "</option>");
-                    } else {
-                        out.println("<option value='" + rs.getString(1) + "'>" + rs.getString(2) + "</option>");
-                    }
-                    count++;
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Groups.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            out.println("</select>");
-            out.println("</div>");
-            out.println("</div>");
-            out.println("<div class='form-group row'>");
-            out.println("<label for='reference' class='col-sm-1 col-form-label'>Reference</label>");
-            out.println("<div class='col-sm-5'>");
-            out.println("<input type='text' class='form-control' id='reference' name='reference' required>");
-            out.println("</div>");
-            out.println("</div>");
-            out.println("<div class='form-group row'>");
-            out.println("<label for='amount' class='col-sm-1 col-form-label'>Amount</label>");
-            out.println("<div class='col-sm-5'>");
-            out.println("<input type='text' class='form-control' id='amount' name='amount' placeholder='0.00' required>");
-            out.println("</div>");
-            out.println("</div>");
-            out.println("<div class='form-group row'>");
-            out.println("<div class='col-sm-10'>");
-            out.println("<button type='submit' value='submit' class='btn btn-primary'>Add</button>");
-            out.println("</div>");
-            out.println("</div>");
-            out.println("</form>");
-            out.println("<h2 class='section-heading mb-4'>");
-            out.println("<span class='section-heading-lower text-center'>Clients</span>");
-            out.println("</h2>");
-            out.println("<table class='table table-striped'>");
-            out.println("<thead class='thead-dark'>");
-            out.println("<tr>");
-            out.println("<th scope='col'>#</th>");
-            out.println("<th scope='col'>Client Code</th>");
-            out.println("<th scope='col'>Name</th>");
-            out.println("<th scope='col'>Float Balance</th>");
-            out.println("</tr>");
-            out.println("</thead>");
-            out.println("<tbody>");
-            String query = "SELECT id,clientCode,fullName from clients";
-            try {
-                Connection con = data.connect();
-                Statement stm = con.createStatement();
-                ResultSet rs = stm.executeQuery(query);
-                int count = 1;
-                while (rs.next()) {
-                    out.println("<tr>");
-                    out.println("<th scope='row'>" + count + "</th>");
-                    out.println("<td>" + rs.getString(2) + "</td>");
-                    out.println("<td>" + rs.getString(3) + "</td>");
-                    String fb = data.getFloatBal(parseInt(rs.getString(1)));
-                    DecimalFormat formatter = new DecimalFormat("#,###.00");
-                    double floatbal = Math.round(Double.parseDouble(fb) * 100.0) / 100.0;
-                    out.println("<td>" + formatter.format(floatbal) + "</td>");
-                    out.println("</tr>");
-                    count++;
-                }
-                con.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(Groups.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            out.println("</tbody>");
-            out.println("</table>");
-            out.println("</div>");
-            out.println("</div>");
-            out.println("</div>");
-            out.println("</div>");
-            out.println("</div>");
-            out.println("</section>");
-            out.println(data.pageFoorter(""));
         }
     }
 

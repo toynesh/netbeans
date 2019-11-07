@@ -72,7 +72,7 @@ public class Home extends HttpServlet {
                     }
                 } else {
                     System.out.println("User Not Found");
-                    notify = "Wrong Username or Password**!!";
+                    notify = "Unknown Username or Password**!!";
                 }
             }
 
