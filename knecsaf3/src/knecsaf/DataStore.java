@@ -46,7 +46,7 @@ public class DataStore {
             conn = DriverManager.getConnection(myUrl, "pdsluser", "P@Dsl949022");
 
         } catch (Exception e) {
-            System.err.println("Exception: " + e.getMessage());
+            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, "Exception: " + e.getMessage());
 
         }
         return conn;
@@ -64,13 +64,13 @@ public class DataStore {
             // Creating Credentials 
             MongoCredential credential;
             credential = MongoCredential.createCredential("knec", "1root2", "".toCharArray());
-            System.out.println("Connected to the database successfully");
+            Logger.getLogger(DataStore.class.getName()).log(Level.INFO, "Connected to the database successfully");
 
             // Accessing the database 
             database = mongo.getDatabase("knecsms");
-            System.out.println("Credentials ::" + credential);
+            Logger.getLogger(DataStore.class.getName()).log(Level.INFO, "Credentials ::" + credential);
         } catch (Exception e) {
-            System.err.println("Exception connecting to Mongo: " + e.getMessage());
+            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, "Exception connecting to Mongo: " + e.getMessage());
 
         }
         return database;
@@ -119,7 +119,7 @@ public class DataStore {
         PreparedStatement pstm = null;
         try {
 
-            System.out.println(insert);
+            Logger.getLogger(DataStore.class.getName()).log(Level.INFO, insert);
             pstm = conn.prepareStatement(insert);
             pstm.execute();
             pstm.close();
@@ -142,11 +142,11 @@ public class DataStore {
         try {
             Process shell = pb.start();
         } catch (Exception exp) {
-            System.out.println("Exception--->" + exp.getMessage());
+            Logger.getLogger(DataStore.class.getName()).log(Level.INFO, "Exception--->" + exp.getMessage());
         }
         // close the stream
 
-        System.out.println("Done---->");
+        Logger.getLogger(DataStore.class.getName()).log(Level.INFO, "Done---->");
     }
 
     public String sendReq(String param) throws IOException {
@@ -177,7 +177,7 @@ public class DataStore {
         }
         in.close();
 
-        System.out.println(response.toString());
+        Logger.getLogger(DataStore.class.getName()).log(Level.INFO, response.toString());
         out.close();
         connection.disconnect();
         return response.toString();

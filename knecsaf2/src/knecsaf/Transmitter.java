@@ -302,6 +302,51 @@ public class Transmitter {
                 }
             } else {
                 Logger.getLogger(Transmitter.class.getName()).log(Level.WARNING, "GET MESSAGE FROM TONY FAILED");
+                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVING:" + intime + "||" + from + "||" + snd_sender + "||" + message + "||" + "QUERYING FAILED" );
+                    long savestartTime = System.nanoTime();
+                    Runnable runnable = () -> {
+                        /*String insert = "insert into sms (time_recieved,smsc,sender,shortcode,inmessage,outmessage,msgid,sendresults) values (?,?,?,?,?,?,?,?)";
+                        try {
+                            Connection con = data.connect();
+                            PreparedStatement prep = con.prepareStatement(insert);
+                            prep.setString(1, intime);
+                            prep.setString(2, "SAFARICOM");
+                            prep.setString(3, from);
+                            prep.setString(4, snd_sender);
+                            prep.setString(5, message);
+                            prep.setString(6, snd_txt);
+                            prep.setString(7, mid);
+                            prep.setString(8, sr);
+                            prep.execute();
+                            prep.close();
+                            con.close();
+                        } catch (SQLException sq) {
+                            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
+                            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "WUUIIII SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
+                            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "WOOIII SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
+                        }*/
+                        MongoCollection<Document> collection = database.getCollection("sms");
+                        Document newSMS = new Document(
+                                "time_recieved", intime)
+                                .append("smsc", "SAFARICOM")
+                                .append("sender", from)
+                                .append("shortcode", snd_sender)
+                                .append("inmessage", message)
+                                .append("outmessage", "QUERYING FAILED")
+                                .append("msgid", "")
+                                .append("sendresults", snd_txt)
+                                .append("deliverystatus", "");
+                        collection.insertOne(newSMS);
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "newSMS Document inserted successfully");
+                    };
+                    Thread t = new Thread(runnable);
+                    t.start();
+                    long saveendTime = System.nanoTime();
+                    long saveduration = (saveendTime - savestartTime);
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration + " nanoseconds");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration / 1000000 + " milliseconds");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration / 1000000 / 1000 + " seconds");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "TRX COUNTER: " + counter);
             }
         } else {
             Logger.getLogger(Transmitter.class.getName()).log(Level.WARNING, "TRX Session is NULL!!!");

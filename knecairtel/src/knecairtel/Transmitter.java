@@ -208,9 +208,9 @@ public class Transmitter {
 
                         long submitendTime = System.nanoTime();
                         long submitduration = (submitendTime - submitstartTime);
-                        System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
-                        System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
-                        System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
                         msgid = submitResp.getMessageId();
                         sendresults = submitResp.getResultMessage();
                     } catch (Exception myex) {
@@ -223,14 +223,14 @@ public class Transmitter {
                         long chargestartTime = System.nanoTime();
                         String chres = ch.ChargeGW(from);
                         String resstatus = ch.xmlGetCElement(chres, "status");
-                        System.out.println("Status: " + resstatus);
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "Status: " + resstatus);
                         String reserro = ch.xmlGetCElement(chres, "errorMessage");
-                        System.out.println("Charging Error: " + reserro);
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "Charging Error: " + reserro);
                         long chargeendTime = System.nanoTime();
                         long chargeduration = (chargeendTime - chargestartTime);
-                        System.out.println(from + " CHARGING REQ RES TOOK:" + chargeduration + " nanoseconds");
-                        System.out.println(from + " CHARGING REQ RES TOOK:" + chargeduration / 1000000 + " milliseconds");
-                        System.out.println(from + " CHARGING REQ RES TOOK:" + chargeduration / 1000000 / 1000 + " seconds");
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " CHARGING REQ RES TOOK:" + chargeduration + " nanoseconds");
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " CHARGING REQ RES TOOK:" + chargeduration / 1000000 + " milliseconds");
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " CHARGING REQ RES TOOK:" + chargeduration / 1000000 / 1000 + " seconds");
 
                         if (resstatus.equals("Success")) {
                             Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "Sending After Charge From:" + snd_sender + " To:" + from + " Message:" + snd_txt);
@@ -250,9 +250,9 @@ public class Transmitter {
 
                             long submitendTime = System.nanoTime();
                             long submitduration = (submitendTime - submitstartTime);
-                            System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
-                            System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
-                            System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
+                            Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
+                            Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
+                            Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
                             msgid = submitResp.getMessageId();
                             sendresults = submitResp.getResultMessage();
                         } else if (resstatus.equals("Failure")) {
@@ -276,9 +276,9 @@ public class Transmitter {
 
                                 long submitendTime = System.nanoTime();
                                 long submitduration = (submitendTime - submitstartTime);
-                                System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
-                                System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
-                                System.out.println(from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
+                                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration + " nanoseconds");
+                                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 + " milliseconds");
+                                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, from + " SUBMIT REQ RES TOOK:" + submitduration / 1000000 / 1000 + " seconds");
                                 msgid = submitResp.getMessageId();
                                 sendresults = submitResp.getResultMessage();
                             } else {
@@ -357,6 +357,52 @@ public class Transmitter {
                 //}
             } else {
                 Logger.getLogger(Transmitter.class.getName()).log(Level.WARNING, "GET MESSAGE FROM TONY FAILED");
+                Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVING:" + intime + "||" + from + "||" + snd_sender + "||" + message + "||" + "QUERYING FAILED" );
+                final String snd_txt_save = snd_txt;    
+                long savestartTime = System.nanoTime();
+                    Runnable runnable = () -> {
+                        /*String insert = "insert into sms (time_recieved,smsc,sender,shortcode,inmessage,outmessage,msgid,sendresults) values (?,?,?,?,?,?,?,?)";
+                        try {
+                            Connection con = data.connect();
+                            PreparedStatement prep = con.prepareStatement(insert);
+                            prep.setString(1, intime);
+                            prep.setString(2, "SAFARICOM");
+                            prep.setString(3, from);
+                            prep.setString(4, snd_sender);
+                            prep.setString(5, message);
+                            prep.setString(6, snd_txt);
+                            prep.setString(7, mid);
+                            prep.setString(8, sr);
+                            prep.execute();
+                            prep.close();
+                            con.close();
+                        } catch (SQLException sq) {
+                            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
+                            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "WUUIIII SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
+                            Logger.getLogger(Transmitter.class.getName()).log(Level.SEVERE, "WOOIII SAVING ERROR!!!!!!!!!!!!!!!!!!" + sq);
+                        }*/
+                        MongoCollection<Document> collection = database.getCollection("sms");
+                        Document newSMS = new Document(
+                                "time_recieved", intime)
+                                .append("smsc", "SAFARICOM")
+                                .append("sender", from)
+                                .append("shortcode", snd_sender)
+                                .append("inmessage", message)
+                                .append("outmessage", "QUERYING FAILED")
+                                .append("msgid", "")
+                                .append("sendresults", snd_txt_save)
+                                .append("deliverystatus", "");
+                        collection.insertOne(newSMS);
+                        Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "newSMS Document inserted successfully");
+                    };
+                    Thread t = new Thread(runnable);
+                    t.start();
+                    long saveendTime = System.nanoTime();
+                    long saveduration = (saveendTime - savestartTime);
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration + " nanoseconds");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration / 1000000 + " milliseconds");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "SAVE TOOK:" + saveduration / 1000000 / 1000 + " seconds");
+                    Logger.getLogger(Transmitter.class.getName()).log(Level.INFO, "TRX COUNTER: " + counter);
             }
         } else {
             Logger.getLogger(Transmitter.class.getName()).log(Level.WARNING, "TRX Session is NULL!!!");
