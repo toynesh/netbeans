@@ -187,7 +187,7 @@ public class Knecsaf {
                         MongoCollection<Document> collection = database.getCollection("inbox");
                         Document newInbox = new Document(
                                 "smsc", "SAFARICOM")
-                                .append("osmsc", serviceT)
+                                .append("time", intime)
                                 .append("sender", from)
                                 .append("reciever", dest)
                                 .append("message", message);

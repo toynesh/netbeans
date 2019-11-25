@@ -24,7 +24,7 @@ public class Knecportaldata {
         try {
             // TODO code application logic here
             Connection con = data.connect();
-            Connection con44 = data.connect44();
+            /*Connection con44 = data.connect44();
             Connection con46 = data.connect46();
 
             //DELETE TABLES
@@ -35,21 +35,21 @@ public class Knecportaldata {
             Statement stmt2 = con.createStatement();
             String sql2 = "DROP TABLE failedreg ";
             stmt2.executeUpdate(sql2);
-            System.out.println("failedreg Table  deleted in given database...");
+            System.out.println("failedreg Table  deleted in given database...");*/
             Statement stmt78 = con.createStatement();
             String sql78 = "DROP TABLE seveneightportaldata ";
             stmt78.executeUpdate(sql78);
             System.out.println("seveneightportaldata Table  deleted in given database...");
 
             //CREATE TABLES
-            Statement cstmt = con.createStatement();
+            /*Statement cstmt = con.createStatement();
             String csql = "CREATE TABLE regportaldata AS SELECT * FROM sms WHERE outmessage NOT LIKE 'Dear customer, you have insufficient airtime%' AND sendresults='OK';";
             cstmt.executeUpdate(csql);
             System.out.println("Created regportaldata table...");
             Statement cstmt2 = con.createStatement();
             String csql2 = "CREATE TABLE failedreg AS SELECT * FROM sms WHERE outmessage LIKE 'Dear customer%';";
             cstmt2.executeUpdate(csql2);
-            System.out.println("Created failedreg table...");
+            System.out.println("Created failedreg table...");*/
             Statement cstmt78 = con.createStatement();
             String csql78 = "CREATE TABLE seveneightportaldata AS SELECT * FROM sms WHERE id<0;";
             cstmt78.executeUpdate(csql78);
@@ -87,7 +87,7 @@ public class Knecportaldata {
             }
             System.out.println("Inserted into seveneightportaldata table from inbox78...");
 
-            String isql = "INSERT INTO `regportaldata`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+            /*String isql = "INSERT INTO `regportaldata`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
             Statement statement = con44.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             PreparedStatement pstmt = con.prepareStatement(isql);
             ResultSet rs = statement.executeQuery("SELECT `time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status` from sms where outmessage NOT LIKE 'Dear customer, you have insufficient airtime%' AND sendresults='OK';");
@@ -204,11 +204,11 @@ public class Knecportaldata {
                 fpstmt.setString(11, status);
                 fpstmt.executeUpdate();
             }
-            System.out.println("Inserted into failedreg table from 46...");
+            System.out.println("Inserted into failedreg table from 46...");*/
 
             con.close();
-            con44.close();
-            con46.close();
+            /*con44.close();
+            con46.close();*/
             System.out.println("====================Done===============");
         } catch (SQLException ex) {
             Logger.getLogger(Knecportaldata.class.getName()).log(Level.SEVERE, null, ex);

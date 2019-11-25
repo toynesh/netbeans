@@ -75,8 +75,15 @@ public class Home extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println(data.header);
-            String stable = "regportaldata";
+            String stable = "kcpe2019portaldata";
+            String year = "2019";
 
+            if (null != request.getParameter("year")) {
+                year = request.getParameter("year");
+            }
+            if (year.equals("2018")) {
+                stable = "portaldata";
+            }
             if (null != request.getParameter("optradio")) {
                 stable = request.getParameter("optradio");
             }
@@ -86,36 +93,53 @@ public class Home extends HttpServlet {
             String placeholderdate = sfmt.print(sdt);
             out.println("<div class='container-fluid' style='margin-top:2%'>");
             out.println("<div class='row'>");
-            out.println("<div class='col-lg-12 text-center'>");
+            out.println("<div class='col-lg-6'>");
+            out.println("<div class='form-group row'>");
+            out.println("<label for='year' class='col-sm-1 col-form-label' style='margin-top:20px'>Year: </label>");
+            out.println("<div class='col-sm-3' style='height:60px'>");
+            out.println("<select style='font-size:30px;height:50px;'  class='form-control' onChange=\"window.document.location.href='Home?year='+this.value;\">");
+            out.println("<option value='' selected>2019</option>");
+            out.println("<option value='2019'>2019</option>");
+            out.println("<option value='2018'>2018</option>");
+            out.println("</select>");
+            out.println("</div>");
+            out.println("</div>");
+            out.println("</div>");
+            out.println("<div class='col-lg-6'>");
             out.println("<form id='oria'  action='" + request.getContextPath() + "/Home' method='post'>");
+            out.println("<input type='text' value='" + year + "' name='year' style='display:none'>");
             out.println("<label class='radio-inline'>");
-            if (stable.equals("portaldata")) {
-                out.println("<input value='portaldata' onclick=\"document.getElementById('oria').submit();\" type='radio' name='optradio' checked>KCPE");
+            if (year.equals("2019")) {
+                out.println("<input value='portaldata' type='radio' name='optradio' checked>KCPE");
             } else {
-                out.println("<input value='portaldata' onclick=\"document.getElementById('oria').submit();\" type='radio' name='optradio'>KCPE");
+                if (stable.equals("portaldata")) {
+                    out.println("<input value='portaldata' onclick=\"document.getElementById('oria').submit();\" type='radio' name='optradio' checked>KCPE");
+                } else {
+                    out.println("<input value='portaldata' onclick=\"document.getElementById('oria').submit();\" type='radio' name='optradio'>KCPE");
+                }
+                out.println("</label>");
+                out.println("<label class='radio-inline'>");
+                if (stable.equals("kcseportaldata")) {
+                    out.println("<input value='kcseportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>KCSE");
+                } else {
+                    out.println("<input value='kcseportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>KCSE");
+                }
+                out.println("</label>");
+                out.println("<label class='radio-inline'>");
+                if (stable.equals("regportaldata")) {
+                    out.println("<input value='regportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>REGCHECK");
+                } else {
+                    out.println("<input value='regportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>REGCHECK");
+                }
+                out.println("</label>");
+                out.println("<label class='radio-inline'>");
+                if (stable.equals("seveneightportaldata")) {
+                    out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>20078");
+                } else {
+                    out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>20078");
+                }
+                out.println("</label>");
             }
-            out.println("</label>");
-            out.println("<label class='radio-inline'>");
-            if (stable.equals("kcseportaldata")) {
-                out.println("<input value='kcseportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>KCSE");
-            } else {
-                out.println("<input value='kcseportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>KCSE");
-            }
-            out.println("</label>");
-            out.println("<label class='radio-inline'>");
-            if (stable.equals("regportaldata")) {
-                out.println("<input value='regportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>REGCHECK");
-            } else {
-                out.println("<input value='regportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>REGCHECK");
-            }
-            out.println("</label>");
-            out.println("<label class='radio-inline'>");
-            if (stable.equals("seveneightportaldata")) {
-                out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>20078");
-            } else {
-                out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>20078");
-            }
-            out.println("</label>");
             out.println("</form>");
 
             out.println("</br>");
@@ -238,39 +262,54 @@ public class Home extends HttpServlet {
             out.println("</form>");
             out.println("</div>");
             out.println("<br><hr>");
+            if (year.equals("2019")) {
+                out.println("<a href='" + request.getContextPath() + "/Home?failed=kcpe'>Export Failed KCPE<i class='fas fa-angle-double-right pull-right'></i></a><br><br>");
+            }else{
             out.println("<a href='" + request.getContextPath() + "/Home?failed=kcpe'>Export Failed KCPE<i class='fas fa-angle-double-right pull-right'></i></a><br><br>");
             out.println("<a href='" + request.getContextPath() + "/Home?failed=kcse'>Export Failed KCSE<i class='fas fa-angle-double-right pull-right'></i></a><br><br>");
             out.println("<a href='" + request.getContextPath() + "/Home?failed=reg'>Export Failed REG<i class='fas fa-angle-double-right pull-right'></i></a><br>");
+            }
             out.println("</div>");
             out.println("</div>");
 
             //safcount
             int safcount = 0;
-            try {
-                Statement statement = con.createStatement();
-                //ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `"+stable+"` WHERE `smsc`='SAFARICOM'");
-                ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM safdlry WHERE `smsc`='SAFARICOM'");
-                if (stable.equals("portaldata")) {
-                    resultSet = statement.executeQuery("SELECT COUNT(*) FROM  safdlrykcpe WHERE `smsc`='SAFARICOM'");
-                } else if (stable.equals("kcseportaldata")) {
-                    resultSet = statement.executeQuery("SELECT COUNT(*) FROM  safdlrykcse WHERE `smsc`='SAFARICOM'");
-                } else if (stable.equals("seveneightportaldata")) {
-                    resultSet = statement.executeQuery("SELECT COUNT(*) FROM  `" + stable + "` WHERE `smsc`='SAFARICOM'");
-                }
-                while (resultSet.next()) {
-                    safcount = resultSet.getInt(1);
-                }
-            } catch (SQLException myex) {
-            }
-            if (!stable.equals("seveneightportaldata")) {
+            if (!year.equals("2019")) {
                 try {
                     Statement statement = con.createStatement();
                     //ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `"+stable+"` WHERE `smsc`='SAFARICOM'");
-                    ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM dlr_status WHERE `correlator`='20076' AND `status`='DeliveredToTerminal'");
-                    while (resultSet.next()) {
-                        safcount = safcount + resultSet.getInt(1);
+                    ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM safdlry WHERE `smsc`='SAFARICOM'");
+                    if (stable.equals("portaldata")) {
+                        resultSet = statement.executeQuery("SELECT COUNT(*) FROM  safdlrykcpe WHERE `smsc`='SAFARICOM'");
+                    } else if (stable.equals("kcseportaldata")) {
+                        resultSet = statement.executeQuery("SELECT COUNT(*) FROM  safdlrykcse WHERE `smsc`='SAFARICOM'");
+                    } else if (stable.equals("seveneightportaldata")) {
+                        resultSet = statement.executeQuery("SELECT COUNT(*) FROM  `" + stable + "` WHERE `smsc`='SAFARICOM'");
                     }
+                    while (resultSet.next()) {
+                        safcount = resultSet.getInt(1);
+                    }
+                } catch (SQLException myex) {
+                }
+                if (!stable.equals("seveneightportaldata")) {
+                    try {
+                        Statement statement = con.createStatement();
+                        //ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `"+stable+"` WHERE `smsc`='SAFARICOM'");
+                        ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM dlr_status WHERE `correlator`='20076' AND `status`='DeliveredToTerminal'");
+                        while (resultSet.next()) {
+                            safcount = safcount + resultSet.getInt(1);
+                        }
 
+                    } catch (SQLException myex) {
+                    }
+                }
+            } else {
+                try {
+                    Statement statement = con.createStatement();
+                    ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `" + stable + "` WHERE `smsc`='SAFARICOM'");
+                    while (resultSet.next()) {
+                        safcount = resultSet.getInt(1);
+                    }
                 } catch (SQLException myex) {
                 }
             }
@@ -284,6 +323,7 @@ public class Home extends HttpServlet {
                 }
             } catch (SQLException myex) {
             }
+
             //telkomcount
             int telkomcount = 0;
             try {
@@ -304,9 +344,10 @@ public class Home extends HttpServlet {
                 }
             } catch (SQLException myex) {
             }
+
             List<List<String>> eexportarray = new ArrayList<>();
             List<List<String>> pexportarray = new ArrayList<>();
-            String addedurl = "&optradio=" + stable + "";
+            String addedurl = "&year=" + year + "&optradio=" + stable + "";
             String limit = " limit 20";
             int pageno = 1;
             int pages = 1;
@@ -315,41 +356,46 @@ public class Home extends HttpServlet {
                 int sindex = (pageno * 20) - 19;
                 limit = " limit " + sindex + ",20";
             }
-            String query = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from " + stable + " order by time_recieved desc" + limit + "";
+            String query = "";
+            query = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from " + stable + " order by time_recieved desc" + limit + "";
 
             if (null != request.getParameter("msi")) {
                 String msisdn = request.getParameter("msi");
                 query = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from " + stable + " where sender='" + msisdn + "' order by time_recieved desc" + limit + "";
-                addedurl = "&msi=" + msisdn + "&optradio=" + stable + "";
+                addedurl = "&year=" + year + "&msi=" + msisdn + "&optradio=" + stable + "";
             }
             if (null != request.getParameter("indexnumber")) {
                 String indexnumber = request.getParameter("indexnumber");
                 query = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from " + stable + " where inmessage='" + indexnumber + "' order by time_recieved desc" + limit + "";
-                addedurl = "&indexnumber=" + indexnumber + "&optradio=" + stable + "";
+                addedurl = "&year=" + year + "&indexnumber=" + indexnumber + "&optradio=" + stable + "";
             }
             if (null != request.getParameter("smsid")) {
                 String smsid = request.getParameter("smsid");
                 query = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from " + stable + " where msgid='" + smsid + "' order by time_recieved desc" + limit + "";
-                addedurl = "&smsid=" + smsid + "&optradio=" + stable + "";
+                addedurl = "&year=" + year + "&smsid=" + smsid + "&optradio=" + stable + "";
             }
             if (null != request.getParameter("smsc")) {
                 String smsc = request.getParameter("smsc");
                 query = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from " + stable + " where smsc='" + smsc + "' order by time_recieved desc" + limit + "";
-                addedurl = "&smsc=" + smsc + "&optradio=" + stable + "";
+                addedurl = "&year=" + year + "&smsc=" + smsc + "&optradio=" + stable + "";
             }
             if (null != request.getParameter("sdate")) {
                 String sdate = request.getParameter("sdate");
                 String edate = request.getParameter("edate");
                 query = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from " + stable + " where timesent between '" + sdate + "' and '" + edate + "' order by time_recieved desc" + limit + "";
-                addedurl = "&sdate=" + sdate + "&edate=" + edate + "&optradio=" + stable + "";
+                addedurl = "&year=" + year + "&sdate=" + sdate + "&edate=" + edate + "&optradio=" + stable + "";
             }
+
             System.out.println(query);
+
             try {
+                String cquery = query.replaceAll(limit, " ").replaceAll("sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc", "COUNT(*)");
+                System.out.println("Count query: "+cquery);
                 Statement rowstm = con.createStatement();
-                ResultSet rowrs = rowstm.executeQuery(query.replaceAll(limit, " "));
+                ResultSet rowrs = rowstm.executeQuery(cquery);
                 int numrows = 0;
                 while (rowrs.next()) {
-                    numrows++;
+                    numrows=rowrs.getInt(1);
                 }
                 System.out.println("Rows:" + numrows);
                 pages = numrows / 20;
@@ -420,6 +466,10 @@ public class Home extends HttpServlet {
                 }
             }
             if (null != request.getParameter("failed")) {
+                String fquery = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from failedkcpe order by time_recieved desc";
+                if (!year.equals("2019")) {
+                    fquery = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from kcpe2019failed order by time_recieved desc";
+                }
                 if (request.getParameter("failed").equals("kcpe")) {
                     DateTime dt = new DateTime();
                     DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMddhhmmss");
@@ -429,7 +479,7 @@ public class Home extends HttpServlet {
                     writer.println("Mobile,Shortcode,Inbox,Time sent,Message,MSG ID,Delivery Status,SMSC");
                     try {
                         Statement st = con.createStatement();
-                        ResultSet rs = st.executeQuery("SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from failedkcpe order by time_recieved desc");
+                        ResultSet rs = st.executeQuery(fquery);
                         ResultSetMetaData metadata = rs.getMetaData();
                         int numcols = metadata.getColumnCount();
                         while (rs.next()) {

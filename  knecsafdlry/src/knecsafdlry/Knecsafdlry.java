@@ -21,6 +21,8 @@ import com.cloudhopper.smpp.type.RecoverablePduException;
 import com.cloudhopper.smpp.type.SmppChannelException;
 import com.cloudhopper.smpp.type.SmppTimeoutException;
 import com.cloudhopper.smpp.type.UnrecoverablePduException;
+import com.cloudhopper.smpp.util.DeliveryReceipt;
+import com.cloudhopper.smpp.util.DeliveryReceiptException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import java.io.BufferedReader;
@@ -41,6 +43,7 @@ import java.util.logging.Logger;
 import org.bson.Document;
 import org.jboss.netty.channel.DefaultChannelFuture;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -176,29 +179,35 @@ public class Knecsafdlry {
             Runnable runnable = () -> {
                 Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "SMS Received: {}", pduRequest);
                 if (pduRequest.getCommandId() == SmppConstants.CMD_ID_DELIVER_SM) {
-                    DeliverSm mo = (DeliverSm) pduRequest;
-                    int length = mo.getShortMessageLength();
-                    String from = mo.getSourceAddress().getAddress();
-                    String dest = mo.getDestAddress().getAddress();
-                    String serviceT = mo.getServiceType();
-                    byte[] shortMessage = mo.getShortMessage();
-                    String message = new String(shortMessage);
-                    //processSms(dest_address.getAddress(), mo.getShortMessage().toString());
-                    DateTime idt = new DateTime();
-                    DateTimeFormatter ifmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-                    String intime = ifmt.print(idt);
-                    Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Dlr1: From:" + from + " To:" + dest + " Msg:" + message + " Time:" + intime);
-                    /*String insert = "INSERT INTO `knecsms`.`dlry` (`smsc`, `osmsc`, `sender`, `reciever`, `message`) VALUES ('SAFARICOM', '" + serviceT + "', '" + from + "', '" + dest + "', '" + message + "')";
-                    data.insert(insert);*/
-                    MongoCollection<Document> collection = database.getCollection("dlry");
-                    Document newDlry = new Document(
-                            "smsc", "SAFARICOM")
-                            .append("osmsc", serviceT)
-                            .append("sender", from)
-                            .append("reciever", dest)
-                            .append("message", message);
-                    collection.insertOne(newDlry);
-                    Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "newDlry1 Document inserted successfully");
+                    try {
+                        DeliverSm mo = (DeliverSm) pduRequest;
+                        int length = mo.getShortMessageLength();
+                        String from = mo.getSourceAddress().getAddress();
+                        String dest = mo.getDestAddress().getAddress();
+                        String serviceT = mo.getServiceType();
+                        byte[] shortMessage = mo.getShortMessage();
+                        String message = new String(shortMessage);
+                        DeliveryReceipt dlr = DeliveryReceipt.parseShortMessage(message, DateTimeZone.UTC, false);
+                        //processSms(dest_address.getAddress(), mo.getShortMessage().toString());
+                        DateTime idt = new DateTime();
+                        DateTimeFormatter ifmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                        String intime = ifmt.print(idt);
+                        Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "Dlr1: From:" + from + " To:" + dest + " Msg:" + message + " Time:" + intime);
+                        /*String insert = "INSERT INTO `knecsms`.`dlry` (`smsc`, `osmsc`, `sender`, `reciever`, `message`) VALUES ('SAFARICOM', '" + serviceT + "', '" + from + "', '" + dest + "', '" + message + "')";
+                        data.insert(insert);*/
+                        MongoCollection<Document> collection = database.getCollection("dlry");
+                        Document newDlry = new Document(
+                                "smsc", "SAFARICOM")
+                                .append("time", intime)
+                                .append("messageID", dlr.getMessageId())
+                                .append("reciever", from)
+                                .append("sender", dest)
+                                .append("message", dlr.getText());
+                        collection.insertOne(newDlry);
+                        Logger.getLogger(Knecsafdlry.class.getName()).log(Level.INFO, "newDlry Document inserted successfully");
+                    } catch (DeliveryReceiptException ex) {
+                        Logger.getLogger(Knecsafdlry.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                 }
             };
