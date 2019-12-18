@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,10 +43,12 @@ public class Knecdatadump {
 
         //LAST DATE
         String ltime = "none";
+        String ltime2 = "none";
+
         try {
             Connection con = data.connect();
             Statement stm = con.createStatement();
-            String query = "SELECT timesent from kcpe2019failed order by id desc limit 1";
+            String query = "SELECT timesent from kcse2019failed order by id desc limit 1";
             ResultSet rs = stm.executeQuery(query);
             while (rs.next()) {
                 ltime = rs.getString(1);
@@ -55,9 +58,31 @@ public class Knecdatadump {
         } catch (SQLException ex) {
             Logger.getLogger(Knecdatadump.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            Connection con = data.connect();
+            Statement stm = con.createStatement();
+            String query = "SELECT timesent from moe2019failed order by id desc limit 1";
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                ltime2 = rs.getString(1);
+            }
+            Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Last time2..." + ltime2);
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Knecdatadump.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        //PULL DATA
+        //PULLDATA
         if (!ltime.equals("none")) {
+            try {
+                Date ltimed = formatter.parse(ltime);
+                Date ltimed2 = formatter.parse(ltime2);
+                if (ltimed2.compareTo(ltimed) > 0) {
+                    ltime = ltime2;
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(Knecdatadump.class.getName()).log(Level.SEVERE, null, ex);
+            }
             try {
                 MongoCollection<Document> collection = database42.getCollection("sms");
                 // Getting the iterable object 
@@ -187,89 +212,202 @@ public class Knecdatadump {
         } catch (SQLException ex0) {
             Logger.getLogger(Knecdatadump.class.getName()).log(Level.WARNING, "Tables already deleted");
         }
-
-        try {
-            //CREATE TABLES
-            Connection con = data.connect();
-            String kcpe2019portaldata = "CREATE TABLE IF NOT EXISTS kcpe2019portaldata ("
-                    + "id int(11) NOT NULL AUTO_INCREMENT,"
-                    + "time_recieved varchar(200),"
-                    + "smsc varchar(100),"
-                    + "sender varchar(200),"
-                    + "shortcode varchar(200),"
-                    + "inmessage text,"
-                    + "timesent varchar(200),"
-                    + "outmessage text,"
-                    + "msgid text,"
-                    + "sendresults varchar(200),"
-                    + "deliverystatus varchar(200),"
-                    + "status int(11) NOT NULL DEFAULT '0',"
-                    + "PRIMARY KEY (id))";
-            String kcpe2019failedreg = "CREATE TABLE IF NOT EXISTS kcpe2019failed ("
-                    + "id int(11) NOT NULL AUTO_INCREMENT,"
-                    + "time_recieved varchar(200),"
-                    + "smsc varchar(100),"
-                    + "sender varchar(200),"
-                    + "shortcode varchar(200),"
-                    + "inmessage text,"
-                    + "timesent varchar(200),"
-                    + "outmessage text,"
-                    + "msgid text,"
-                    + "sendresults varchar(200),"
-                    + "deliverystatus varchar(200) ,"
-                    + "status int(11) NOT NULL DEFAULT '0',"
-                    + "PRIMARY KEY (id))";
-            Statement stm = con.createStatement();
-            stm.execute(kcpe2019portaldata);
-            stm.execute(kcpe2019failedreg);
-            Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Tables Created...");
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Knecdatadump.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+             */
+            try {
+                //CREATE TABLES
+                Connection con = data.connect();
+                String kcpe2019portaldata = "CREATE TABLE IF NOT EXISTS kcpe2019portaldata ("
+                        + "id int(11) NOT NULL AUTO_INCREMENT,"
+                        + "time_recieved varchar(200),"
+                        + "smsc varchar(100),"
+                        + "sender varchar(200),"
+                        + "shortcode varchar(200),"
+                        + "inmessage text,"
+                        + "timesent varchar(200),"
+                        + "outmessage text,"
+                        + "msgid text,"
+                        + "sendresults varchar(200),"
+                        + "deliverystatus varchar(200),"
+                        + "status int(11) NOT NULL DEFAULT '0',"
+                        + "PRIMARY KEY (id))";
+                String kcpe2019failed = "CREATE TABLE IF NOT EXISTS kcpe2019failed ("
+                        + "id int(11) NOT NULL AUTO_INCREMENT,"
+                        + "time_recieved varchar(200),"
+                        + "smsc varchar(100),"
+                        + "sender varchar(200),"
+                        + "shortcode varchar(200),"
+                        + "inmessage text,"
+                        + "timesent varchar(200),"
+                        + "outmessage text,"
+                        + "msgid text,"
+                        + "sendresults varchar(200),"
+                        + "deliverystatus varchar(200) ,"
+                        + "status int(11) NOT NULL DEFAULT '0',"
+                        + "PRIMARY KEY (id))";
+                String moe2019portaldata = "CREATE TABLE IF NOT EXISTS moe2019portaldata ("
+                        + "id int(11) NOT NULL AUTO_INCREMENT,"
+                        + "time_recieved varchar(200),"
+                        + "smsc varchar(100),"
+                        + "sender varchar(200),"
+                        + "shortcode varchar(200),"
+                        + "inmessage text,"
+                        + "timesent varchar(200),"
+                        + "outmessage text,"
+                        + "msgid text,"
+                        + "sendresults varchar(200),"
+                        + "deliverystatus varchar(200),"
+                        + "status int(11) NOT NULL DEFAULT '0',"
+                        + "PRIMARY KEY (id))";
+                String moe2019failed = "CREATE TABLE IF NOT EXISTS moe2019failed ("
+                        + "id int(11) NOT NULL AUTO_INCREMENT,"
+                        + "time_recieved varchar(200),"
+                        + "smsc varchar(100),"
+                        + "sender varchar(200),"
+                        + "shortcode varchar(200),"
+                        + "inmessage text,"
+                        + "timesent varchar(200),"
+                        + "outmessage text,"
+                        + "msgid text,"
+                        + "sendresults varchar(200),"
+                        + "deliverystatus varchar(200) ,"
+                        + "status int(11) NOT NULL DEFAULT '0',"
+                        + "PRIMARY KEY (id))";
+                String kcse2019portaldata = "CREATE TABLE IF NOT EXISTS kcse2019portaldata ("
+                        + "id int(11) NOT NULL AUTO_INCREMENT,"
+                        + "time_recieved varchar(200),"
+                        + "smsc varchar(100),"
+                        + "sender varchar(200),"
+                        + "shortcode varchar(200),"
+                        + "inmessage text,"
+                        + "timesent varchar(200),"
+                        + "outmessage text,"
+                        + "msgid text,"
+                        + "sendresults varchar(200),"
+                        + "deliverystatus varchar(200),"
+                        + "status int(11) NOT NULL DEFAULT '0',"
+                        + "PRIMARY KEY (id))";
+                String kcse2019failed = "CREATE TABLE IF NOT EXISTS kcse2019failed ("
+                        + "id int(11) NOT NULL AUTO_INCREMENT,"
+                        + "time_recieved varchar(200),"
+                        + "smsc varchar(100),"
+                        + "sender varchar(200),"
+                        + "shortcode varchar(200),"
+                        + "inmessage text,"
+                        + "timesent varchar(200),"
+                        + "outmessage text,"
+                        + "msgid text,"
+                        + "sendresults varchar(200),"
+                        + "deliverystatus varchar(200) ,"
+                        + "status int(11) NOT NULL DEFAULT '0',"
+                        + "PRIMARY KEY (id))";
+                Statement stm = con.createStatement();
+                stm.execute(kcpe2019portaldata);
+                stm.execute(kcpe2019failed);
+                stm.execute(moe2019portaldata);
+                stm.execute(moe2019failed);
+                stm.execute(kcse2019portaldata);
+                stm.execute(kcse2019failed);
+                Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Tables Created...");
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Knecdatadump.class.getName()).log(Level.SEVERE, null, ex);
+            }
             for (int x = 0; x < databasesdata.size(); x++) {
-                String time_recieved = databasesdata.get(x).get(0);
-                String smsc = databasesdata.get(x).get(1);
-                String sender = databasesdata.get(x).get(2);
-                String shortcode = databasesdata.get(x).get(3);
-                String inmessage = databasesdata.get(x).get(4);
-                String timesent = databasesdata.get(x).get(5);
-                String outmessage = databasesdata.get(x).get(6);
-                String msgid = databasesdata.get(x).get(7);
-                String sendresults = databasesdata.get(x).get(8);
-                String deliverystatus = databasesdata.get(x).get(9);
-                String status = databasesdata.get(x).get(10);
-                if (!outmessage.toLowerCase().startsWith("dear customer, ")) {
-                    if (sendresults != null) {
-                        if (sendresults.equals("OK")) {
-                            Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Successful ");
-                            String insert = "INSERT INTO `kcpe2019portaldata`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) "
-                                    + "VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
-                            data.insert(insert);
+                String time_recieved = ((List<String>) databasesdata.get(x)).get(0);
+                String smsc = ((List<String>) databasesdata.get(x)).get(1);
+                String sender = ((List<String>) databasesdata.get(x)).get(2);
+                String shortcode = ((List<String>) databasesdata.get(x)).get(3);
+                String inmessage = ((List<String>) databasesdata.get(x)).get(4);
+                String timesent = ((List<String>) databasesdata.get(x)).get(5);
+                String outmessage = ((List<String>) databasesdata.get(x)).get(6);
+                String msgid = ((List<String>) databasesdata.get(x)).get(7);
+                String sendresults = ((List<String>) databasesdata.get(x)).get(8);
+                String deliverystatus = ((List<String>) databasesdata.get(x)).get(9);
+                String status = ((List<String>) databasesdata.get(x)).get(10);
+                if (shortcode.equals("20076") || shortcode.equals("25420076")) {
+                    /*if (!outmessage.toLowerCase().startsWith("dear customer, ")) {
+                        if (sendresults != null) {
+                            if (sendresults.equals("OK")) {
+                                Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Successful ");
+                                String insert = "INSERT INTO `kcpe2019portaldata`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                                data.insert(insert);
+                            } else {
+                                Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Status not OK ");
+                                String insert = "INSERT INTO `kcpe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                                data.insert(insert);
+                            }
                         } else {
-                            Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Status not OK ");
-                            String insert = "INSERT INTO `kcpe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) "
-                                    + "VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+                            Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Status is null ");
+                            String insert = "INSERT INTO `kcpe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
                             data.insert(insert);
                         }
                     } else {
-                        Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Status is null ");
-                        String insert = "INSERT INTO `kcpe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) "
-                                + "VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+                        Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Starts with Dear customer ");
+                        String insert = "INSERT INTO `kcpe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                        data.insert(insert);
+                    }*/
+                    if (!outmessage.toLowerCase().startsWith("dear customer, ")) {
+                        if (sendresults != null) {
+                            if (sendresults.equals("OK")) {
+                                Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Successful ");
+                                String insert = "INSERT INTO `kcse2019portaldata`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                                data.insert(insert);
+                            } else {
+                                Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Status not OK ");
+                                String insert = "INSERT INTO `kcse2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                                data.insert(insert);
+                            }
+                        } else {
+                            Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Status is null ");
+                            String insert = "INSERT INTO `kcse2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                            data.insert(insert);
+                        }
+                    } else {
+                        Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Starts with Dear customer ");
+                        String insert = "INSERT INTO `kcse2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
                         data.insert(insert);
                     }
-                } else {
-                    Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Starts with Dear customer ");
-                    String insert = "INSERT INTO `kcpe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) "
-                            + "VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
-                    data.insert(insert);
+                } else if (shortcode.equals("22263")) {
+                    if (!outmessage.toLowerCase().startsWith("dear customer, ")) {
+                        if (sendresults != null) {
+                            if (sendresults.equals("OK")) {
+                                Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Successful ");
+                                String insert = "INSERT INTO `moe2019portaldata`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                                data.insert(insert);
+                            } else {
+                                Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Status not OK ");
+                                String insert = "INSERT INTO `moe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                                data.insert(insert);
+                            }
+                        } else {
+                            Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Status is null ");
+                            String insert = "INSERT INTO `moe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                            data.insert(insert);
+                        }
+                    } else {
+                        Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Starts with Dear customer ");
+                        String insert = "INSERT INTO `moe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
+
+                        data.insert(insert);
+                    }
                 }
             }
-        
-        }else{
+        } else {
+
             Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Last time is empty");
         }
-        System.out.println("====================Done===============");
+        Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "\n====================Done===============");
 
     }
 

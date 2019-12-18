@@ -75,7 +75,7 @@ public class Home extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println(data.header);
-            String stable = "kcpe2019portaldata";
+            String stable = "kcse2019portaldata";
             String year = "2019";
 
             if (null != request.getParameter("year")) {
@@ -110,7 +110,19 @@ public class Home extends HttpServlet {
             out.println("<input type='text' value='" + year + "' name='year' style='display:none'>");
             out.println("<label class='radio-inline'>");
             if (year.equals("2019")) {
-                out.println("<input value='portaldata' type='radio' name='optradio' checked>KCPE");
+                if (stable.equals("kcpe2019portaldata")) {
+                    out.println("<input value='kcpe2019portaldata' onclick=\"document.getElementById('oria').submit();\" type='radio' name='optradio' checked>KCPE");
+                } else {
+                    out.println("<input value='kcpe2019portaldata' onclick=\"document.getElementById('oria').submit();\" type='radio' name='optradio'>KCPE");
+                }
+                out.println("</label>");
+                out.println("<label class='radio-inline'>");
+                if (stable.equals("kcse2019portaldata")) {
+                    out.println("<input value='kcse2019portaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>KCSE");
+                } else {
+                    out.println("<input value='kcse2019portaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>KCSE");
+                }
+                out.println("</label>");
             } else {
                 if (stable.equals("portaldata")) {
                     out.println("<input value='portaldata' onclick=\"document.getElementById('oria').submit();\" type='radio' name='optradio' checked>KCPE");
@@ -264,10 +276,11 @@ public class Home extends HttpServlet {
             out.println("<br><hr>");
             if (year.equals("2019")) {
                 out.println("<a href='" + request.getContextPath() + "/Home?failed=kcpe'>Export Failed KCPE<i class='fas fa-angle-double-right pull-right'></i></a><br><br>");
-            }else{
-            out.println("<a href='" + request.getContextPath() + "/Home?failed=kcpe'>Export Failed KCPE<i class='fas fa-angle-double-right pull-right'></i></a><br><br>");
-            out.println("<a href='" + request.getContextPath() + "/Home?failed=kcse'>Export Failed KCSE<i class='fas fa-angle-double-right pull-right'></i></a><br><br>");
-            out.println("<a href='" + request.getContextPath() + "/Home?failed=reg'>Export Failed REG<i class='fas fa-angle-double-right pull-right'></i></a><br>");
+                out.println("<a href='" + request.getContextPath() + "/Home?failed=kcse'>Export Failed KCSE<i class='fas fa-angle-double-right pull-right'></i></a><br><br>");
+            } else {
+                out.println("<a href='" + request.getContextPath() + "/Home?failed=kcpe'>Export Failed KCPE<i class='fas fa-angle-double-right pull-right'></i></a><br><br>");
+                out.println("<a href='" + request.getContextPath() + "/Home?failed=kcse'>Export Failed KCSE<i class='fas fa-angle-double-right pull-right'></i></a><br><br>");
+                out.println("<a href='" + request.getContextPath() + "/Home?failed=reg'>Export Failed REG<i class='fas fa-angle-double-right pull-right'></i></a><br>");
             }
             out.println("</div>");
             out.println("</div>");
@@ -390,12 +403,12 @@ public class Home extends HttpServlet {
 
             try {
                 String cquery = query.replaceAll(limit, " ").replaceAll("sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc", "COUNT(*)");
-                System.out.println("Count query: "+cquery);
+                System.out.println("Count query: " + cquery);
                 Statement rowstm = con.createStatement();
                 ResultSet rowrs = rowstm.executeQuery(cquery);
                 int numrows = 0;
                 while (rowrs.next()) {
-                    numrows=rowrs.getInt(1);
+                    numrows = rowrs.getInt(1);
                 }
                 System.out.println("Rows:" + numrows);
                 pages = numrows / 20;
@@ -445,7 +458,7 @@ public class Home extends HttpServlet {
                     //writer.println("Mobile,Shortcode,Inbox,Time sent,Message,MSG ID,Delivery Status,SMSC");
                     try {
                         Statement st = con.createStatement();
-                        ResultSet rs = st.executeQuery(query.replaceAll(limit, " "));
+                        ResultSet rs = st.executeQuery(query.replaceAll(limit, " limit 14400"));
                         ResultSetMetaData metadata = rs.getMetaData();
                         int numcols = metadata.getColumnCount();
                         while (rs.next()) {
@@ -466,15 +479,16 @@ public class Home extends HttpServlet {
                 }
             }
             if (null != request.getParameter("failed")) {
-                String fquery = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from failedkcpe order by time_recieved desc";
-                if (!year.equals("2019")) {
-                    fquery = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from kcpe2019failed order by time_recieved desc";
-                }
                 if (request.getParameter("failed").equals("kcpe")) {
+                    String fquery = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from failedkcpe order by time_recieved desc";
+                    if (year.equals("2019")) {
+                        fquery = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from kcpe2019failed order by time_recieved desc";
+                    }
+                    System.out.println("Failed QUERY: " + fquery);
                     DateTime dt = new DateTime();
                     DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMddhhmmss");
                     String currdate = fmt.print(dt);
-                    String filename = "knecsms" + currdate;
+                    String filename = "knecsmsfailedkcpe" + currdate;
                     PrintWriter writer = new PrintWriter("/opt/applications/downloads/" + filename + ".csv", "UTF-8");
                     writer.println("Mobile,Shortcode,Inbox,Time sent,Message,MSG ID,Delivery Status,SMSC");
                     try {
@@ -502,12 +516,16 @@ public class Home extends HttpServlet {
                     DateTime dt = new DateTime();
                     DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMddhhmmss");
                     String currdate = fmt.print(dt);
-                    String filename = "knecsms" + currdate;
+                    String filename = "knecsmsfailedkcse" + currdate;
                     PrintWriter writer = new PrintWriter("/opt/applications/downloads/" + filename + ".csv", "UTF-8");
                     writer.println("Mobile,Shortcode,Inbox,Time sent,Message,MSG ID,Delivery Status,SMSC");
                     try {
+                        String fquery = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from failedkcse order by time_recieved desc";
+                        if (year.equals("2019")) {
+                            fquery = "SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from kcse2019failed order by time_recieved desc";
+                        }
                         Statement st = con.createStatement();
-                        ResultSet rs = st.executeQuery("SELECT sender,shortcode,inmessage,timesent,outmessage,msgid,deliverystatus,smsc from failedkcse order by time_recieved desc");
+                        ResultSet rs = st.executeQuery(fquery);
                         ResultSetMetaData metadata = rs.getMetaData();
                         int numcols = metadata.getColumnCount();
                         while (rs.next()) {
@@ -726,7 +744,7 @@ public class Home extends HttpServlet {
 
     public void exportPDF(List<List<String>> export, String file) throws FileNotFoundException, IOException {
         try {
-            //System.out.println("Exporting in the here size: " + export.size());
+            System.out.println("Exporting to pdf size: " + export.size());
 
             //Document PDFLogReport = new Document(PageSize.A4, 0f, 0f, 15f, 0f);
             Document PDFLogReport = new Document(new Rectangle(792, 612));
