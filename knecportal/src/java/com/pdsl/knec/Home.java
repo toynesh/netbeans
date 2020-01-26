@@ -75,7 +75,7 @@ public class Home extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println(data.header);
-            String stable = "kcse2019portaldata";
+            String stable = "seveneightportaldata";
             String year = "2019";
 
             if (null != request.getParameter("year")) {
@@ -98,9 +98,13 @@ public class Home extends HttpServlet {
             out.println("<label for='year' class='col-sm-1 col-form-label' style='margin-top:20px'>Year: </label>");
             out.println("<div class='col-sm-3' style='height:60px'>");
             out.println("<select style='font-size:30px;height:50px;'  class='form-control' onChange=\"window.document.location.href='Home?year='+this.value;\">");
-            out.println("<option value='' selected>2019</option>");
-            out.println("<option value='2019'>2019</option>");
-            out.println("<option value='2018'>2018</option>");
+            if (year.equals("2019")) {
+                out.println("<option value='2019' selected>2019</option>");
+                out.println("<option value='2018'>2018</option>");
+            } else {
+                out.println("<option value='2019'>2019</option>");
+                out.println("<option value='2018' selected>2018</option>");
+            }
             out.println("</select>");
             out.println("</div>");
             out.println("</div>");
@@ -121,6 +125,13 @@ public class Home extends HttpServlet {
                     out.println("<input value='kcse2019portaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>KCSE");
                 } else {
                     out.println("<input value='kcse2019portaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>KCSE");
+                }
+                out.println("</label>");
+                out.println("<label class='radio-inline'>");
+                if (stable.equals("seveneightportaldata")) {
+                    out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>20078");
+                } else {
+                    out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>20078");
                 }
                 out.println("</label>");
             } else {
@@ -145,10 +156,10 @@ public class Home extends HttpServlet {
                 }
                 out.println("</label>");
                 out.println("<label class='radio-inline'>");
-                if (stable.equals("seveneightportaldata")) {
-                    out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>20078");
+                if (stable.equals("seveneight2019portaldata")) {
+                    out.println("<input value='seveneight2019portaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio' checked>20078");
                 } else {
-                    out.println("<input value='seveneightportaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>20078");
+                    out.println("<input value='seveneight2019portaldata' onclick=\"document.getElementById('oria').submit();\"  type='radio' name='optradio'>20078");
                 }
                 out.println("</label>");
             }
@@ -304,7 +315,7 @@ public class Home extends HttpServlet {
                     }
                 } catch (SQLException myex) {
                 }
-                if (!stable.equals("seveneightportaldata")) {
+                if (!stable.equals("seveneightportaldata")||!stable.equals("seveneight2019portaldata")) {
                     try {
                         Statement statement = con.createStatement();
                         //ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM `"+stable+"` WHERE `smsc`='SAFARICOM'");

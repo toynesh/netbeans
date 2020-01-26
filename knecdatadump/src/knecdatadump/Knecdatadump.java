@@ -42,7 +42,8 @@ public class Knecdatadump {
         List<List<String>> databasesdata = new ArrayList<>();
 
         //LAST DATE
-        String ltime = "none";
+        String ltime = "2020-01-21 23:51:23";
+        //String ltime = "none";
         String ltime2 = "none";
 
         try {
@@ -74,7 +75,7 @@ public class Knecdatadump {
 
         //PULLDATA
         if (!ltime.equals("none")) {
-            try {
+            /*try {
                 Date ltimed = formatter.parse(ltime);
                 Date ltimed2 = formatter.parse(ltime2);
                 if (ltimed2.compareTo(ltimed) > 0) {
@@ -82,7 +83,7 @@ public class Knecdatadump {
                 }
             } catch (ParseException ex) {
                 Logger.getLogger(Knecdatadump.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
             try {
                 MongoCollection<Document> collection = database42.getCollection("sms");
                 // Getting the iterable object 
@@ -375,8 +376,8 @@ public class Knecdatadump {
 
                         data.insert(insert);
                     }
-                } else if (shortcode.equals("22263")) {
-                    if (!outmessage.toLowerCase().startsWith("dear customer, ")) {
+                } else if (shortcode.equals("22263") || shortcode.equals("25422263")) {
+                    /*if (!outmessage.toLowerCase().startsWith("dear customer, ")) {
                         if (sendresults != null) {
                             if (sendresults.equals("OK")) {
                                 Logger.getLogger(Knecdatadump.class.getName()).log(Level.INFO, "Successful ");
@@ -400,7 +401,7 @@ public class Knecdatadump {
                         String insert = "INSERT INTO `moe2019failed`(`time_recieved`, `smsc`, `sender`, `shortcode`, `inmessage`, `timesent`, `outmessage`, `msgid`, `sendresults`, `deliverystatus`, `status`) VALUES ('" + time_recieved + "', '" + smsc + "', '" + sender + "', '" + shortcode + "', '" + inmessage + "', '" + timesent + "', '" + outmessage + "', '" + msgid + "', '" + sendresults + "', '" + deliverystatus + "', '" + status + "')";
 
                         data.insert(insert);
-                    }
+                    }*/
                 }
             }
         } else {
